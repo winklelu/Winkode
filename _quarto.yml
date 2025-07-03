@@ -8,4 +8,5 @@ website:
     left:
       - href: index.qmd
         text: Home
-
+      - href: Speaker.qmd
+        text: Presentations

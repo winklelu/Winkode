@@ -1,11 +1,48 @@
 ---
-title: "Winkode"
+title: "Winkle Lu"
+about:
+  id: hero-heading
+  template: solana
+  image: winkle.jpg
+  links:
+    - icon: LinkedIn
+      text: LinkedIn
+      href: https://www.linkedin.com/in/winkle-lu-programming-tw/
+    - icon: github
+      text: Github
+      href: https://github.com/winklelu
+    - text: winklelu1226@gmail.com 
+    
 ---
 
-## Quarto
+### Statistical Programming | Data Visualization & Automation Tool | SAS, R, Python, Shiny, Quarto | Developer | Clinical Trial | CDISC
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+:::{#hero-heading}
 
-```{r}
-1 + 1
-```
+With over a decade of experience in clinical trial programming, I specialize in CDISC standards and regulatory deliverable — but I’m not standing still. I’ve embraced open-source tools like R, Shiny, and Python to drive automation and improve data visualization.
+
+## Experience
+
+Clinical Research Organization | Pharmaceutical Company | 
+Statistical Programming
+
+## Education
+
+Master of Public Health | Tzu Chi University
+
+## Performance Summary
+- 11+ years of clinical trial programming experience with deep expertise in SDTM, ADaM, and regulatory submission.
+
+- Led an 18-member team to complete COVID-19 Phase III programming within 3 months; results published in NEJM.
+
+- Skilled at cross-functional collaboration, providing medical-monitor support and creating publication-ready output.
+
+- Developed automation tools including an aCRF mapping system and review validation tools, boosting efficiency by 70%. 
+
+- Presented at R/Pharma 2024 and ShinyConf 2025, demonstrating advanced R Shiny proficiency.
+
+- Recognized for consistently delivering high-quality work with exceptional efficiency, I have earned promotions at nearly every company I have worked for.
+
+
+:::
+

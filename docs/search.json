@@ -2,15 +2,43 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Winkode",
+    "title": "Winkle Lu",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\n1 + 1\n\n[1] 2"
+    "text": "LinkedIn\n  \n  \n    \n     Github\n  \n  \n     winklelu1226@gmail.com\n  \n\n      \nWith over a decade of experience in clinical trial programming, I specialize in CDISC standards and regulatory deliverable — but I’m not standing still. I’ve embraced open-source tools like R, Shiny, and Python to drive automation and improve data visualization.\n\n\nClinical Research Organization | Pharmaceutical Company | Statistical Programming\n\n\n\nMaster of Public Health | Tzu Chi University\n\n\n\n\n11+ years of clinical trial programming experience with deep expertise in SDTM, ADaM, and regulatory submission.\nLed an 18-member team to complete COVID-19 Phase III programming within 3 months; results published in NEJM.\nSkilled at cross-functional collaboration, providing medical-monitor support and creating publication-ready output.\nDeveloped automation tools including an aCRF mapping system and review validation tools, boosting efficiency by 70%.\nPresented at R/Pharma 2024 and ShinyConf 2025, demonstrating advanced R Shiny proficiency.\nRecognized for consistently delivering high-quality work with exceptional efficiency, I have earned promotions at nearly every company I have worked for."
   },
   {
-    "objectID": "index.html#quarto",
-    "href": "index.html#quarto",
-    "title": "Winkode",
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Winkle Lu",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\n1 + 1\n\n[1] 2"
+    "text": "Clinical Research Organization | Pharmaceutical Company | Statistical Programming"
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Winkle Lu",
+    "section": "",
+    "text": "Master of Public Health | Tzu Chi University"
+  },
+  {
+    "objectID": "index.html#performance-summary",
+    "href": "index.html#performance-summary",
+    "title": "Winkle Lu",
+    "section": "",
+    "text": "11+ years of clinical trial programming experience with deep expertise in SDTM, ADaM, and regulatory submission.\nLed an 18-member team to complete COVID-19 Phase III programming within 3 months; results published in NEJM.\nSkilled at cross-functional collaboration, providing medical-monitor support and creating publication-ready output.\nDeveloped automation tools including an aCRF mapping system and review validation tools, boosting efficiency by 70%.\nPresented at R/Pharma 2024 and ShinyConf 2025, demonstrating advanced R Shiny proficiency.\nRecognized for consistently delivering high-quality work with exceptional efficiency, I have earned promotions at nearly every company I have worked for."
+  },
+  {
+    "objectID": "Speaker.html",
+    "href": "Speaker.html",
+    "title": "Talks & Presentations",
+    "section": "",
+    "text": "🔹 R/Pharma 2024\n\nTitle: Using Shiny to Clearly Present Clinical Results with CDISC-Compliant Dataset\n📍 Date: 2024-10-31\n📝 Summary:\nThis presentation explores how R and Shiny can enhance the review and visualization of clinical trial data. Traditional workflows often involve repeated back-and-forth verification between datasets such as SDTM, ADaM, and EDC, which is time-consuming. By leveraging R’s Shiny framework, we can streamline data filtering and visualization, enabling faster and more intuitive review processes for both statisticians and medical teams. The talk highlights three key Shiny applications: tumor response visualization, patient milestone tracking, and SDTM domain review. These tools support both population-level summaries and individual-level insights. Emphasis is also placed on the importance of using CDISC-compliant data formats to standardize and simplify data handling. Finally, the integration of Shiny with Quarto is introduced as a future direction to make clinical data more accessible to non-programmers, improving data transparency and efficiency in reporting.\n📄 Download Slides (PDF)\n\n\n\n🔹 ShinyConf 2025\n\nTitle: Reviewing Clinical Data Efficiently with Shiny\n📍 Date: 2025-04-12\n📝 Summary:\nThis presentation introduces a Shiny-based application designed to improve the efficiency of clinical data review. Traditional EDC systems often limit reviewers to viewing data one form and one patient at a time, making it difficult to cross-reference information across forms such as Adverse Events (AE), Exposure (EX), and Concomitant Medication (CM). This tool addresses that challenge by providing a user-friendly, click-driven interface that allows reviewers to select patients, filter forms and variables, and instantly visualize clinical timelines and data listings. The application maintains the original data structure, requires minimal setup by programmers, and is accessible to non-programming users. Key benefits include simultaneous multi-form data review, integrated visualizations and listings, and Excel export functionality. This tool aims to bridge communication gaps between reviewers and programmers while enhancing the speed and clarity of clinical review workflows..\n📄 Download Slides (PDF)"
+  },
+  {
+    "objectID": "Speaker.html#conference-presentations",
+    "href": "Speaker.html#conference-presentations",
+    "title": "Talks & Presentations",
+    "section": "",
+    "text": "&lt;h3&gt;🔹 R/Pharma 2024&lt;/h3&gt;\n&lt;p&gt;&lt;strong&gt;Title:&lt;/strong&gt; Using Shiny to Clearly Present Clinical Results with CDISC-Compliant Dataset&lt;br&gt;\n📍 &lt;em&gt;Date:&lt;/em&gt; 2024-10-31&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Summary:&lt;/strong&gt;&lt;br&gt;\nThis presentation explores how R and Shiny can enhance the review and visualization of clinical trial data...\n&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"slides/R_Pharma_Using Shiny to Clearly Present Clinical Results with CDISC-Compliant Dataset.pdf\" target=\"_blank\"&gt;📄 Download Slides (PDF)&lt;/a&gt;&lt;/p&gt;"
   }
 ]
