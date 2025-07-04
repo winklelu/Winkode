@@ -10,3 +10,5 @@ website:
         text: Home
       - href: Speaker.qmd
         text: Presentations
+      - href: blog/index.qmd
+        text: Blog

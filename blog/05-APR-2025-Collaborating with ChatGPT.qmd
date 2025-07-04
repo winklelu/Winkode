@@ -1,0 +1,32 @@
+---
+title: "Collaborating with ChatGPT in Coding"
+date: 05-APR-2025
+categories: [AI, ChatGPT, Programming]
+description: "What I’ve Learned So Far"
+format: html
+---
+
+<img src="../images/AI_coding.jpg" width="600px" style="margin-bottom: 1em; border-radius: 8px;">
+
+Lately, I’ve been exploring how to work more effectively with ChatGPT when writing code—mostly in R and Python—to boost my productivity and reach my goals faster.
+
+To be honest, it hasn’t always been smooth sailing. While AI can be a powerful assistant, working with it efficiently takes practice and intention. I’m still learning and fine-tuning my process, but I’ve picked up a few lessons along the way that I’d like to share. And of course, I’d love to hear your thoughts too 🪇
+
+💡 1. Define the Programming Goal Clearly
+Before asking AI for help, I’ve found it crucial to clearly explain what I’m trying to achieve. The more specific and outcome-oriented the request, the more helpful the response. When I start with a well-defined goal, ChatGPT can often propose a clean structure or even a solid template for the task.
+
+💡 2. Understand the AI-Generated Code
+This might sound obvious, but it’s tempting to copy and paste without fully understanding the AI’s output. In reality, taking the time to read and grasp the logic is essential. It helps me make sure the code aligns with my intent—and gives me a much better chance at troubleshooting if something goes wrong later on.
+
+💡 3. Debug Step by Step
+Initially, I asked ChatGPT to revise big chunks of code at once, but that often led to confusion. I’ve since learned that breaking things down into smaller parts works much better. By reviewing and applying changes step by step, I stay in control and reduce the risk of introducing new errors. It also allows me to better evaluate the AI’s reasoning behind each suggestion.
+
+💡 4. Restart If the Conversation Gets Stuck
+There are times when ChatGPT just doesn’t seem to “get it”—no matter how I phrase my question. In those cases, I’ve found it helpful to summarize the issue clearly and start a fresh conversation. A clean slate often results in clearer, more accurate responses.
+
+🚧 Still a Work in Progress
+I’m still experimenting, reflecting, and learning through this process. For me, working with AI has been more than just about writing code—it’s been a way to sharpen how I think and communicate as a developer.
+
+If you’ve had similar experiences—or totally different ones—I’d love to hear how you collaborate with AI when coding. Let’s share ideas and make this learning journey smarter, together. 🔍🔍🔍
+
+---
