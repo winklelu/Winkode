@@ -110,5 +110,26 @@
     "title": "Winkle Lu",
     "section": "",
     "text": "11+ years of clinical trial programming experience with deep expertise in SDTM, ADaM, and regulatory submission.\nLed an 18-member team to complete COVID-19 Phase III programming within 3 months; results published in NEJM.\nSkilled at cross-functional collaboration, providing medical-monitor support and creating publication-ready output.\nDeveloped automation tools including an aCRF mapping system and review validation tools, boosting efficiency by 70%.\nPresented at R/Pharma 2024 and ShinyConf 2025, demonstrating advanced R Shiny proficiency.\nRecognized for consistently delivering high-quality work with exceptional efficiency, I have earned promotions at nearly every company I have worked for."
+  },
+  {
+    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#introduction",
+    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#introduction",
+    "title": "Generate Dynamic Text Results with glue and lapply in R",
+    "section": "🧩 Introduction",
+    "text": "🧩 Introduction\nWhen presenting analysis results, it’s often necessary to embed specific values into structured sentences — for example, describing results for certain patients, countries, or hospitals.\nThe glue package in R provides a powerful solution for this. It allows you to integrate variable values into a fixed text template, making your code more efficient, readable, and less prone to errors.\nIn this post, I’ll demonstrate how to: - Use glue() to dynamically create descriptive text\n- Use glue_collapse() to collapse grouped records\n- Use lapply() to manage and prefix multiple datasets\n- Integrate the results into Quarto or R Markdown reports"
+  },
+  {
+    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#required-packages",
+    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#required-packages",
+    "title": "Generate Dynamic Text Results with glue and lapply in R",
+    "section": "📦 Required Packages",
+    "text": "📦 Required Packages\nlibrary(dplyr) \nlibrary(glue) \n🪇 Step 1: Create and Prefix Multiple Datasetsrepresenting different hospitals’ medication records:\n# Sample CM data from different hospitals\ncm1 &lt;- data.frame(USUBJID = c(\"001\", \"002\"), CMTRT = c(\"DrugA\", \"DrugB\"))\ncm2 &lt;- data.frame(USUBJID = c(\"003\", \"004\"), CMTRT = c(\"DrugC\", \"DrugD\"))\n\n# Put into a named list\ncm_list &lt;- list(Hosp1 = cm1, Hosp2 = cm2)\n\n# Prefix each dataset with its group name\ncm_prefixed &lt;- lapply(names(cm_list), function(name) {\n  df &lt;- cm_list[[name]]\n  df$Group &lt;- name\n  df\n})\n\n# Merge all into one\ncm_all &lt;- bind_rows(cm_prefixed)"
+  },
+  {
+    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#step-2-collapse-records-per-subject",
+    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#step-2-collapse-records-per-subject",
+    "title": "Generate Dynamic Text Results with glue and lapply in R",
+    "section": "🧠 Step 2: Collapse Records per Subject",
+    "text": "🧠 Step 2: Collapse Records per Subject\nWe want to describe each subject’s treatment history by combining multiple CMTRT values:\n# Example: combine multiple treatments per subject\ncm_text &lt;- cm_all %&gt;%\n  group_by(USUBJID, Group) %&gt;%\n  summarise(cmx_CMTRT = glue_collapse(CMTRT, sep = \"; \"), .groups = \"drop\")\n✨ Step 3: Use glue() to Format Sentences\n# Create dynamic sentences for reporting\ncm_text &lt;- cm_text %&gt;%\n  mutate(sentence = glue(\"Subject {USUBJID} in {Group} was treated with: {cmx_CMTRT}.\"))\n\n# Preview\ncm_text$sentence\n📝 Output Example\nSubject 001 in Hosp1 was treated with: DrugA.\nSubject 002 in Hosp1 was treated with: DrugB.\nSubject 003 in Hosp2 was treated with: DrugC.\nSubject 004 in Hosp2 was treated with: DrugD.\n🧵 Conclusion\nThe combination of glue(), glue_collapse(), and lapply() offers a powerful workflow for:\n-Efficient text generation\n-Flexible dataset processing\n-Clean report integration\nThis approach not only reduces manual effort but also ensures consistency and clarity in reporting."
   }
 ]

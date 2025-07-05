@@ -1,0 +1,95 @@
+---
+title: "Generate Dynamic Text Results with glue and lapply in R"
+date: 02-JAN-2025
+categories: [R, Tidyverse, glue]
+description: " "
+format: html
+---
+
+![](../images/glue.jpg){style="margin-bottom: 1em; border-radius: 8px;" width="600"}
+
+## 🧩 Introduction
+
+When presenting analysis results, it's often necessary to **embed specific values into structured sentences** — for example, describing results for certain patients, countries, or hospitals.
+
+The [`glue`](https://glue.tidyverse.org/) package in R provides a powerful solution for this. It allows you to **integrate variable values into a fixed text template**, making your code more efficient, readable, and less prone to errors.
+
+In this post, I’ll demonstrate how to: - Use `glue()` to dynamically create descriptive text\
+- Use `glue_collapse()` to collapse grouped records\
+- Use `lapply()` to manage and prefix multiple datasets\
+- Integrate the results into **Quarto** or **R Markdown** reports
+
+------------------------------------------------------------------------
+
+## 📦 Required Packages
+
+``` r
+library(dplyr) 
+library(glue) 
+```
+
+🪇 Step 1: Create and Prefix Multiple Datasetsrepresenting different hospitals’ medication records:
+
+``` r
+# Sample CM data from different hospitals
+cm1 <- data.frame(USUBJID = c("001", "002"), CMTRT = c("DrugA", "DrugB"))
+cm2 <- data.frame(USUBJID = c("003", "004"), CMTRT = c("DrugC", "DrugD"))
+
+# Put into a named list
+cm_list <- list(Hosp1 = cm1, Hosp2 = cm2)
+
+# Prefix each dataset with its group name
+cm_prefixed <- lapply(names(cm_list), function(name) {
+  df <- cm_list[[name]]
+  df$Group <- name
+  df
+})
+
+# Merge all into one
+cm_all <- bind_rows(cm_prefixed)
+```
+
+## 🧠 Step 2: Collapse Records per Subject
+
+We want to describe each subject's treatment history by combining multiple CMTRT values:
+
+``` r
+# Example: combine multiple treatments per subject
+cm_text <- cm_all %>%
+  group_by(USUBJID, Group) %>%
+  summarise(cmx_CMTRT = glue_collapse(CMTRT, sep = "; "), .groups = "drop")
+```
+
+✨ Step 3: Use `glue()` to Format Sentences
+
+``` r
+# Create dynamic sentences for reporting
+cm_text <- cm_text %>%
+  mutate(sentence = glue("Subject {USUBJID} in {Group} was treated with: {cmx_CMTRT}."))
+
+# Preview
+cm_text$sentence
+```
+
+📝 Output Example
+
+``` r
+Subject 001 in Hosp1 was treated with: DrugA.
+Subject 002 in Hosp1 was treated with: DrugB.
+Subject 003 in Hosp2 was treated with: DrugC.
+Subject 004 in Hosp2 was treated with: DrugD.
+```
+
+🧵 Conclusion
+
+The combination of glue(), glue_collapse(), and lapply() offers a powerful workflow for:
+
+-   fficient text generation
+
+-   Flexible dataset processing
+
+-   Clean report integration
+
+This approach not only reduces manual effort but also ensures consistency and clarity in reporting.
+
+------------------------------------------------------------------------
