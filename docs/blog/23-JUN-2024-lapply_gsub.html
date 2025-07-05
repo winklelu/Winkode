@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2024-06-23">
 
-<title>Blog – Winkode</title>
+<title>Efficiently Apply the Same Function to Multiple Datasets in R – Winkode</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +66,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -69,35 +103,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-date','listing-categories','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -131,7 +136,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -157,7 +162,7 @@ window.Quarto = {
 <span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../blog/index.html" aria-current="page"> 
+    <a class="nav-link" href="../blog/index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
@@ -171,22 +176,31 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="QUk=">AI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2hhdEdQVA==">ChatGPT <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RFQ=">DT <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z3N1Yg==">gsub <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aGFzaA==">hash <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bGFwcGx5">lapply <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGxvdGx5">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHJvZ3JhbW1pbmc=">Programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(3)</span></div><div class="category" data-category="U2hpbnk=">Shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Wm9kaWFj">Zodiac <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
+<h1 class="title">Efficiently Apply the Same Function to Multiple Datasets in R</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">lapply</div>
+    <div class="quarto-category">gsub</div>
+  </div>
+  </div>
 
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 23, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -196,118 +210,74 @@ window.Quarto = {
 </header>
 
 
+<p><img src="../images/lapply.jpg" class="img-fluid" style="margin-bottom: 1em; border-radius: 8px;" width="779"></p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">🔁 Introduction</h2>
+<p>In data analysis, we often encounter situations where we need to perform the <strong>same transformation or calculation on multiple datasets</strong> — such as datasets grouped by age, treatment, or study phase.</p>
+<p>Rather than repeating the same code block over and over, R provides a more efficient, less error-prone solution: the <strong><code>lapply()</code></strong> function.</p>
+</section>
+<section id="why-use-lapply" class="level2">
+<h2 class="anchored" data-anchor-id="why-use-lapply">✨ Why Use <code>lapply()</code>?</h2>
+<p>When you have more than 5 or even 10 datasets to process, using a loop or manually running the same function can quickly become tedious and risky. By placing all target datasets in a <strong>list</strong> and applying a custom function via <code>lapply()</code>, you can:</p>
+<ul>
+<li>Minimize code repetition<br>
+</li>
+<li>Reduce the chance of mistakes<br>
+</li>
+<li>Improve code scalability and clarity</li>
+</ul>
+</section>
+<section id="example-adjust-units-and-calculate-bmi" class="level2">
+<h2 class="anchored" data-anchor-id="example-adjust-units-and-calculate-bmi">🔧 Example: Adjust Units and Calculate BMI</h2>
+<p>Let’s say you have datasets containing <strong>weight (in 公斤)</strong> and <strong>height (in 公尺)</strong> for different age groups. The goal is to:</p>
+<ol type="1">
+<li>Convert the units from Chinese characters to standard abbreviations (<code>kg</code>, <code>m</code>)<br>
+</li>
+<li>Calculate the <strong>Body Mass Index (BMI)</strong> using the formula:</li>
+</ol>
+<p><span class="math display">\[
+\text{BMI} = \frac{\text{weight (kg)}}{\text{height (m)}^2}
+\]</span></p>
+<section id="step-1-create-sample-datasets" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-create-sample-datasets">📦 Step 1: Create Sample Datasets</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data for three age groups</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>group1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Height =</span> <span class="fu">c</span>(<span class="st">"1.65公尺"</span>, <span class="st">"1.70公尺"</span>), <span class="at">Weight =</span> <span class="fu">c</span>(<span class="st">"60公斤"</span>, <span class="st">"65公斤"</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>group2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Height =</span> <span class="fu">c</span>(<span class="st">"1.60公尺"</span>, <span class="st">"1.75公尺"</span>), <span class="at">Weight =</span> <span class="fu">c</span>(<span class="st">"55公斤"</span>, <span class="st">"70公斤"</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>group3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Height =</span> <span class="fu">c</span>(<span class="st">"1.72公尺"</span>, <span class="st">"1.80公尺"</span>), <span class="at">Weight =</span> <span class="fu">c</span>(<span class="st">"68公斤"</span>, <span class="st">"75公斤"</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine them into a list</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">list</span>(group1, group2, group3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>🔧 Step 2: Define a Custom Function</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to convert units and calculate BMI</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>replace_function <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>Height <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"公尺"</span>, <span class="st">""</span>, df<span class="sc">$</span>Height))  <span class="co"># Remove '公尺' and convert to numeric</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>Weight <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"公斤"</span>, <span class="st">""</span>, df<span class="sc">$</span>Weight))  <span class="co"># Remove '公斤' and convert to numeric</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>BMI <span class="ot">&lt;-</span> <span class="fu">round</span>(df<span class="sc">$</span>Weight <span class="sc">/</span> (df<span class="sc">$</span>Height<span class="sc">^</span><span class="dv">2</span>), <span class="dv">1</span>)         <span class="co"># Calculate BMI</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>🚀 Step 3: Apply the Function Using <code>lapply()</code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the same function to all groups</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">lapply</span>(groups, replace_function)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview the result for group1</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>results[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>✅ Output (example)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  Height Weight  BMI</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>   <span class="fl">1.65</span>     <span class="dv">60</span>  <span class="fl">22.0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   <span class="fl">1.70</span>     <span class="dv">65</span>  <span class="fl">22.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="final-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="final-thoughts">💡 Final Thoughts</h2>
+<p>The <strong>combination of <code>lapply()</code> and <code>gsub()</code></strong> demonstrates a powerful pattern in R: clean, consistent, and reproducible operations across datasets.</p>
+<p>Whether you’re dealing with different demographic groups or multiple study arms, putting your datasets in a list and defining a reusable function can save time and prevent mistakes — especially in clinical trial data preparation or large-scale reporting tasks.</p>
+<p>Happy coding!</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ0RUJTJDU2hpbnklMkNwbG90bHk=" data-listing-date-sort="1746288000000" data-listing-file-modified-sort="1751736818194" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="468">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html" class="no-external">Plot-Table Highlighting in Shiny</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RFQ='); return false;">DT</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2hpbnk='); return false;">Shiny</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cGxvdGx5'); return false;">plotly</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html" class="no-external">
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html" class="no-external">
-<div class="listing-date">
-May 4, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="QUklMkNDaGF0R1BUJTJDUHJvZ3JhbW1pbmc=" data-listing-date-sort="1743782400000" data-listing-file-modified-sort="1751648929700" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="388">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/05-APR-2025-Collaborating with ChatGPT.html" class="no-external">Collaborating with ChatGPT in Coding</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q2hhdEdQVA=='); return false;">ChatGPT</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvZ3JhbW1pbmc='); return false;">Programming</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/05-APR-2025-Collaborating with ChatGPT.html" class="no-external">
-<p>What I’ve Learned So Far</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/05-APR-2025-Collaborating with ChatGPT.html" class="no-external">
-<div class="listing-date">
-Apr 5, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ2hhc2glMkNab2RpYWM=" data-listing-date-sort="1738339200000" data-listing-file-modified-sort="1751738549387" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="446">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/01-FEB-2025-Lets Code the Zodiac in R.html" class="no-external">🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('aGFzaA=='); return false;">hash</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Wm9kaWFj'); return false;">Zodiac</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/01-FEB-2025-Lets Code the Zodiac in R.html" class="no-external">
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/01-FEB-2025-Lets Code the Zodiac in R.html" class="no-external">
-<div class="listing-date">
-Feb 1, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ2xhcHBseSUyQ2dzdWI=" data-listing-date-sort="1719072000000" data-listing-file-modified-sort="1751740957804" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="399">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/23-JUN-2024-lapply_gsub.html" class="no-external">Efficiently Apply the Same Function to Multiple Datasets in R</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bGFwcGx5'); return false;">lapply</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z3N1Yg=='); return false;">gsub</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/23-JUN-2024-lapply_gsub.html" class="no-external">
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/23-JUN-2024-lapply_gsub.html" class="no-external">
-<div class="listing-date">
-Jun 23, 2024
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

@@ -11,7 +11,42 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Plot-Table Highlighting in Shiny\n\n\n\nR\n\nDT\n\nShiny\n\nplotly\n\n\n\n\n\n\n\n\nMay 4, 2025\n\n\n\n\n\n\n\nCollaborating with ChatGPT in Coding\n\n\n\nAI\n\nChatGPT\n\nProgramming\n\n\n\nWhat I’ve Learned So Far\n\n\n\n\n\nApr 5, 2025\n\n\n\n\n\nNo matching items"
+    "text": "Plot-Table Highlighting in Shiny\n\n\n\nR\n\nDT\n\nShiny\n\nplotly\n\n\n\n\n\n\n\n\nMay 4, 2025\n\n\n\n\n\n\n\nCollaborating with ChatGPT in Coding\n\n\n\nAI\n\nChatGPT\n\nProgramming\n\n\n\nWhat I’ve Learned So Far\n\n\n\n\n\nApr 5, 2025\n\n\n\n\n\n\n\n🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍\n\n\n\nR\n\nhash\n\nZodiac\n\n\n\n\n\n\n\n\nFeb 1, 2025\n\n\n\n\n\n\n\nEfficiently Apply the Same Function to Multiple Datasets in R\n\n\n\nR\n\nlapply\n\ngsub\n\n\n\n\n\n\n\n\nJun 23, 2024\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blog/05-APR-2025-Collaborating with ChatGPT.html",
+    "href": "blog/05-APR-2025-Collaborating with ChatGPT.html",
+    "title": "Collaborating with ChatGPT in Coding",
+    "section": "",
+    "text": "Lately, I’ve been exploring how to work more effectively with ChatGPT when writing code—mostly in R and Python—to boost my productivity and reach my goals faster.\nTo be honest, it hasn’t always been smooth sailing. While AI can be a powerful assistant, working with it efficiently takes practice and intention. I’m still learning and fine-tuning my process, but I’ve picked up a few lessons along the way that I’d like to share. And of course, I’d love to hear your thoughts too 🪇\n💡 1. Define the Programming Goal Clearly Before asking AI for help, I’ve found it crucial to clearly explain what I’m trying to achieve. The more specific and outcome-oriented the request, the more helpful the response. When I start with a well-defined goal, ChatGPT can often propose a clean structure or even a solid template for the task.\n💡 2. Understand the AI-Generated Code This might sound obvious, but it’s tempting to copy and paste without fully understanding the AI’s output. In reality, taking the time to read and grasp the logic is essential. It helps me make sure the code aligns with my intent—and gives me a much better chance at troubleshooting if something goes wrong later on.\n💡 3. Debug Step by Step Initially, I asked ChatGPT to revise big chunks of code at once, but that often led to confusion. I’ve since learned that breaking things down into smaller parts works much better. By reviewing and applying changes step by step, I stay in control and reduce the risk of introducing new errors. It also allows me to better evaluate the AI’s reasoning behind each suggestion.\n💡 4. Restart If the Conversation Gets Stuck There are times when ChatGPT just doesn’t seem to “get it”—no matter how I phrase my question. In those cases, I’ve found it helpful to summarize the issue clearly and start a fresh conversation. A clean slate often results in clearer, more accurate responses.\n🚧 Still a Work in Progress I’m still experimenting, reflecting, and learning through this process. For me, working with AI has been more than just about writing code—it’s been a way to sharpen how I think and communicate as a developer.\nIf you’ve had similar experiences—or totally different ones—I’d love to hear how you collaborate with AI when coding. Let’s share ideas and make this learning journey smarter, together. 🔍🔍🔍"
+  },
+  {
+    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html",
+    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html",
+    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "section": "",
+    "text": "The Lunar New Year holiday has begun — Happy Year of the Snake! 🎉🐍🎉\nIn many Eastern cultures, the zodiac (生肖) plays an important role in tradition, storytelling, and even personal identity. This 12-year cycle assigns an animal to each year, with the animal of your birth year becoming your zodiac sign. For example, those born in 1989 or 2001 are Snakes 🐍, while others may be Tigers 🐅 or Rabbits 🐇.\nBut how exactly can we figure out someone’s zodiac animal using code?\nSure, you could just Google it… 😂\nBut as an R programmer, I decided to use this as a small coding challenge!"
+  },
+  {
+    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#the-idea",
+    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#the-idea",
+    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "section": "🔍 The Idea",
+    "text": "🔍 The Idea\nWe’ll base our logic on the Common Era (CE) calendar, and apply a combination of vectors and the {hash} package in R to map a given year to its corresponding zodiac animal.\n\n💡 Note: For more precise results, especially if you’re working with historical or cultural data, you might want to factor in the lunar calendar (which usually starts in late January or early February). For this example, we’ll keep things simple."
+  },
+  {
+    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#how-the-chinese-zodiac-works",
+    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#how-the-chinese-zodiac-works",
+    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "section": "🧮 How the Chinese Zodiac Works",
+    "text": "🧮 How the Chinese Zodiac Works\nThe 12 animals, in order, are:\n\nRat\n\nOx\n\nTiger\n\nRabbit\n\nDragon\n\nSnake\n\nHorse\n\nGoat\n\nMonkey\n\nRooster\n\nDog\n\nPig\n\nThe cycle repeats every 12 years. For instance, the year 2025 will be the Year of the Snake, just like 2013, 2001, 1989, etc."
+  },
+  {
+    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#coding-it-in-r",
+    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#coding-it-in-r",
+    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "section": "💻 Coding It in R",
+    "text": "💻 Coding It in R\nLet’s write a simple function using the {hash} package:\n# Load the hash package library(hash)"
   },
   {
     "objectID": "blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html",
@@ -21,11 +56,32 @@
     "text": "When working with large volumes of clinical trial data, it’s easy to get lost in hundreds—or even thousands—of records. To support more intuitive data review, I’ve recently been exploring ways to combine visual plots with interactive data tables in Shiny. This approach can help reviewers quickly grasp key insights and trace them back to the raw data.\nOne idea I tested recently is a “highlight record” function, which links points on a plot to specific rows in a data listing. This functionality is built using three powerful R packages: {ggplot2}, {plotly}, and {DT}.\n🔍 How It Works: Interactive Highlighting Step-by-Step Here’s a breakdown of the mechanism:\n\n🕯️ Step 1: Create the Base Plot with ggplot2\nThe visualization starts with a standard ggplot chart—for example, plotting subject-level events by date and domain. This gives us full control over the aesthetics and data structure.\n\n\n🕯️ Step 2: Make the Plot Interactive with plotly\nNext, I use ggplotly() from the {plotly} package to convert the static ggplot into an interactive chart. With this transformation, the plot becomes clickable and dynamic, enabling deeper user interaction.\n\n\n🕯️ Step 3: Capture User Clicks Using event_data(“plotly_click”)\nThanks to plotly_click event data, I can capture exactly which point a user clicks on—such as the domain, event date, or subject ID. This click event generates metadata we can use to match against the underlying dataset.\n\n\n🕯️ Step 4: Highlight the Matched Record in DT::datatable()\nThe final step is to link the clicked point to a specific row in the data table rendered with the {DT} package. When a match is found (based on selected key values like date and domain), the corresponding row is automatically highlighted, drawing the reviewer’s attention to the source record.\n\n\n🚀 Why This Matters\nThis interaction model significantly improves the reviewer experience:\nVisual-first exploration: Users can spot patterns and anomalies visually.\nSeamless data tracing: Clicking on a point takes you straight to the corresponding record—no need to scroll through the full table.\nFaster reviews: Especially useful when reviewing patient timelines, safety events, or domain-specific findings.\n\n\n⚠️ One Caveat: Handle Factor Conversion with Care\nOne challenge I encountered involves the matching logic. Since ggplot may internally convert character variables (like domain) into factors, you must be very cautious when comparing click event values to original data values.\nA mismatch—say, due to different data types or formatting—can easily break the highlight feature. This is a common area for debugging, especially when your plot aesthetics depend on factor() transformations or custom labeling.\n\n\nFinal Thoughts\nThis approach is still evolving, but the integration of plot interactivity and table linking is already proving to be a valuable enhancement for Shiny apps, especially in clinical data review contexts. If you’re working with multi-domain datasets or timeline-based visualizations, this pattern might be worth exploring. If you have built something similar or have ideas to improve this logic, I would love to hear your thoughts! —"
   },
   {
-    "objectID": "blog/05-APR-2025-Collaborating with ChatGPT.html",
-    "href": "blog/05-APR-2025-Collaborating with ChatGPT.html",
-    "title": "Collaborating with ChatGPT in Coding",
-    "section": "",
-    "text": "Lately, I’ve been exploring how to work more effectively with ChatGPT when writing code—mostly in R and Python—to boost my productivity and reach my goals faster.\nTo be honest, it hasn’t always been smooth sailing. While AI can be a powerful assistant, working with it efficiently takes practice and intention. I’m still learning and fine-tuning my process, but I’ve picked up a few lessons along the way that I’d like to share. And of course, I’d love to hear your thoughts too 🪇\n💡 1. Define the Programming Goal Clearly Before asking AI for help, I’ve found it crucial to clearly explain what I’m trying to achieve. The more specific and outcome-oriented the request, the more helpful the response. When I start with a well-defined goal, ChatGPT can often propose a clean structure or even a solid template for the task.\n💡 2. Understand the AI-Generated Code This might sound obvious, but it’s tempting to copy and paste without fully understanding the AI’s output. In reality, taking the time to read and grasp the logic is essential. It helps me make sure the code aligns with my intent—and gives me a much better chance at troubleshooting if something goes wrong later on.\n💡 3. Debug Step by Step Initially, I asked ChatGPT to revise big chunks of code at once, but that often led to confusion. I’ve since learned that breaking things down into smaller parts works much better. By reviewing and applying changes step by step, I stay in control and reduce the risk of introducing new errors. It also allows me to better evaluate the AI’s reasoning behind each suggestion.\n💡 4. Restart If the Conversation Gets Stuck There are times when ChatGPT just doesn’t seem to “get it”—no matter how I phrase my question. In those cases, I’ve found it helpful to summarize the issue clearly and start a fresh conversation. A clean slate often results in clearer, more accurate responses.\n🚧 Still a Work in Progress I’m still experimenting, reflecting, and learning through this process. For me, working with AI has been more than just about writing code—it’s been a way to sharpen how I think and communicate as a developer.\nIf you’ve had similar experiences—or totally different ones—I’d love to hear how you collaborate with AI when coding. Let’s share ideas and make this learning journey smarter, together. 🔍🔍🔍"
+    "objectID": "blog/23-JUN-2024-lapply_gsub.html#introduction",
+    "href": "blog/23-JUN-2024-lapply_gsub.html#introduction",
+    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
+    "section": "🔁 Introduction",
+    "text": "🔁 Introduction\nIn data analysis, we often encounter situations where we need to perform the same transformation or calculation on multiple datasets — such as datasets grouped by age, treatment, or study phase.\nRather than repeating the same code block over and over, R provides a more efficient, less error-prone solution: the lapply() function."
+  },
+  {
+    "objectID": "blog/23-JUN-2024-lapply_gsub.html#why-use-lapply",
+    "href": "blog/23-JUN-2024-lapply_gsub.html#why-use-lapply",
+    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
+    "section": "✨ Why Use lapply()?",
+    "text": "✨ Why Use lapply()?\nWhen you have more than 5 or even 10 datasets to process, using a loop or manually running the same function can quickly become tedious and risky. By placing all target datasets in a list and applying a custom function via lapply(), you can:\n\nMinimize code repetition\n\nReduce the chance of mistakes\n\nImprove code scalability and clarity"
+  },
+  {
+    "objectID": "blog/23-JUN-2024-lapply_gsub.html#example-adjust-units-and-calculate-bmi",
+    "href": "blog/23-JUN-2024-lapply_gsub.html#example-adjust-units-and-calculate-bmi",
+    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
+    "section": "🔧 Example: Adjust Units and Calculate BMI",
+    "text": "🔧 Example: Adjust Units and Calculate BMI\nLet’s say you have datasets containing weight (in 公斤) and height (in 公尺) for different age groups. The goal is to:\n\nConvert the units from Chinese characters to standard abbreviations (kg, m)\n\nCalculate the Body Mass Index (BMI) using the formula:\n\n\\[\n\\text{BMI} = \\frac{\\text{weight (kg)}}{\\text{height (m)}^2}\n\\]\n\n📦 Step 1: Create Sample Datasets\n# Sample data for three age groups\ngroup1 &lt;- data.frame(Height = c(\"1.65公尺\", \"1.70公尺\"), Weight = c(\"60公斤\", \"65公斤\"))\n\ngroup2 &lt;- data.frame(Height = c(\"1.60公尺\", \"1.75公尺\"), Weight = c(\"55公斤\", \"70公斤\"))\n\ngroup3 &lt;- data.frame(Height = c(\"1.72公尺\", \"1.80公尺\"), Weight = c(\"68公斤\", \"75公斤\"))\n# Combine them into a list\ngroups &lt;- list(group1, group2, group3)\n🔧 Step 2: Define a Custom Function\n# Function to convert units and calculate BMI\nreplace_function &lt;- function(df) {\n  df$Height &lt;- as.numeric(gsub(\"公尺\", \"\", df$Height))  # Remove '公尺' and convert to numeric\n  df$Weight &lt;- as.numeric(gsub(\"公斤\", \"\", df$Weight))  # Remove '公斤' and convert to numeric\n  df$BMI &lt;- round(df$Weight / (df$Height^2), 1)         # Calculate BMI\n  return(df)\n}\n🚀 Step 3: Apply the Function Using lapply()\n# Apply the same function to all groups\nresults &lt;- lapply(groups, replace_function)\n\n# Preview the result for group1\nresults[[1]]\n✅ Output (example)\n  Height Weight  BMI\n1   1.65     60  22.0\n2   1.70     65  22.5"
+  },
+  {
+    "objectID": "blog/23-JUN-2024-lapply_gsub.html#final-thoughts",
+    "href": "blog/23-JUN-2024-lapply_gsub.html#final-thoughts",
+    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
+    "section": "💡 Final Thoughts",
+    "text": "💡 Final Thoughts\nThe combination of lapply() and gsub() demonstrates a powerful pattern in R: clean, consistent, and reproducible operations across datasets.\nWhether you’re dealing with different demographic groups or multiple study arms, putting your datasets in a list and defining a reusable function can save time and prevent mistakes — especially in clinical trial data preparation or large-scale reporting tasks.\nHappy coding!"
   },
   {
     "objectID": "index.html",

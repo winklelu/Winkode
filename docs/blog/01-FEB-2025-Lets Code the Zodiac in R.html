@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-02-01">
 
-<title>Blog – Winkode</title>
+<title>🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍 – Winkode</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +31,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -69,69 +68,11 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-date','listing-categories','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -157,7 +98,7 @@ window.Quarto = {
 <span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../blog/index.html" aria-current="page"> 
+    <a class="nav-link" href="../blog/index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
@@ -171,22 +112,31 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="QUk=">AI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2hhdEdQVA==">ChatGPT <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RFQ=">DT <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z3N1Yg==">gsub <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aGFzaA==">hash <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bGFwcGx5">lapply <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGxvdGx5">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHJvZ3JhbW1pbmc=">Programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(3)</span></div><div class="category" data-category="U2hpbnk=">Shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Wm9kaWFj">Zodiac <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
+<h1 class="title">🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">hash</div>
+    <div class="quarto-category">Zodiac</div>
+  </div>
+  </div>
 
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 1, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -196,118 +146,78 @@ window.Quarto = {
 </header>
 
 
+<p><img src="../images/hash1.jpg" class="img-fluid" style="border-radius: 10px;" width="400"></p>
+<p>The Lunar New Year holiday has begun — <strong>Happy Year of the Snake!</strong> 🎉🐍🎉<br>
+In many Eastern cultures, the zodiac (生肖) plays an important role in tradition, storytelling, and even personal identity. This 12-year cycle assigns an animal to each year, with the animal of your birth year becoming your zodiac sign. For example, those born in 1989 or 2001 are Snakes 🐍, while others may be Tigers 🐅 or Rabbits 🐇.</p>
+<p>But how exactly can we figure out someone’s zodiac animal using code?</p>
+<p>Sure, you could just Google it… 😂<br>
+But as an R programmer, I decided to use this as a small coding challenge!</p>
+<section id="the-idea" class="level2">
+<h2 class="anchored" data-anchor-id="the-idea">🔍 The Idea</h2>
+<p>We’ll base our logic on the <strong>Common Era (CE)</strong> calendar, and apply a combination of <strong>vectors</strong> and the <code>{hash}</code> package in R to map a given year to its corresponding zodiac animal.</p>
+<blockquote class="blockquote">
+<p>💡 <em>Note:</em> For more precise results, especially if you’re working with historical or cultural data, you might want to factor in the <strong>lunar calendar</strong> (which usually starts in late January or early February). For this example, we’ll keep things simple.</p>
+</blockquote>
+</section>
+<section id="how-the-chinese-zodiac-works" class="level2">
+<h2 class="anchored" data-anchor-id="how-the-chinese-zodiac-works">🧮 How the Chinese Zodiac Works</h2>
+<p>The 12 animals, in order, are:</p>
+<ol type="1">
+<li>Rat<br>
+</li>
+<li>Ox<br>
+</li>
+<li>Tiger<br>
+</li>
+<li>Rabbit<br>
+</li>
+<li>Dragon<br>
+</li>
+<li>Snake<br>
+</li>
+<li>Horse<br>
+</li>
+<li>Goat<br>
+</li>
+<li>Monkey<br>
+</li>
+<li>Rooster<br>
+</li>
+<li>Dog<br>
+</li>
+<li>Pig</li>
+</ol>
+<p>The cycle repeats every 12 years. For instance, the year 2025 will be the <strong>Year of the Snake</strong>, just like 2013, 2001, 1989, etc.</p>
+<p><img src="../images/hash2.jpg" class="img-fluid" style="border-radius: 10px;" width="400"></p>
+</section>
+<section id="coding-it-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="coding-it-in-r">💻 Coding It in R</h2>
+<p>Let’s write a simple function using the <code>{hash}</code> package:</p>
+<p># Load the hash package library(hash)</p>
+</section>
+<section id="define-zodiac-animals-in-order" class="level1">
+<h1>Define zodiac animals in order</h1>
+<p>zodiac &lt;- c(“Rat”, “Ox”, “Tiger”, “Rabbit”, “Dragon”, “Snake”, “Horse”, “Goat”, “Monkey”, “Rooster”, “Dog”, “Pig”)</p>
+</section>
+<section id="create-a-hash-map-for-quick-lookup" class="level1">
+<h1>Create a hash map for quick lookup</h1>
+<p>zodiac_hash &lt;- hash() for (i in 0:11) { zodiac_hash[[as.character(i)]] &lt;- zodiac[i + 1] }</p>
+</section>
+<section id="function-to-get-zodiac-by-year" class="level1">
+<h1>Function to get zodiac by year</h1>
+<p>get_zodiac &lt;- function(year) { index &lt;- (year - 4) %% 12 # The cycle starts from year 4 AD as the Year of the Rat return(zodiac_hash[[as.character(index)]]) }</p>
+</section>
+<section id="example-usage" class="level1">
+<h1>Example usage</h1>
+<p>get_zodiac(2025) # “Snake” You can now call get_zodiac(1985) or any other year to instantly find the associated animal.</p>
+<p>🧠 Why Use {hash}? You could also solve this with a simple vector index, but using {hash} helps demonstrate how mapping structures work in R — it’s clean, fast, and especially useful when keys aren’t strictly numeric or sequential.</p>
+<p>🐾 Final Thoughts While this example is a light-hearted way to blend culture with code, it also highlights how small projects like this can be both fun and educational. Whether you’re celebrating the Lunar New Year or just exploring R, this is a great way to practice using vectors, modulo operations, and hash maps.</p>
+<p>Wishing you a year full of clarity, joy, and good code. Happy Year of the Snake! 🐍💻✨</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ0RUJTJDU2hpbnklMkNwbG90bHk=" data-listing-date-sort="1746288000000" data-listing-file-modified-sort="1751736818194" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="468">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html" class="no-external">Plot-Table Highlighting in Shiny</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RFQ='); return false;">DT</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2hpbnk='); return false;">Shiny</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cGxvdGx5'); return false;">plotly</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html" class="no-external">
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html" class="no-external">
-<div class="listing-date">
-May 4, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="QUklMkNDaGF0R1BUJTJDUHJvZ3JhbW1pbmc=" data-listing-date-sort="1743782400000" data-listing-file-modified-sort="1751648929700" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="388">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/05-APR-2025-Collaborating with ChatGPT.html" class="no-external">Collaborating with ChatGPT in Coding</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q2hhdEdQVA=='); return false;">ChatGPT</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvZ3JhbW1pbmc='); return false;">Programming</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/05-APR-2025-Collaborating with ChatGPT.html" class="no-external">
-<p>What I’ve Learned So Far</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/05-APR-2025-Collaborating with ChatGPT.html" class="no-external">
-<div class="listing-date">
-Apr 5, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ2hhc2glMkNab2RpYWM=" data-listing-date-sort="1738339200000" data-listing-file-modified-sort="1751738549387" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="446">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/01-FEB-2025-Lets Code the Zodiac in R.html" class="no-external">🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('aGFzaA=='); return false;">hash</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Wm9kaWFj'); return false;">Zodiac</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/01-FEB-2025-Lets Code the Zodiac in R.html" class="no-external">
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/01-FEB-2025-Lets Code the Zodiac in R.html" class="no-external">
-<div class="listing-date">
-Feb 1, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ2xhcHBseSUyQ2dzdWI=" data-listing-date-sort="1719072000000" data-listing-file-modified-sort="1751740957804" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="399">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/23-JUN-2024-lapply_gsub.html" class="no-external">Efficiently Apply the Same Function to Multiple Datasets in R</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bGFwcGx5'); return false;">lapply</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z3N1Yg=='); return false;">gsub</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/23-JUN-2024-lapply_gsub.html" class="no-external">
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/23-JUN-2024-lapply_gsub.html" class="no-external">
-<div class="listing-date">
-Jun 23, 2024
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
