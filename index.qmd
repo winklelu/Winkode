@@ -17,9 +17,13 @@ about:
 
 ### Statistical Programming | SAS, R, Python, Shiny, Quarto | Data Visualization & Automation Tool | Developer | Clinical Trial | CDISC
 
+
 :::{#hero-heading}
 
 With over a decade of experience in clinical trial programming, I specialize in CDISC standards and regulatory deliverable — but I’m not standing still. I’ve embraced open-source tools like R, Shiny, and Python to drive automation and improve data visualization.
+
+📘 [Blog/Sharing](blog/)  |  👉 [Presentations](Speaker.qmd)
+
 
 ## Experience
 
@@ -70,6 +74,8 @@ Master of Public Health | Tzu Chi University
 - Zhi-Sheng Lu, 2018, Combining quality of productivity and efficiency under highly pressure of lacking time – discussion by view of first-time quality, PharmaSUG – Beijing.
 
 - Shu-Hui Wen, Zhi-Sheng Lu, 2011, Factors affecting the effective number of tests in genetic association studies: A comparative study of three PCA-based methods, Journal of Human Genetics, 56, 428–435 [SCI].
+
+
 
 :::
 
