@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-07-06">
+
+<title>Lesser-known but crucial role - Statistical Programmer – Winkode</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-991b1886d3c685c7aa2b62b80640c7af.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Winkode</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Speaker.html"> 
+<span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lesser-known but crucial role - Statistical Programmer</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Statistical Programmer</div>
+    <div class="quarto-category">Career</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 6, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="../images/SP.png" class="img-fluid" style="margin-bottom: 1em; border-radius: 8px;" width="478"></p>
+<section id="什麼是統計程式設計師-what-is-a-statistical-programmer-sp" class="level2">
+<h2 class="anchored" data-anchor-id="什麼是統計程式設計師-what-is-a-statistical-programmer-sp">🔁 <strong>什麼是統計程式設計師</strong> | <strong>What is a Statistical Programmer (SP)</strong></h2>
+<p>在臨床試驗的過程中，統計程式設計師負責將試驗數據依照規範整理成可以解釋且適合報告呈現的格式。這裡所說的「規範」，包含審查主管機關（例如：FDA、EMA）所要求的提交規格、CDISC 制定的標準（如 SDTM、ADaM、define.xml），以及公司內部的作業規範。<br>
+In clinical trials, Statistical Programmers are responsible for organizing trial data according to predefined standards, transforming it into interpretable and report-ready formats. These “standards” include regulatory submission requirements (such as those from the FDA and EMA), CDISC-defined structures like SDTM, ADaM, and define.xml, as well as internal company-specific guidelines.</p>
+<p>這個問題，其實是身為統計程式設計師向身旁親友解釋工作內容時，最難說明的一部分，因為很容易與 Data Management、Statistician 等職務混淆。不過也正因如此，統計程式設計師與 Data Management、Statistician 的工作確實經常密不可分。<br>
+This is often one of the most difficult aspects for Statistical Programmers to explain to friends and family, as it is easily confused with roles like Data Management or Statistician. However, this overlap also highlights how closely intertwined these roles truly are.</p>
+<p>我在臨床試驗領域擔任統計程式設計師超過十年的時間，待過兩間大型 CRO 公司與兩間藥廠。以下我將簡單分享一些從自己角度出發，對這份工作內容與價值的觀察與理解。<br>
+I have worked as a Statistical Programmer in the clinical trial field for over ten years, across two large CRO companies and two pharmaceutical firms. In the following sections, I’ll share my perspective on the nature and value of this profession based on my own experiences.</p>
+</section>
+<section id="statistical-programmer-在做什麼-what-does-a-statistical-programmer-actually-do" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-programmer-在做什麼-what-does-a-statistical-programmer-actually-do">🔁 Statistical Programmer 在做什麼 | What Does a Statistical Programmer Actually Do</h2>
+<p>先前擔任面試主管的時候，常會聽到面試者提到 CDISC。CDISC 是什麼呢？簡單來說，是針對臨床數據制定相關交換與整理標準的組織。而其中 SDTM、ADaM 的標準化規範與建議就是由 CDISC 制定出來的。這其實就是 SP 核心工作的重要標準之一。<br>
+When I previously served as an interview manager, I often heard candidates mention CDISC. So, what exactly is CDISC? Simply, it is an organization that defines data exchange and standardization frameworks for clinical trial data. The well-known SDTM and ADaM standards were established by CDISC - and these are among the key foundations of a Statistical Programmer’s role.</p>
+<p>CDISC 是我非常喜歡的單位之一，因為臨床原始數據其實是非常多元的。這個組織針對臨床試驗各階段的數據進行標準化整理，讓資料在整理、分析、以及提交方面更具效率。<br>
+CDISC is one of my favorite organizations, because clinical raw data is inherently diverse and complex. By applying standardized structures to each phase of a clinical trial, CDISC enables much more efficient data organization, analysis, and regulatory submission.</p>
+<p><img src="images/clipboard-922834279.png" class="img-fluid" width="1046"></p>
+<p>以一般的流程來說，當臨床數據依照 CRF（Case Report Form）進行收集至 EDC（Electronic Data Capture）系統後，SP 將依照案子的進度與需求，開始進行 SDTM 數據集的程式編寫。同時間，也會與相關部門，例如統計與醫學部門，確認統計分析的內容後，開始進行 ADaM 及 TLF（Table, Listing, Figure）的準備。<br>
+In a general workflow, once clinical data is collected by CRFs (Case Report Forms) and entered into the EDC (Electronic Data Capture) system, SPs begin programming the SDTM datasets based on the project timeline and needs. At the same time, they collaborate with key departments - such as statisticians and medical reviewers - to confirm the analysis plan and begin developing ADaM datasets and generating TLFs (Tables, Listings, and Figures).</p>
+<p>回憶自己剛進這領域時，那時候的部門分工十分細，SDTM 與 ADaM+TLF 是由不同的 SP 團隊負責。我一開始是在負責 ADaM+TLF 的團隊，當時第一個主要任務是 ADLB 數據集。由於數量龐大、分析方法複雜，程式每次執行都要耗時 4～5 小時。<br>
+Looking back to when I first entered the field, the departments were highly specialized - separate teams handled SDTM and ADaM+TLF. I started in the ADaM+TLF team, and my first major task was the ADLB (laboratory) dataset. Due to its size and the complexity of the analysis methods, each run of the program would take 4 to 5 hours.</p>
+<p>記得那時候團隊常常一起晚餐後又一起加班，就這樣持續了幾個月，最後順利完成 Sponsor 的需求，接著也推進至 define.xml 的製作。對當時年資還不到一年的我來說，能接觸這樣的任務實屬難得，哈哈。<br>
+I remember how the team often stayed late after dinner to keep working together. After several months, we successfully met the sponsor’s expectations and moved on to preparing define.xml. At the time, I had less than one year of experience, so being involved in such tasks was rare - and rewarding - for a junior SP.</p>
+<p>雖然第一年的 SP 生活讓我吃盡苦頭，不過在當時 mentor 和團隊的帶領下，也讓我更快打下 SP 生涯的重要基礎。<br>
+Although that first year as a Statistical Programmer was filled with challenges, the guidance of my mentor and the support of the team helped me quickly build a solid foundation in this career.</p>
+</section>
+<section id="sp-與現在的臨床試驗-statistical-programmers-in-todays-clinical-trials" class="level2">
+<h2 class="anchored" data-anchor-id="sp-與現在的臨床試驗-statistical-programmers-in-todays-clinical-trials">✨ SP 與現在的臨床試驗 | Statistical Programmers in Today’s Clinical Trials</h2>
+<p>剛入行時，SP 工作多數以 SAS 為主要的常用程式語言。SAS 是一項非常穩定的工具，我認為最強大的部分是它背後的支持公司資源。即使遇到 SAS 本身的技術問題，也會有專業團隊協助解決；另外，由於這是臨床試驗領域長久以來所使用的語言，可供參考的程式範例非常豐富，這也是至今 SAS 擁有不可撼動地位的原因之一。<br>
+When I first entered the field, SAS was the dominant programming language for Statistical Programmers. It is a highly stable tool, and in my view, its greatest strength lies in the robust support from the company behind it. Even when technical issues arise, professional support teams are available to help. Moreover, as SAS has been widely used in clinical trials for decades, it offers an abundance of reference programs — one of the key reasons for its long-standing, unshakable position in the field,</p>
+<p>印象中，從 2018 年開始，我開始有機會參與公司外的研討會，open-source tool 相關的分享已經很多，例如：R、Python。這是非常好的現象，代表整個臨床試驗領域正在不斷思考與進步。對我來說，這些工具不應該被用來與 SAS 相互比較或競爭，而是提供給使用者（例如 SP）更多協作的可能性與思考的空間。<br>
+I recall that starting around 2018, I had the opportunity to attend external conferences, and there were already many discussions around open-source tools like R and Python. This is a very positive trend - it shows that the clinical trial industry is continuously evolving and open to new ideas. Personally, I don’t see these tools as competitors to SAS. Rather, they offer more collaborative options and new perspectives for users like Statistical Programmers.</p>
+</section>
+<section id="至於什麼是現在-sp-的利器-what-are-the-current-must-have-skills-for-sps" class="level2">
+<h2 class="anchored" data-anchor-id="至於什麼是現在-sp-的利器-what-are-the-current-must-have-skills-for-sps">💡 至於什麼是現在 SP 的利器 | What Are the Current Must-Have Skills for SPs</h2>
+<p>如果由我來回答，我會列舉以下幾點：<br>
+If I were to answer this question, here are the capabilities I consider essential:</p>
+<p>🧩<strong>理解當下所進行的任務:</strong> SP 經手許多任務也常會跟其他部門合作, 理解當下任務的原由除了可以幫助維持正確達成目標外, 也可以適時提出更合適的解決方案</p>
+<p><strong>Understanding the task at hand</strong>: SPs handle various tasks and frequently collaborate with other departments. Understanding the purpose behind the current task not only helps ensure that the objectives are met correctly, but also allows SPs to propose more appropriate solutions when needed.</p>
+<p>🧩<strong>維持高品質的產出:</strong> 臨床試驗直接關乎人體生命，是一份需要審慎對待的工作；若因品質不佳而多次修改，將直接影響案子的整體時程</p>
+<p><strong>Delivering high-quality outputs:</strong> Clinical trials involve human lives, and this work must be approached with great care. Poor quality that requires repeated revisions can directly delay project timelines.</p>
+<p>🧩<strong>熟悉常規工作的技能:</strong> 了解每個常規步驟，並高效率完成工作，是降低風險與提升穩定性的關鍵<br>
+<strong>Mastering routine tasks:</strong> Understanding each standard step and performing them efficiently helps reduce risk and ensure consistent deliverables.</p>
+<p>🧩<strong>維持思考與拓展視野:</strong> SP 的常規程式開發需求屬於中等程度，但若能不斷思考改善流程，並關注產業趨勢，將是提升自我價值最有效的方式<br>
+<strong>Keeping a growth mindset:</strong> While the programming complexity for routine SP tasks is moderate, constantly seeking improvements and tracking industry developments is one of the fastest ways to increase one’s value.</p>
+<p>🧩<strong>AI 的應用:</strong> 延續前一點，AI 的浪潮已經吹進臨床試驗領域。AI 不僅能優化程式開發流程，也可能改善 SP 的行政與溝通流程。相關討論正持續發展中，非常值得思考與參考<br>
+<strong>Leveraging AI tools:</strong> Building on the previous point - the wave of AI has already entered the clinical trial space. AI has the potential to enhance both programming and administrative workflows for SPs. These discussions are ongoing, and I highly recommend staying informed and open-minded.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
