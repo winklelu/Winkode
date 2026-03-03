@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-03-03">
+<meta name="dcterms.date" content="2026-03-04">
 <meta name="description" content="An early draft of an interactive patient timeline built with R and D3.js — integrating screening, dosing, adverse events, and survival status into a single view.">
 
 <title>Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js – WinSual</title>
@@ -142,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 3, 2026</p>
+      <p class="date">March 4, 2026</p>
     </div>
   </div>
   
@@ -154,6 +154,19 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>In clinical trials, data is abundant and critical. Understanding, interpreting, analyzing, and presenting data — there are already many established approaches in our field. But visualization has always been the area I find most interesting, because it is the most intuitive way to communicate findings.</p>
+<p>I used to present clinical data through Shiny applications. Now I am exploring how to bring interactive visualization directly into a real web environment. This is still a work in progress, and today I am sharing an early draft — I feel there is a lot of potential here worth exploring further.</p>
+<hr>
+<section id="what-i-built" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-built">What I Built</h2>
+<p>An interactive patient timeline using <strong>R and D3.js</strong>, integrating:</p>
+<ul>
+<li>Screening &amp; Enrollment</li>
+<li>Medication records (First Dose / Last Dose)</li>
+<li>Adverse Events (with severity)</li>
+<li>Survival status</li>
+</ul>
+<p>All in a single view — so reviewers can see a patient’s complete journey at a glance.</p>
 <div class="quarto-figure quarto-figure-center" style="border-radius: 10px;">
 <figure class="figure">
 <p><img src="../images/patient-timeline.png" class="img-fluid figure-img" width="800"></p>
@@ -161,6 +174,14 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <hr>
+</section>
+<section id="how-it-works" class="level2">
+<h2 class="anchored" data-anchor-id="how-it-works">How It Works</h2>
+<p>The R side is simple: a data frame with event types, study days, and severity is passed directly into a D3.js script using the <code>r2d3</code> package. No CDISC-formatted datasets required — raw CRF data goes in, and the timeline comes out.</p>
+<p>On the JavaScript side, <code>r2d3</code> automatically converts the R data frame into a row-oriented JSON array. Each event is plotted as a colored circle on a time axis, with labels alternating above and below to avoid overlap.</p>
+<p>One key design choice: <strong>study day zero is excluded from the axis</strong>, since Day 0 has no clinical meaning in this context.</p>
+<hr>
+</section>
 <section id="why-this-matters" class="level2">
 <h2 class="anchored" data-anchor-id="why-this-matters">Why This Matters</h2>
 <p>In clinical data review, reviewers often need to switch between multiple reports to piece together one patient’s story. A timeline view solves this by putting everything in one place — clearly and interactively.</p>
