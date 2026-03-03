@@ -6,8 +6,7 @@ description: "An early draft of an interactive patient timeline built with R and
 format: html
 ---
 
-![Patient Timeline Demo](images/patient-timeline.png){
-  style="border-radius: 10px;" width="800"}
+![Patient Timeline Demo](../images/patient-timeline.png){style="border-radius: 10px;" width="800"}
 
 ---
 
