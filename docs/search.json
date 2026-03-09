@@ -7,214 +7,144 @@
     "text": "🔹 ShinyConf 2025\n\nTitle: Reviewing Clinical Data Efficiently with Shiny\n📍 Date: 2025-04-12\n📝 Summary:\nThis presentation introduces a Shiny-based application designed to improve the efficiency of clinical data review. Traditional EDC systems often limit reviewers to viewing data one form and one patient at a time, making it difficult to cross-reference information across forms such as Adverse Events (AE), Exposure (EX), and Concomitant Medication (CM). This tool addresses that challenge by providing a user-friendly, click-driven interface that allows reviewers to select patients, filter forms and variables, and instantly visualize clinical timelines and data listings. The application maintains the original data structure, requires minimal setup by programmers, and is accessible to non-programming users. Key benefits include simultaneous multi-form data review, integrated visualizations and listings, and Excel export functionality. This tool aims to bridge communication gaps between reviewers and programmers while enhancing the speed and clarity of clinical review workflows..\n📄 Download Slides (PDF)\n\n\n\n🔹 R/Pharma 2024\n\nTitle: Using Shiny to Clearly Present Clinical Results with CDISC-Compliant Dataset\n📍 Date: 2024-10-31\n📝 Summary:\nThis presentation explores how R and Shiny can enhance the review and visualization of clinical trial data. Traditional workflows often involve repeated back-and-forth verification between datasets such as SDTM, ADaM, and EDC, which is time-consuming. By leveraging R’s Shiny framework, we can streamline data filtering and visualization, enabling faster and more intuitive review processes for both statisticians and medical teams. The talk highlights three key Shiny applications: tumor response visualization, patient milestone tracking, and SDTM domain review. These tools support both population-level summaries and individual-level insights. Emphasis is also placed on the importance of using CDISC-compliant data formats to standardize and simplify data handling. Finally, the integration of Shiny with Quarto is introduced as a future direction to make clinical data more accessible to non-programmers, improving data transparency and efficiency in reporting.\n📄 Download Slides (PDF)\n\n\n\n🔹 Pharmasug 2018\n\nTitle: Combining Quality of Productivity and Efficiency Under Highly Pressure of Lacking Time – Discussion by View of First-Time Quality\n📍 Date: 2018-08-31\n📝 Summary:\nThis paper discusses how to enhance programming quality and efficiency in clinical trials under tight deadlines, especially within CROs. It emphasizes the importance of “first-time quality,” defined as the quality of deliverables before QC review. The author argues that poor initial quality leads to higher correction costs and delays, despite common practices like SOPs, validated macros, and training. A structured QC plan is essential but resource-intensive. The paper highlights factors affecting quality, including unfamiliarity with study design, insufficient task understanding, and client complexity. To address this, the author proposes a “First-Time Quality Scale” that evaluates programmers based on QC comments, client feedback, and satisfaction. High-scoring individuals can be assigned to time-sensitive projects, maximizing both quality and speed. The paper concludes that focusing on first-time quality can reduce repetitive work, save resources, and improve overall outcomes, aligning with the increasing demand for rapid and accurate clinical data processing.\n📄 Download Article (PDF)"
   },
   {
-    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html",
-    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html",
-    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
+    "objectID": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html",
+    "href": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html",
+    "title": "WBC 2026: the Chart Every Taiwan Fan Was Watching",
     "section": "",
-    "text": "My old laptop had a strange problem. Even after a professional repair, it kept shutting down by itself. For someone who works with data every day, this was too risky to ignore. So I decided to get a new computer.\nThis was also a good chance to rename my personal website from Winkode to WinSual, and rebuild my development environment from scratch."
+    "text": "Patient Timeline Demo\nThe World Baseball Classic 2026 has been the hottest topic in Taiwan these past few days. Whenever Taiwan plays, the whole country is glued to the screen.\nTaiwan, Japan, Korea, Czech Republic, and Australia are in the same group. The top 2 teams by wins advance to the Super Round in the US. If teams are tied on wins, the tiebreaker goes to runs allowed in head-to-head matchups — a rule that is honestly hard to explain and even harder to calculate on the fly.\nTaiwan ended up in exactly that situation:\nSo when Korea faced Australia, one chart became the most-shared image among Taiwan fans — a matrix showing every possible score combination and who advances.\nI rebuilt it in R using ggplot2."
   },
   {
-    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#what-i-did-tonight",
-    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#what-i-did-tonight",
-    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
-    "section": "What I Did Tonight",
-    "text": "What I Did Tonight\nWhen I moved my files to the new MacBook, the files came over — but the tools did not. Here is what I had to check:\n\nGit: Already built into macOS. Just run git --version to confirm.\nR, Python, and project folders: Moved over fine and worked without problems.\nQuarto: Not included in the move. I downloaded it from the official website and installed it in about five minutes."
+    "objectID": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#the-chart",
+    "href": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#the-chart",
+    "title": "WBC 2026: the Chart Every Taiwan Fan Was Watching",
+    "section": "The Chart",
+    "text": "The Chart\nThe X-axis is Australia’s score. The Y-axis is Korea’s score. Every cell tells you directly: does Taiwan, Korea, or Australia advance?\n\nlibrary(ggplot2)\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.0     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ lubridate 1.9.5     ✔ tibble    3.3.0\n✔ purrr     1.2.0     ✔ tidyr     1.3.2\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\ndf &lt;- expand.grid(korea = 0:10, australia = 0:10)\ndf &lt;- df %&gt;% mutate(\n  result = case_when(\n    korea == australia              ~ \"TIE\",\n    australia &gt; korea               ~ \"AUS\",\n    korea &gt;= 8 & australia &gt;= 3     ~ \"TWN\",\n    korea - australia &lt;= 4          ~ \"AUS\",\n    korea &gt; australia & korea &lt;= 7  ~ \"KOR\",\n    TRUE                            ~ \"KOR\"\n  )\n)\n\ncolor_map &lt;- c(\"AUS\" = \"#2E7D32\", \"KOR\" = \"#1565C0\", \"TWN\" = \"#BF360C\", \"TIE\" = \"#212121\")\n\nggplot(df, aes(x = australia, y = korea, fill = result)) +\n  geom_tile(color = \"#111111\", linewidth = 0.5) +\n  geom_text(aes(label = result), color = \"white\", size = 5, fontface = \"bold\") +\n  scale_fill_manual(values = color_map) +\n  scale_x_continuous(breaks = 0:10, position = \"top\", expand = c(0, 0)) +\n  scale_y_reverse(breaks = 0:10, expand = c(0, 0)) +\n  labs(\n    title = \"WBC2026 Group Stage Advancement Chart\",\n    x = \"Australia Score\",\n    y = \"Korea Score\"\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    plot.background  = element_rect(fill = \"#1a1a1a\", color = NA),\n    panel.background = element_rect(fill = \"#1a1a1a\", color = NA),\n    panel.grid       = element_blank(),\n    plot.title  = element_text(color = \"white\", hjust = 0.5, size = 18, face = \"bold\"),\n    axis.text   = element_text(color = \"white\", size = 12, face = \"bold\"),\n    axis.title  = element_text(color = \"white\", size = 13),\n    axis.ticks  = element_blank(),\n    legend.position = \"none\"\n  )"
   },
   {
-    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#things-that-went-wrong",
-    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#things-that-went-wrong",
-    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
-    "section": "Things That Went Wrong",
-    "text": "Things That Went Wrong\nThe most surprising problem was a folder name. My R folder was saved with a full-width “Ｒ” — a character from the Chinese input method — instead of a normal English “R”. Terminal could not find the path at all. It took a while to figure out why. Renaming the folder to a regular English letter fixed it right away.\nAnother thing: R packages do not move to a new computer automatically. When I ran quarto render, it showed an error saying tidyverse was missing. After installing it, everything worked. If other blog posts use different packages, I will need to install those too.\nFor GitHub login, passwords are no longer supported. You must use a Personal Access Token (PAT) instead. Once you set it up, Mac’s osxkeychain saves it for you, so you do not need to enter it every time you push."
+    "objectID": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#design-decisions-worth-noting",
+    "href": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#design-decisions-worth-noting",
+    "title": "WBC 2026: the Chart Every Taiwan Fan Was Watching",
+    "section": "Design Decisions Worth Noting",
+    "text": "Design Decisions Worth Noting\nThree scale_* functions do most of the heavy lifting here.\nscale_y_reverse() flips the Y-axis so that 0–0 sits at the top-left corner. This matches how humans naturally read a table — from the starting point outward. Without it, low scores would appear at the bottom, which feels backwards for a lookup chart.\nscale_fill_manual() assigns each country a fixed color. The color carries meaning on its own. No legend needed — the reader understands immediately.\nscale_x_continuous(position = \"top\") moves the X-axis label to the top of the chart. Combined with the reversed Y-axis, the whole chart becomes a lookup table rather than just a plot."
   },
   {
-    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#dont-forget-to-sync-github-on-a-new-machine",
-    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#dont-forget-to-sync-github-on-a-new-machine",
-    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
-    "section": "Don’t Forget to Sync GitHub on a New Machine",
-    "text": "Don’t Forget to Sync GitHub on a New Machine\nThis is easy to forget. On a new computer, your local Git history is empty. You need to connect it to GitHub again:\n\ngit init — set up a new local repo\ngit remote add origin — link it to your GitHub repo\nFirst git push needs --force — because your local repo has no history yet, GitHub will block a normal push\n\nAfter that, everything is back to normal. Just use git add, git commit, and git push each time you make changes. See the diagram below:\n\n\n\nGit Workflow Diagram"
+    "objectID": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#the-bigger-idea",
+    "href": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#the-bigger-idea",
+    "title": "WBC 2026: the Chart Every Taiwan Fan Was Watching",
+    "section": "The Bigger Idea",
+    "text": "The Bigger Idea\nGood data visualization removes the need to think."
   },
   {
-    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#final-thoughts",
-    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#final-thoughts",
-    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
-    "section": "Final Thoughts",
-    "text": "Final Thoughts\nWinSual is now live 👉 https://winklelu.github.io/WinSual/\nThe direction is clear — turning complex data into something people can actually understand. That is what I will keep doing."
+    "objectID": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#the-final-result",
+    "href": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#the-final-result",
+    "title": "WBC 2026: the Chart Every Taiwan Fan Was Watching",
+    "section": "The Final Result",
+    "text": "The Final Result\nKorea finished 2nd. They advanced alongside Japan.\nTaiwan’s journey ended there — but the chart lived on. ⚾"
   },
   {
-    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#學習心得程式設計與-ai-工具-learning-reflections-programming-and-ai-tools",
-    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#學習心得程式設計與-ai-工具-learning-reflections-programming-and-ai-tools",
-    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
-    "section": "🧠 學習心得：程式設計與 AI 工具 | Learning Reflections: Programming and AI Tools",
-    "text": "🧠 學習心得：程式設計與 AI 工具 | Learning Reflections: Programming and AI Tools\n截至 2025 年年中，AI 工具的發展相較於 2024 年又呈現出全新的面貌。\n這次有幸參加由台灣 五倍學院 舉辦的 AI 工具應用分享會，獲得許多寶貴的觀念與實戰經驗，讓我在這個 AI 快速演進的階段中，得以深入觀察與體驗不同工具的應用方式。\n\nAs of mid-2025, the development of AI tools has taken on a new look compared to 2024.\nI had the opportunity to attend an AI tools application sharing session organized by 五倍學院 in Taiwan, and gained many valuable ideas and hands-on insights. In this rapidly evolving era of AI, this experience allowed me to better explore and try out various tool applications."
-  },
-  {
-    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#發展與限制並存-coexistence-of-advancement-and-limitations",
-    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#發展與限制並存-coexistence-of-advancement-and-limitations",
-    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
-    "section": "⚖️ 發展與限制並存 | Coexistence of Advancement and Limitations",
-    "text": "⚖️ 發展與限制並存 | Coexistence of Advancement and Limitations\n\n程式開發的流程正在轉變: 從過去每一行程式碼都需由開發者親自撰寫，到如今，AI 成為得力的協作助手，顯著提升開發效率與產量。其中一位講者分享，他在與 AI 協作的情況下，一個月就能產出數萬行程式碼，這在以往幾乎是難以想像的效率。\nThe software development process is evolving - from the days when every line of code was written manually, to now where AI acts as a capable assistant, greatly improving speed and productivity. One speaker shared that, with the help of AI, they were able to generate tens of thousands of lines of code within a single month - something hardly imaginable in the past.\n然而，AI 工具在應用過程中仍存在不少挑戰，例如：\n\n程式碼缺乏目標，胡亂撰寫內容\n大型語言模型（LLM）知識未更新到當下的時間點\n容易忘記上下文對話\nToken 數限制帶來上下文瓶頸\n\n\nHowever, there are still several challenges when applying AI tools:\n\nCode may lack direction and be generated randomly\nLLMs are not trained with the most up-to-date data\nThe AI can easily forget previous conversations\nToken limits can cause loss of context"
-  },
-  {
-    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#解決-ai-工具限制的三個關鍵做法-three-key-strategies-to-overcome-ai-limitations",
-    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#解決-ai-工具限制的三個關鍵做法-three-key-strategies-to-overcome-ai-limitations",
-    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
-    "section": "🔧 解決 AI 工具限制的三個關鍵做法 | Three Key Strategies to Overcome AI Limitations",
-    "text": "🔧 解決 AI 工具限制的三個關鍵做法 | Three Key Strategies to Overcome AI Limitations\n這場分享會提出了許多實用策略，我將其歸納為三個核心重點：\nThe session provided several practical strategies. I summarize them into three key actions:\n\n1️⃣ 先理解任務，再拆解行動 | Understand the task, then break it down\n使用 AI 撰寫程式前，應先釐清整體任務內容，撰寫 PRD（產品需求文件），再將任務切分成多個小目標，逐步交由 AI 執行。這不僅能提升成功率，也能更有系統地控管開發進度與品質。\nBefore asking AI to write code, clarify the overall goal and prepare a PRD (Product Requirements Document). Then break down the task into smaller sub-tasks, and let AI handle them step by step. This ensures both higher success rates and more manageable project progress.\n\n\n2️⃣ 明確定義 Role、Rules 與 Prompt | Clearly define Role, Rules, and Promp\n這部分是我個人收穫最大的區塊，建議開發者可從以下三點著手：\nThis was the most valuable part for me. Developers can start by defining the following:\n\n角色：\n定義 AI 模型在對話中的專業知識與語言習慣。例如：限定使用 JavaScript 撰寫，且專注於前端開發的相關邏輯，幫助 AI 更聚焦產出方向。\nRole:\nDefine the model’s expertise and response tone. For example, restrict output to JavaScript, focusing on frontend logic, so the AI stays on track.\n規則：\n除了要明確定義專案的程式風格與架構，更要設定「不允許執行的行為」，例如：嘗試兩次失敗後應中止並回報人員; 嚴禁執行 rm -rf 等危險指令.\n這些規則可根據公司標準、團隊風格或個人開發習慣自行制定，也能參考以下資源調整：\n\nCursor Rules Directory\nGitHub Copilot Best Practices\n\nRules:\nBesides coding style and project structure, define things AI should NOT do, such as: Stop and report after two failed attempts, Never run dangerous commands like rm -rf\nThese rules can be based on company standards, team preferences, or personal habits. We can also refer to these resources for inspiration:\n\nCursor Rules Directory\nGitHub Copilot Best Practices\n\n提示語：\n重點不在「套用範本」，而是清楚表達需求。只要明確說出你要什麼、使用哪種語言、預期的輸出形式，AI 就能有效理解與執行。\nPrompt:\nThe key is to clearly state your needs. No need to memorize templates and just explain what you want, which language to use, and what output you expect.\n\n\n\n3️⃣ 對話內容過長時，善用摘要與上下文引用 | Manage long conversations with summaries and context reference\n當與 AI 對話時間拉長，容易超出 token 限制。\n建議將對話摘要紀錄為 .md 檔案，或使用 AI 工具的記憶功能（如 Cursor 的 @file 標記），在新對話中引用上下文，讓 AI 延續思路，提升整體協作品質。\nWhen conversations get too long, you may hit token limits.\nTo manage this, summarize the key points into .md files or use memory features (like Cursor’s @file tag) to carry context across sessions.\nThis helps maintain continuity and improves AI collaboration quality."
-  },
-  {
-    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#工具選擇的多元與策略-choosing-the-right-tools",
-    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#工具選擇的多元與策略-choosing-the-right-tools",
-    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
-    "section": "🧰 工具選擇的多元與策略 | Choosing the Right Tools",
-    "text": "🧰 工具選擇的多元與策略 | Choosing the Right Tools\n這次分享會介紹了許多常見的 AI coding 工具，包括：\n\nChatGPT\nGitHub Copilot\nCursor\nClaude Code\nCline / RooCode\nGemini CLI\n\n每個工具都有不同特色，選擇上應視個人工作流程與專案需求而定。\nAI 工具發展變化快速，不需要追求「最好」，而是找到最適合你使用習慣的那一個。當然，是否收費也是需要納入考量的因素。\nThe session introduced many popular AI coding tools, including:\n\nChatGPT\nGitHub Copilot\nCursor\nClaude Code\nCline / RooCode\nGemini CLI\n\nEach tool has its strengths. Choose based on your personal workflow and project needs.\nGiven how fast AI tools evolve, there’s no need to chase “the best”—just pick the one that fits you best. Also, remember to factor in cost differences."
-  },
-  {
-    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#實例啟發定義讓-ai-發揮得更好-practical-insight-help-ai-help-you",
-    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#實例啟發定義讓-ai-發揮得更好-practical-insight-help-ai-help-you",
-    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
-    "section": "🧪 實例啟發：定義讓 AI 發揮得更好 | Practical Insight: Help AI Help You",
-    "text": "🧪 實例啟發：定義讓 AI 發揮得更好 | Practical Insight: Help AI Help You\n透過 Cursor 首席工程師 Ryo Lu 的經驗分享 (https://x.com/ryolu_/status/1914384195138511142)，更加深我對 Role 與 Rules 設定的重要性理解。他強調：「AI 是手，不是腦。你要教會它，才會成為神隊友。」\nThrough the experience shared by Cursor’s lead engineer Ryo Lu (https://x.com/ryolu_/status/1914384195138511142), I gained a deeper understanding of how defining Role and Rules can significantly improve AI output.\n同時，反覆測試、優化 prompt、提升對程式的理解，仍是每位開發者的基本功。當 AI 無法給出正確答案時，仍需有能力親自下場撰寫，甚至反過來讓 AI 向你學習。\nRepeated testing, prompt refinement, and improving your own coding understanding remain essential. When AI fails, developers still need to write code themselves—and even help AI learn from you."
-  },
-  {
-    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#收穫-takeaways",
-    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#收穫-takeaways",
-    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
-    "section": "📌 收穫 |Takeaways",
-    "text": "📌 收穫 |Takeaways\n\n1️⃣ 講者分享「AI 是 Copilot，我們是 Pilot」，我認為我們執行一項專案時，必須認知到 AI 始終僅是工具，我們必須清楚掌握專案的主軸，並適時給予調整與反覆確認正確性。\nThe speaker mentioned, “AI is the copilot, and we are the pilot.”\nI believe that when working on a project, we must always remember that AI is just a tool. We, as humans, should stay in control - clearly understanding the goals, making adjustments as needed, and constantly verifying the correctness of outcomes.\n\n\n2️⃣ 「AI 使我們寫程式的肌肉記憶消失」、「AI 讓人喪失思考能力」等負面研究結果的出現，提醒我們必須不斷思考如何持續在自己的專業領域成長，以及如何在必要時也有能力繼續編輯程式。\nResearch has raised concerns that AI may cause us to lose our “muscle memory” for coding and weaken our problem-solving abilities. This reminds us to keep improving in our fields, and ensure we can still code when needed.\n我認為，偶爾需要停下操作協作工具，看看這些 AI 工具產出的流程與程式內容，自己是否能大部分掌握；甚至自己是否可以在不依賴工具的狀況下，產出一樣的結果。換句話說，讓自己維持一定的掌握度是很重要的。\nSometimes, it’s good to pause and review the AI’s output:\n“Do I understand the logic? Could I write this myself without the tool?”\nMaintaining a certain level of independence is essential.\n\n\n3️⃣ AI 時代下，技術的更新十分快速，自己與這些工具之間各扮演的角色也不會一成不變。持續了解潮流的變化以及透過邏輯思考讓自己工作更有效率，是維持競爭力的重點之一。\nIn the age of AI, technologies are evolving rapidly, and our roles in relation to these tools are also shifting.　Staying up-to-date with trends and using logical thinking to work more efficiently is one of the keys to staying competitive.\n\n\n4️⃣ 繼續探索有價值的領域知識。AI 幫我們省去許多撰寫程式的時間，我們可以利用這些時間去探索專業領域的細節。這將讓我們提出更明確且更創新的想法，進而讓 AI 工具幫助我們創造出更有價值的成果。\nWe should use the time saved by AI coding to explore deeper domain knowledge. With better understanding, we can ask smarter questions and give clearer instructions - enabling AI to help us create results that are more valuable and more innovative."
-  },
-  {
-    "objectID": "blog/23-JUN-2024-lapply_gsub.html#introduction",
-    "href": "blog/23-JUN-2024-lapply_gsub.html#introduction",
-    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
-    "section": "🔁 Introduction",
-    "text": "🔁 Introduction\nIn data analysis, we often encounter situations where we need to perform the same transformation or calculation on multiple datasets — such as datasets grouped by age, treatment, or study phase.\nRather than repeating the same code block over and over, R provides a more efficient, less error-prone solution: the lapply() function."
-  },
-  {
-    "objectID": "blog/23-JUN-2024-lapply_gsub.html#why-use-lapply",
-    "href": "blog/23-JUN-2024-lapply_gsub.html#why-use-lapply",
-    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
-    "section": "✨ Why Use lapply()?",
-    "text": "✨ Why Use lapply()?\nWhen you have more than 5 or even 10 datasets to process, using a loop or manually running the same function can quickly become tedious and risky. By placing all target datasets in a list and applying a custom function via lapply(), you can:\n\nMinimize code repetition\n\nReduce the chance of mistakes\n\nImprove code scalability and clarity"
-  },
-  {
-    "objectID": "blog/23-JUN-2024-lapply_gsub.html#example-adjust-units-and-calculate-bmi",
-    "href": "blog/23-JUN-2024-lapply_gsub.html#example-adjust-units-and-calculate-bmi",
-    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
-    "section": "🔧 Example: Adjust Units and Calculate BMI",
-    "text": "🔧 Example: Adjust Units and Calculate BMI\nLet’s say you have datasets containing weight (in 公斤) and height (in 公尺) for different age groups. The goal is to:\n\nConvert the units from Chinese characters to standard abbreviations (kg, m)\n\nCalculate the Body Mass Index (BMI) using the formula:\n\n\\[\n\\text{BMI} = \\frac{\\text{weight (kg)}}{\\text{height (m)}^2}\n\\]\n\n📦 Step 1: Create Sample Datasets\n# Sample data for three age groups\ngroup1 &lt;- data.frame(Height = c(\"1.65公尺\", \"1.70公尺\"), Weight = c(\"60公斤\", \"65公斤\"))\n\ngroup2 &lt;- data.frame(Height = c(\"1.60公尺\", \"1.75公尺\"), Weight = c(\"55公斤\", \"70公斤\"))\n\ngroup3 &lt;- data.frame(Height = c(\"1.72公尺\", \"1.80公尺\"), Weight = c(\"68公斤\", \"75公斤\"))\n# Combine them into a list\ngroups &lt;- list(group1, group2, group3)\n🔧 Step 2: Define a Custom Function\n# Function to convert units and calculate BMI\nreplace_function &lt;- function(df) {\n  df$Height &lt;- as.numeric(gsub(\"公尺\", \"\", df$Height))  # Remove '公尺' and convert to numeric\n  df$Weight &lt;- as.numeric(gsub(\"公斤\", \"\", df$Weight))  # Remove '公斤' and convert to numeric\n  df$BMI &lt;- round(df$Weight / (df$Height^2), 1)         # Calculate BMI\n  return(df)\n}\n🚀 Step 3: Apply the Function Using lapply()\n# Apply the same function to all groups\nresults &lt;- lapply(groups, replace_function)\n\n# Preview the result for group1\nresults[[1]]\n✅ Output (example)\n  Height Weight  BMI\n1   1.65     60  22.0\n2   1.70     65  22.5"
-  },
-  {
-    "objectID": "blog/23-JUN-2024-lapply_gsub.html#final-thoughts",
-    "href": "blog/23-JUN-2024-lapply_gsub.html#final-thoughts",
-    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
-    "section": "💡 Final Thoughts",
-    "text": "💡 Final Thoughts\nThe combination of lapply() and gsub() demonstrates a powerful pattern in R: clean, consistent, and reproducible operations across datasets.\nWhether you’re dealing with different demographic groups or multiple study arms, putting your datasets in a list and defining a reusable function can save time and prevent mistakes — especially in clinical trial data preparation or large-scale reporting tasks.\nHappy coding!"
-  },
-  {
-    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#introduction",
-    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#introduction",
-    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
-    "section": "Introduction",
-    "text": "Introduction\nWhen preparing statistical summaries, we often need to create dummy data to maintain consistent structures.For example, ensuring all combinations of categorical variables appear in a summary table. This post introduces two simple approaches to fill dummy rows into your dataset using R and the tidyverse."
-  },
-  {
-    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#example-dataset",
-    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#example-dataset",
-    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
-    "section": "Example Dataset",
-    "text": "Example Dataset\nLet’s start by creating a sample dataset:\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.0     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.2     ✔ tibble    3.3.0\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.0     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nset.seed(2025)\n\ntemp1 &lt;- tibble(\n  treatment = sample(c(\"g1\", \"g2\"), size = 10, replace = TRUE),\n  sub       = sample(c(\"x1\", \"x2\", \"x3\"), size = 10, replace = TRUE),\n  id        = 1:10\n)\n\ntemp1\n\n# A tibble: 10 × 3\n   treatment sub      id\n   &lt;chr&gt;     &lt;chr&gt; &lt;int&gt;\n 1 g1        x1        1\n 2 g2        x3        2\n 3 g2        x3        3\n 4 g2        x3        4\n 5 g1        x1        5\n 6 g1        x3        6\n 7 g2        x3        7\n 8 g1        x3        8\n 9 g2        x3        9\n10 g1        x2       10\n\n\nThis dataset contains three variables:\n\ntreatment with values “g1” and “g2”,\nsub with values “x1”, “x2”, and “x3”,\nid as a sequential index.\n\n👉 Now imagine we need to count records by treatment and sub, but we also want to include a new category — y1 — under sub, even if it doesn’t appear in the data. How can we achieve that?"
-  },
-  {
-    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#method-1-using-crossing",
-    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#method-1-using-crossing",
-    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
-    "section": "Method 1 — Using crossing()",
-    "text": "Method 1 — Using crossing()\nThis approach manually builds a dummy dataset and merges it with the existing summary.\nSteps:\n1️⃣ Obtain unique treatment values.\n2️⃣ Create all desired combinations using crossing().\n3️⃣ Combine the dummy and original counts.\n\n# Count the original combinations\n\ntemp2 &lt;- temp1 %&gt;%\ncount(treatment, sub, name = \"count\")\n\n# Extract unique treatments\n\ntemp2_nodup &lt;- temp2 %&gt;%\n  arrange(treatment, sub, count) %&gt;%\n  group_by(treatment) %&gt;%\n  mutate(id = row_number()) %&gt;%\n  filter(row_number() == 1) %&gt;%\n  select(treatment) %&gt;%\n  ungroup()\n\n\n# Create dummy data with all sub categories, including y1\n\ndummy &lt;- crossing(\n  temp2_nodup,\n  sub = c(\"x1\", \"x2\", \"x3\", \"y1\"),\n  count = 0\n)\n\n# Combine and keep the latest record per combination\n\ntemp3 &lt;- temp2 %&gt;%\n  rbind(dummy) %&gt;%\n  arrange(treatment, sub, count) %&gt;%\n  group_by(treatment, sub) %&gt;%\n  mutate(id1 = row_number(), id2 = n()) %&gt;%\n  filter(row_number() == n()) %&gt;%\n  select(-matches(\"^id\")) %&gt;%\n  ungroup()\n\ntemp3\n\n# A tibble: 8 × 3\n  treatment sub   count\n  &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;\n1 g1        x1        2\n2 g1        x2        1\n3 g1        x3        2\n4 g1        y1        0\n5 g2        x1        0\n6 g2        x2        0\n7 g2        x3        5\n8 g2        y1        0"
-  },
-  {
-    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#method-2-using-complete",
-    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#method-2-using-complete",
-    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
-    "section": "Method 2 — Using complete()",
-    "text": "Method 2 — Using complete()\nA cleaner and more concise way uses tidyr::complete(), which automatically fills missing combinations.\nSteps:\n1️⃣ Count existing records by group.\n2️⃣ Use complete() to add the missing combinations.\n\n\nway2 &lt;- temp1 %&gt;%\n  count(treatment, sub, name = \"count\") %&gt;%\n  complete(\n    treatment,\n    sub = c(\"x1\", \"x2\", \"x3\", \"y1\"),\n    fill = list(count = 0)\n    )\n\nway2 \n\n# A tibble: 8 × 3\n  treatment sub   count\n  &lt;chr&gt;     &lt;chr&gt; &lt;int&gt;\n1 g1        x1        2\n2 g1        x2        1\n3 g1        x3        2\n4 g1        y1        0\n5 g2        x1        0\n6 g2        x2        0\n7 g2        x3        5\n8 g2        y1        0"
-  },
-  {
-    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#conclusion",
-    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#conclusion",
-    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
-    "section": "🎨Conclusion",
-    "text": "🎨Conclusion\nThis is a common requirement in data processing — ensuring all expected categories appear in your summaries or reports. Both crossing() and complete() from the tidyverse provide efficient ways to generate dummy data and maintain structural integrity.\n\nUse crossing() when you need full control over combinations and want to manually build the structure.\nUse complete() for a more concise, declarative approach that integrates naturally into tidy pipelines.\n\nIn short, crossing() gives you full control to build combinations manually, while complete() offers a cleaner, automatic way to fill missing categories in your data."
-  },
-  {
-    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html",
-    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html",
-    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
+    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html",
+    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html",
+    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
     "section": "",
-    "text": "🎯 ggplot2 & Data Visualization Design\nBased on “Data Visualization in R Using ggplot2 & Friends” by Statistics Globe / Joachim Schork and “Fundamentals of Data Visualization” by Claus O. Wilke,\nI embarked on a 30-day data visualization challenge — a journey that gradually shifted my focus from technical plotting to visual thinking.\nThis challenge was part of the 2025 iThome Ironman Competition in Taiwan,\nwhere participants commit to publishing one IT-related article every day for 30 consecutive days.\nYou can view my full series here: iThome Ironman Challenge – 30 Days of ggplot2.\nMy process followed a simple rhythm:\nThis rhythm turned out to be one of the most effective ways to internalize new skills and transform passive knowledge into creative output. Every day, I learned something new about how data could be shaped, expressed, and communicated visually."
+    "text": "In clinical trials, data is abundant and critical. Understanding, interpreting, analyzing, and presenting data — there are already many established approaches in our field. But visualization has always been the area I find most interesting, because it is the most intuitive way to communicate findings.\nI used to present clinical data through Shiny applications. Now I am exploring how to bring interactive visualization directly into a real web environment. This is still a work in progress, and today I am sharing an early draft — I feel there is a lot of potential here worth exploring further."
   },
   {
-    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#the-grammar-of-graphics-mindset",
-    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#the-grammar-of-graphics-mindset",
-    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
-    "section": "🧩 The Grammar of Graphics Mindset",
-    "text": "🧩 The Grammar of Graphics Mindset\nAt its core, ggplot2 embodies the Grammar of Graphics — a philosophy of building visualizations through syntax, layer by layer.\nIt reminds me of SAS PROC SGPLOT and TEMPLATE:\nboth rely on layered composition, where each layer is independent yet harmonized.\nConnecting data to visuals is not merely about stacking code —\nit’s about understanding how data structure meets visual semantics.\nThrough exploring the philosophy of aes() and the logic behind each geom_xx() layer,\nI came to realize that data visualization is not just a skill — it’s a way of thinking.\nThroughout the series, I used real-world open datasets — from Taiwan’s energy, postal, and demographic data, to built-in R datasets — making each example grounded, contextual, and relatable."
+    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#what-i-built",
+    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#what-i-built",
+    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
+    "section": "What I Built",
+    "text": "What I Built\nAn interactive patient timeline using R and D3.js, integrating:\n\nScreening & Enrollment\nMedication records (First Dose / Last Dose)\nAdverse Events (with severity)\nSurvival status\n\nAll in a single view — so reviewers can see a patient’s complete journey at a glance.\n\n\n\nPatient Timeline Demo"
   },
   {
-    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#extensions-and-ggplot2-4.0.0-highlights",
-    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#extensions-and-ggplot2-4.0.0-highlights",
-    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
-    "section": "🌈 Extensions and ggplot2 4.0.0 Highlights",
-    "text": "🌈 Extensions and ggplot2 4.0.0 Highlights\nBeyond the classic chart types (scatter, density, boxplot, heatmap, line chart, etc.),\nI explored several extensions that greatly expand ggplot2’s expressive power:\n\nggrepel — for non-overlapping labels\n\nggpointdensity — for high-density scatter plots\n\nggstatsplot — for integrated statistical testing\n\npatchwork — for elegant multi-plot layouts\n\nOne major highlight during the challenge was the release of ggplot2 4.0.0,\nwhich marked a significant evolution in the package’s design and structure.\nHere are some key updates from the official announcement:\n1️⃣ Transition from S3 to S7 object system — offering stricter type validation and more flexibility for developers.\n2️⃣ Theme system overhaul — introducing ink/paper/accent logic and new helpers like theme_sub_axis().\n3️⃣ Integration of palettes and scales into themes — ensuring consistent and harmonious visual design across plots.\nThese updates reflect how ggplot2 continues to balance stability and innovation, remaining one of the most elegant tools in the R ecosystem."
+    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#how-it-works",
+    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#how-it-works",
+    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
+    "section": "How It Works",
+    "text": "How It Works\nThe R side is simple: a data frame with event types, study days, and severity is passed directly into a D3.js script using the r2d3 package. No CDISC-formatted datasets required — raw CRF data goes in, and the timeline comes out.\nOn the JavaScript side, r2d3 automatically converts the R data frame into a row-oriented JSON array. Each event is plotted as a colored circle on a time axis, with labels alternating above and below to avoid overlap.\nOne key design choice: study day zero is excluded from the axis, since Day 0 has no clinical meaning in this context."
   },
   {
-    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#balancing-color-and-design",
-    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#balancing-color-and-design",
-    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
-    "section": "🎨 Balancing Color and Design",
-    "text": "🎨 Balancing Color and Design\nAs Cara Thompson mentioned at Shiny in Production 2023,\nthe goal of visualization isn’t simply to make it pretty, but to make it instantly understandable.\nColor choices, typography, and text hierarchy all serve a purpose —\nto guide the reader’s eye, emphasize the story, and support comprehension.\n\nClarity is not a constraint — it’s an act of design.\n\nThroughout this challenge, I found myself constantly adjusting palettes and contrasts,\nbalancing scientific precision with aesthetic intuition."
+    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#why-this-matters",
+    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#why-this-matters",
+    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
+    "section": "Why This Matters",
+    "text": "Why This Matters\nIn clinical data review, reviewers often need to switch between multiple reports to piece together one patient’s story. A timeline view solves this by putting everything in one place — clearly and interactively."
   },
   {
-    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#personal-reflection",
-    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#personal-reflection",
-    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
-    "section": "✨ Personal Reflection",
-    "text": "✨ Personal Reflection\nThis 30-day journey reminded me that data visualization lives at the intersection of science and art.\nAccuracy ensures integrity, but aesthetics guide attention and memory.\nA great visualization doesn’t just display information —\nit tells a story, connects people, and makes insights memorable.\nFinally, I want to express my gratitude to the R community, the iThome Ironman platform,\nand all mentors who make learning, sharing, and creating so much more accessible and inspiring.\nTheir openness is what makes this journey truly rewarding.\n\n\n_“Data visualization is not the end of analysis — it’s the beginning of understanding.”"
+    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#whats-next",
+    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#whats-next",
+    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
+    "section": "What’s Next",
+    "text": "What’s Next\nThis is an early draft. The next steps include:\n\nAdding tooltip interactions\nBuilding a population-level view for cross-patient comparison\nAdding filtering and zoom functionality\n\nIf you are also thinking about clinical data visualization, I would love to connect and exchange ideas!"
   },
   {
-    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html",
-    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html",
-    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
+    "objectID": "blog/05-APR-2025-Collaborating with ChatGPT.html",
+    "href": "blog/05-APR-2025-Collaborating with ChatGPT.html",
+    "title": "Collaborating with ChatGPT in Coding",
     "section": "",
-    "text": "👉 Question for you: What is your go-to tool for choosing color palettes in your visualizations?"
+    "text": "Lately, I’ve been exploring how to work more effectively with ChatGPT when writing code—mostly in R and Python—to boost my productivity and reach my goals faster.\nTo be honest, it hasn’t always been smooth sailing. While AI can be a powerful assistant, working with it efficiently takes practice and intention. I’m still learning and fine-tuning my process, but I’ve picked up a few lessons along the way that I’d like to share. And of course, I’d love to hear your thoughts too 🪇\n💡 1. Define the Programming Goal Clearly Before asking AI for help, I’ve found it crucial to clearly explain what I’m trying to achieve. The more specific and outcome-oriented the request, the more helpful the response. When I start with a well-defined goal, ChatGPT can often propose a clean structure or even a solid template for the task.\n💡 2. Understand the AI-Generated Code This might sound obvious, but it’s tempting to copy and paste without fully understanding the AI’s output. In reality, taking the time to read and grasp the logic is essential. It helps me make sure the code aligns with my intent—and gives me a much better chance at troubleshooting if something goes wrong later on.\n💡 3. Debug Step by Step Initially, I asked ChatGPT to revise big chunks of code at once, but that often led to confusion. I’ve since learned that breaking things down into smaller parts works much better. By reviewing and applying changes step by step, I stay in control and reduce the risk of introducing new errors. It also allows me to better evaluate the AI’s reasoning behind each suggestion.\n💡 4. Restart If the Conversation Gets Stuck There are times when ChatGPT just doesn’t seem to “get it”—no matter how I phrase my question. In those cases, I’ve found it helpful to summarize the issue clearly and start a fresh conversation. A clean slate often results in clearer, more accurate responses.\n🚧 Still a Work in Progress I’m still experimenting, reflecting, and learning through this process. For me, working with AI has been more than just about writing code—it’s been a way to sharpen how I think and communicate as a developer.\nIf you’ve had similar experiences—or totally different ones—I’d love to hear how you collaborate with AI when coding. Let’s share ideas and make this learning journey smarter, together. 🔍🔍🔍"
   },
   {
-    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#why-colors-matter",
-    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#why-colors-matter",
-    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
-    "section": "Why Colors Matter",
-    "text": "Why Colors Matter\nIn data visualization, colors are more than decoration. They guide attention, improve readability, and even determine whether insights are understood correctly.\nThink about it: if the difference between red and green is too subtle, someone with color vision deficiency may not see the contrast at all. In that case, the message of your chart could be completely lost.\nThis is why choosing colors carefully is essential—not just for aesthetics, but also for accessibility."
+    "objectID": "blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html",
+    "href": "blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html",
+    "title": "Plot-Table Highlighting in Shiny",
+    "section": "",
+    "text": "When working with large volumes of clinical trial data, it’s easy to get lost in hundreds—or even thousands—of records. To support more intuitive data review, I’ve recently been exploring ways to combine visual plots with interactive data tables in Shiny. This approach can help reviewers quickly grasp key insights and trace them back to the raw data.\nOne idea I tested recently is a “highlight record” function, which links points on a plot to specific rows in a data listing. This functionality is built using three powerful R packages: {ggplot2}, {plotly}, and {DT}.\n🔍 How It Works: Interactive Highlighting Step-by-Step Here’s a breakdown of the mechanism:\n\n🕯️ Step 1: Create the Base Plot with ggplot2\nThe visualization starts with a standard ggplot chart—for example, plotting subject-level events by date and domain. This gives us full control over the aesthetics and data structure.\n\n\n🕯️ Step 2: Make the Plot Interactive with plotly\nNext, I use ggplotly() from the {plotly} package to convert the static ggplot into an interactive chart. With this transformation, the plot becomes clickable and dynamic, enabling deeper user interaction.\n\n\n🕯️ Step 3: Capture User Clicks Using event_data(“plotly_click”)\nThanks to plotly_click event data, I can capture exactly which point a user clicks on—such as the domain, event date, or subject ID. This click event generates metadata we can use to match against the underlying dataset.\n\n\n🕯️ Step 4: Highlight the Matched Record in DT::datatable()\nThe final step is to link the clicked point to a specific row in the data table rendered with the {DT} package. When a match is found (based on selected key values like date and domain), the corresponding row is automatically highlighted, drawing the reviewer’s attention to the source record.\n\n\n🚀 Why This Matters\nThis interaction model significantly improves the reviewer experience:\nVisual-first exploration: Users can spot patterns and anomalies visually.\nSeamless data tracing: Clicking on a point takes you straight to the corresponding record—no need to scroll through the full table.\nFaster reviews: Especially useful when reviewing patient timelines, safety events, or domain-specific findings.\n\n\n⚠️ One Caveat: Handle Factor Conversion with Care\nOne challenge I encountered involves the matching logic. Since ggplot may internally convert character variables (like domain) into factors, you must be very cautious when comparing click event values to original data values.\nA mismatch—say, due to different data types or formatting—can easily break the highlight feature. This is a common area for debugging, especially when your plot aesthetics depend on factor() transformations or custom labeling.\n\n\nFinal Thoughts\nThis approach is still evolving, but the integration of plot interactivity and table linking is already proving to be a valuable enhancement for Shiny apps, especially in clinical data review contexts. If you’re working with multi-domain datasets or timeline-based visualizations, this pattern might be worth exploring. If you have built something similar or have ideas to improve this logic, I would love to hear your thoughts! —"
   },
   {
-    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#discovering-cols4all",
-    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#discovering-cols4all",
-    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
-    "section": "Discovering cols4all",
-    "text": "Discovering cols4all\nRecently, I explored the R package cols4all. It provides a rich collection of palettes and a powerful GUI for selecting the right ones.\nWith c4a_gui(), you can:\n\nFilter palettes by type: categorical, sequential, diverging, cyclic, bivariate.\n\nAdjust the number of colors depending on your needs.\n\nTest accessibility for color vision deficiencies.\n\nCompare palettes with built-in scores for contrast and colorblind-friendliness.\n\nFor anyone who needs to balance beauty with clarity, this feels like a game changer."
+    "objectID": "blog/index.html",
+    "href": "blog/index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "WBC 2026: the Chart Every Taiwan Fan Was Watching\n\n\n\nR\n\nggplot2\n\nData Visualization\n\nSports\n\n\n\nHow I rebuilt the WBC 2026 advancement matrix in ggplot2 — and what it teaches about good data visualization design.\n\n\n\n\n\nMar 9, 2026\n\n\n\n\n\n\n\nPatient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js\n\n\n\nR\n\nD3.js\n\nClinical Trials\n\nData Visualization\n\n\n\nAn early draft of an interactive patient timeline built with R and D3.js — integrating screening, dosing, adverse events, and survival status into a single view.\n\n\n\n\n\nMar 4, 2026\n\n\n\n\n\n\n\nNew MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website\n\n\n\nGit\n\nQuarto\n\nGitHub\n\nSetup\n\n\n\nWhat I learned from setting up a new MacBook — including the traps I fell into along the way.\n\n\n\n\n\nFeb 25, 2026\n\n\n\n\n\n\n\nTwo Simple Ways to Fill Dummy Data into the Right Rows\n\n\n\nR\n\nTidyverse\n\n\n\nTwo Simple Ways to Fill Dummy Data into the Right Rows.\n\n\n\n\n\nNov 12, 2025\n\n\n\n\n\n\n\nA Journey into Data Visualization: From ggplot2 Techniques to Visual Design\n\n\n\nR\n\nggplot2\n\nVisualization\n\nLearning\n\n\n\n\n\n\n\n\n\nOct 15, 2025\n\n\n\n\n\n\n\nColors Matter: Exploring cols4all for Better Data Visualization\n\n\n\nR\n\nggplot2\n\nData Visualization\n\nColors\n\n\n\nHow the R package cols4all helps you balance aesthetics and accessibility in choosing color palettes.\n\n\n\n\n\nSep 13, 2025\n\n\n\n\n\n\n\nTakeaways from Learning Programming and AI Tools - Part 1\n\n\n\nProgramming\n\nAI\n\nLearning\n\n\n\nIntroduction\n\n\n\n\n\nJul 30, 2025\n\n\n\n\n\n\n\nLesser-known but crucial role - Statistical Programmer\n\n\n\nStatistical Programmer\n\nCareer\n\n\n\n\n\n\n\n\nJul 6, 2025\n\n\n\n\n\n\n\nPlot-Table Highlighting in Shiny\n\n\n\nR\n\nDT\n\nShiny\n\nplotly\n\n\n\n\n\n\n\n\nMay 4, 2025\n\n\n\n\n\n\n\nCollaborating with ChatGPT in Coding\n\n\n\nAI\n\nChatGPT\n\nProgramming\n\n\n\nWhat I’ve Learned So Far\n\n\n\n\n\nApr 5, 2025\n\n\n\n\n\n\n\n🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍\n\n\n\nR\n\nhash\n\nZodiac\n\n\n\n\n\n\n\n\nFeb 1, 2025\n\n\n\n\n\n\n\nGenerate Dynamic Text Results with glue and lapply in R\n\n\n\nR\n\nTidyverse\n\nglue\n\n\n\n\n\n\n\n\nJan 2, 2025\n\n\n\n\n\n\n\nEfficiently Apply the Same Function to Multiple Datasets in R\n\n\n\nR\n\nlapply\n\ngsub\n\n\n\n\n\n\n\n\nJun 23, 2024\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#easy-integration-with-ggplot2",
-    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#easy-integration-with-ggplot2",
-    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
-    "section": "Easy Integration with ggplot2",
-    "text": "Easy Integration with ggplot2\nUsing these palettes with ggplot2 is straightforward. For example:\nscale_fill_manual(values = c4a(\"brewer.set3\"))\nYou can also pick specific colors from a palette and assign them to categories, giving you both consistency and flexibility.\nPractical Value In one project, I had to display data from multiple clinical trial groups. A simple red/blue/green scheme quickly became confusing once the number of groups exceeded five.\nWith cols4all, I could identify a colorblind-friendly palette with clear contrast in just a few clicks. That meant doctors, statisticians, and non-technical stakeholders could all interpret the chart without difficulty.\nThe result? Charts that were not only professional-looking, but also universally readable.\nTakeaway What I love about cols4all:\n✔️ It goes beyond making charts pretty—it makes them understandable for everyone.\n✔️ It saves time by avoiding endless trial-and-error in color selection.\n✔️ It combines aesthetics with accessibility, increasing the impact of your visualizations."
+    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html",
+    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html",
+    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "section": "",
+    "text": "The Lunar New Year holiday has begun — Happy Year of the Snake! 🎉🐍🎉\nIn many Eastern cultures, the zodiac (生肖) plays an important role in tradition, storytelling, and even personal identity. This 12-year cycle assigns an animal to each year, with the animal of your birth year becoming your zodiac sign. For example, those born in 1989 or 2001 are Snakes 🐍, while others may be Tigers 🐅 or Rabbits 🐇.\nBut how exactly can we figure out someone’s zodiac animal using code?\nSure, you could just Google it… 😂\nBut as an R programmer, I decided to use this as a small coding challenge!"
   },
   {
-    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#back-to-you-what-do-you-usually-rely-on-when-choosing-colors-do-you-stick-with-rcolorbrewer-pick-manually-or-have-you-tried-cols4all",
-    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#back-to-you-what-do-you-usually-rely-on-when-choosing-colors-do-you-stick-with-rcolorbrewer-pick-manually-or-have-you-tried-cols4all",
-    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
-    "section": "Back to you: What do you usually rely on when choosing colors? Do you stick with RColorBrewer, pick manually, or have you tried cols4all?",
-    "text": "Back to you: What do you usually rely on when choosing colors? Do you stick with RColorBrewer, pick manually, or have you tried cols4all?"
+    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#the-idea",
+    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#the-idea",
+    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "section": "🔍 The Idea",
+    "text": "🔍 The Idea\nWe’ll base our logic on the Common Era (CE) calendar, and apply a combination of vectors and the {hash} package in R to map a given year to its corresponding zodiac animal.\n\n💡 Note: For more precise results, especially if you’re working with historical or cultural data, you might want to factor in the lunar calendar (which usually starts in late January or early February). For this example, we’ll keep things simple."
+  },
+  {
+    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#how-the-chinese-zodiac-works",
+    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#how-the-chinese-zodiac-works",
+    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "section": "🧮 How the Chinese Zodiac Works",
+    "text": "🧮 How the Chinese Zodiac Works\nThe 12 animals, in order, are:\n\nRat\n\nOx\n\nTiger\n\nRabbit\n\nDragon\n\nSnake\n\nHorse\n\nGoat\n\nMonkey\n\nRooster\n\nDog\n\nPig\n\nThe cycle repeats every 12 years. For instance, the year 2025 will be the Year of the Snake, just like 2013, 2001, 1989, etc."
+  },
+  {
+    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#coding-it-in-r",
+    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#coding-it-in-r",
+    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "section": "💻 Coding It in R",
+    "text": "💻 Coding It in R\nLet’s write a simple function using the {hash} package:\n# Load the hash package library(hash)"
+  },
+  {
+    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#introduction",
+    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#introduction",
+    "title": "Generate Dynamic Text Results with glue and lapply in R",
+    "section": "🧩 Introduction",
+    "text": "🧩 Introduction\nWhen presenting analysis results, it’s often necessary to embed specific values into structured sentences — for example, describing results for certain patients, countries, or hospitals.\nThe glue package in R provides a powerful solution for this. It allows you to integrate variable values into a fixed text template, making your code more efficient, readable, and less prone to errors.\nIn this post, I’ll demonstrate how to: - Use glue() to dynamically create descriptive text\n- Use glue_collapse() to collapse grouped records\n- Use lapply() to manage and prefix multiple datasets\n- Integrate the results into Quarto or R Markdown reports"
+  },
+  {
+    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#required-packages",
+    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#required-packages",
+    "title": "Generate Dynamic Text Results with glue and lapply in R",
+    "section": "📦 Required Packages",
+    "text": "📦 Required Packages\nlibrary(dplyr) \nlibrary(glue) \n🪇 Step 1: Create and Prefix Multiple Datasetsrepresenting different hospitals’ medication records:\n# Sample CM data from different hospitals\ncm1 &lt;- data.frame(USUBJID = c(\"001\", \"002\"), CMTRT = c(\"DrugA\", \"DrugB\"))\ncm2 &lt;- data.frame(USUBJID = c(\"003\", \"004\"), CMTRT = c(\"DrugC\", \"DrugD\"))\n\n# Put into a named list\ncm_list &lt;- list(Hosp1 = cm1, Hosp2 = cm2)\n\n# Prefix each dataset with its group name\ncm_prefixed &lt;- lapply(names(cm_list), function(name) {\n  df &lt;- cm_list[[name]]\n  df$Group &lt;- name\n  df\n})\n\n# Merge all into one\ncm_all &lt;- bind_rows(cm_prefixed)"
+  },
+  {
+    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#step-2-collapse-records-per-subject",
+    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#step-2-collapse-records-per-subject",
+    "title": "Generate Dynamic Text Results with glue and lapply in R",
+    "section": "🧠 Step 2: Collapse Records per Subject",
+    "text": "🧠 Step 2: Collapse Records per Subject\nWe want to describe each subject’s treatment history by combining multiple CMTRT values:\n# Example: combine multiple treatments per subject\ncm_text &lt;- cm_all %&gt;%\n  group_by(USUBJID, Group) %&gt;%\n  summarise(cmx_CMTRT = glue_collapse(CMTRT, sep = \"; \"), .groups = \"drop\")\n✨ Step 3: Use glue() to Format Sentences\n# Create dynamic sentences for reporting\ncm_text &lt;- cm_text %&gt;%\n  mutate(sentence = glue(\"Subject {USUBJID} in {Group} was treated with: {cmx_CMTRT}.\"))\n\n# Preview\ncm_text$sentence\n📝 Output Example\nSubject 001 in Hosp1 was treated with: DrugA.\nSubject 002 in Hosp1 was treated with: DrugB.\nSubject 003 in Hosp2 was treated with: DrugC.\nSubject 004 in Hosp2 was treated with: DrugD.\n🧵 Conclusion\nThe combination of glue(), glue_collapse(), and lapply() offers a powerful workflow for:\n\nfficient text generation\nFlexible dataset processing\nClean report integration\n\nThis approach not only reduces manual effort but also ensures consistency and clarity in reporting."
   },
   {
     "objectID": "index.html",
@@ -259,109 +189,214 @@
     "text": "Winkle Lu, Reviewing Clinical Data Efficiently with Shiny, ShinyConf 2025.\nWinkle Lu, Presenting Clinical Results via CDISC-Compliant Shiny Apps, R/Pharma 2024.\nZhi-Sheng Lu, 2018, Combining quality of productivity and efficiency under highly pressure of lacking time – discussion by view of first-time quality, PharmaSUG – Beijing.\nShu-Hui Wen, Zhi-Sheng Lu, 2011, Factors affecting the effective number of tests in genetic association studies: A comparative study of three PCA-based methods, Journal of Human Genetics, 56, 428–435 [SCI]."
   },
   {
-    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#introduction",
-    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#introduction",
-    "title": "Generate Dynamic Text Results with glue and lapply in R",
-    "section": "🧩 Introduction",
-    "text": "🧩 Introduction\nWhen presenting analysis results, it’s often necessary to embed specific values into structured sentences — for example, describing results for certain patients, countries, or hospitals.\nThe glue package in R provides a powerful solution for this. It allows you to integrate variable values into a fixed text template, making your code more efficient, readable, and less prone to errors.\nIn this post, I’ll demonstrate how to: - Use glue() to dynamically create descriptive text\n- Use glue_collapse() to collapse grouped records\n- Use lapply() to manage and prefix multiple datasets\n- Integrate the results into Quarto or R Markdown reports"
-  },
-  {
-    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#required-packages",
-    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#required-packages",
-    "title": "Generate Dynamic Text Results with glue and lapply in R",
-    "section": "📦 Required Packages",
-    "text": "📦 Required Packages\nlibrary(dplyr) \nlibrary(glue) \n🪇 Step 1: Create and Prefix Multiple Datasetsrepresenting different hospitals’ medication records:\n# Sample CM data from different hospitals\ncm1 &lt;- data.frame(USUBJID = c(\"001\", \"002\"), CMTRT = c(\"DrugA\", \"DrugB\"))\ncm2 &lt;- data.frame(USUBJID = c(\"003\", \"004\"), CMTRT = c(\"DrugC\", \"DrugD\"))\n\n# Put into a named list\ncm_list &lt;- list(Hosp1 = cm1, Hosp2 = cm2)\n\n# Prefix each dataset with its group name\ncm_prefixed &lt;- lapply(names(cm_list), function(name) {\n  df &lt;- cm_list[[name]]\n  df$Group &lt;- name\n  df\n})\n\n# Merge all into one\ncm_all &lt;- bind_rows(cm_prefixed)"
-  },
-  {
-    "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#step-2-collapse-records-per-subject",
-    "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#step-2-collapse-records-per-subject",
-    "title": "Generate Dynamic Text Results with glue and lapply in R",
-    "section": "🧠 Step 2: Collapse Records per Subject",
-    "text": "🧠 Step 2: Collapse Records per Subject\nWe want to describe each subject’s treatment history by combining multiple CMTRT values:\n# Example: combine multiple treatments per subject\ncm_text &lt;- cm_all %&gt;%\n  group_by(USUBJID, Group) %&gt;%\n  summarise(cmx_CMTRT = glue_collapse(CMTRT, sep = \"; \"), .groups = \"drop\")\n✨ Step 3: Use glue() to Format Sentences\n# Create dynamic sentences for reporting\ncm_text &lt;- cm_text %&gt;%\n  mutate(sentence = glue(\"Subject {USUBJID} in {Group} was treated with: {cmx_CMTRT}.\"))\n\n# Preview\ncm_text$sentence\n📝 Output Example\nSubject 001 in Hosp1 was treated with: DrugA.\nSubject 002 in Hosp1 was treated with: DrugB.\nSubject 003 in Hosp2 was treated with: DrugC.\nSubject 004 in Hosp2 was treated with: DrugD.\n🧵 Conclusion\nThe combination of glue(), glue_collapse(), and lapply() offers a powerful workflow for:\n\nfficient text generation\nFlexible dataset processing\nClean report integration\n\nThis approach not only reduces manual effort but also ensures consistency and clarity in reporting."
-  },
-  {
-    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html",
-    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html",
-    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
+    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html",
+    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html",
+    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
     "section": "",
-    "text": "The Lunar New Year holiday has begun — Happy Year of the Snake! 🎉🐍🎉\nIn many Eastern cultures, the zodiac (生肖) plays an important role in tradition, storytelling, and even personal identity. This 12-year cycle assigns an animal to each year, with the animal of your birth year becoming your zodiac sign. For example, those born in 1989 or 2001 are Snakes 🐍, while others may be Tigers 🐅 or Rabbits 🐇.\nBut how exactly can we figure out someone’s zodiac animal using code?\nSure, you could just Google it… 😂\nBut as an R programmer, I decided to use this as a small coding challenge!"
+    "text": "👉 Question for you: What is your go-to tool for choosing color palettes in your visualizations?"
   },
   {
-    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#the-idea",
-    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#the-idea",
-    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
-    "section": "🔍 The Idea",
-    "text": "🔍 The Idea\nWe’ll base our logic on the Common Era (CE) calendar, and apply a combination of vectors and the {hash} package in R to map a given year to its corresponding zodiac animal.\n\n💡 Note: For more precise results, especially if you’re working with historical or cultural data, you might want to factor in the lunar calendar (which usually starts in late January or early February). For this example, we’ll keep things simple."
+    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#why-colors-matter",
+    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#why-colors-matter",
+    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
+    "section": "Why Colors Matter",
+    "text": "Why Colors Matter\nIn data visualization, colors are more than decoration. They guide attention, improve readability, and even determine whether insights are understood correctly.\nThink about it: if the difference between red and green is too subtle, someone with color vision deficiency may not see the contrast at all. In that case, the message of your chart could be completely lost.\nThis is why choosing colors carefully is essential—not just for aesthetics, but also for accessibility."
   },
   {
-    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#how-the-chinese-zodiac-works",
-    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#how-the-chinese-zodiac-works",
-    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
-    "section": "🧮 How the Chinese Zodiac Works",
-    "text": "🧮 How the Chinese Zodiac Works\nThe 12 animals, in order, are:\n\nRat\n\nOx\n\nTiger\n\nRabbit\n\nDragon\n\nSnake\n\nHorse\n\nGoat\n\nMonkey\n\nRooster\n\nDog\n\nPig\n\nThe cycle repeats every 12 years. For instance, the year 2025 will be the Year of the Snake, just like 2013, 2001, 1989, etc."
+    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#discovering-cols4all",
+    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#discovering-cols4all",
+    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
+    "section": "Discovering cols4all",
+    "text": "Discovering cols4all\nRecently, I explored the R package cols4all. It provides a rich collection of palettes and a powerful GUI for selecting the right ones.\nWith c4a_gui(), you can:\n\nFilter palettes by type: categorical, sequential, diverging, cyclic, bivariate.\n\nAdjust the number of colors depending on your needs.\n\nTest accessibility for color vision deficiencies.\n\nCompare palettes with built-in scores for contrast and colorblind-friendliness.\n\nFor anyone who needs to balance beauty with clarity, this feels like a game changer."
   },
   {
-    "objectID": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#coding-it-in-r",
-    "href": "blog/01-FEB-2025-Lets Code the Zodiac in R.html#coding-it-in-r",
-    "title": "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍",
-    "section": "💻 Coding It in R",
-    "text": "💻 Coding It in R\nLet’s write a simple function using the {hash} package:\n# Load the hash package library(hash)"
+    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#easy-integration-with-ggplot2",
+    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#easy-integration-with-ggplot2",
+    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
+    "section": "Easy Integration with ggplot2",
+    "text": "Easy Integration with ggplot2\nUsing these palettes with ggplot2 is straightforward. For example:\nscale_fill_manual(values = c4a(\"brewer.set3\"))\nYou can also pick specific colors from a palette and assign them to categories, giving you both consistency and flexibility.\nPractical Value In one project, I had to display data from multiple clinical trial groups. A simple red/blue/green scheme quickly became confusing once the number of groups exceeded five.\nWith cols4all, I could identify a colorblind-friendly palette with clear contrast in just a few clicks. That meant doctors, statisticians, and non-technical stakeholders could all interpret the chart without difficulty.\nThe result? Charts that were not only professional-looking, but also universally readable.\nTakeaway What I love about cols4all:\n✔️ It goes beyond making charts pretty—it makes them understandable for everyone.\n✔️ It saves time by avoiding endless trial-and-error in color selection.\n✔️ It combines aesthetics with accessibility, increasing the impact of your visualizations."
   },
   {
-    "objectID": "blog/index.html",
-    "href": "blog/index.html",
-    "title": "Blog",
+    "objectID": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#back-to-you-what-do-you-usually-rely-on-when-choosing-colors-do-you-stick-with-rcolorbrewer-pick-manually-or-have-you-tried-cols4all",
+    "href": "blog/13-Sep-2025-Exploring cols4all for Better Data Visualization.html#back-to-you-what-do-you-usually-rely-on-when-choosing-colors-do-you-stick-with-rcolorbrewer-pick-manually-or-have-you-tried-cols4all",
+    "title": "Colors Matter: Exploring cols4all for Better Data Visualization",
+    "section": "Back to you: What do you usually rely on when choosing colors? Do you stick with RColorBrewer, pick manually, or have you tried cols4all?",
+    "text": "Back to you: What do you usually rely on when choosing colors? Do you stick with RColorBrewer, pick manually, or have you tried cols4all?"
+  },
+  {
+    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html",
+    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html",
+    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
     "section": "",
-    "text": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js\n\n\n\nR\n\nD3.js\n\nClinical Trials\n\nData Visualization\n\n\n\nAn early draft of an interactive patient timeline built with R and D3.js — integrating screening, dosing, adverse events, and survival status into a single view.\n\n\n\n\n\nMar 4, 2026\n\n\n\n\n\n\n\nNew MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website\n\n\n\nGit\n\nQuarto\n\nGitHub\n\nSetup\n\n\n\nWhat I learned from setting up a new MacBook — including the traps I fell into along the way.\n\n\n\n\n\nFeb 25, 2026\n\n\n\n\n\n\n\nTwo Simple Ways to Fill Dummy Data into the Right Rows\n\n\n\nR\n\nTidyverse\n\n\n\nTwo Simple Ways to Fill Dummy Data into the Right Rows.\n\n\n\n\n\nNov 12, 2025\n\n\n\n\n\n\n\nA Journey into Data Visualization: From ggplot2 Techniques to Visual Design\n\n\n\nR\n\nggplot2\n\nVisualization\n\nLearning\n\n\n\n\n\n\n\n\n\nOct 15, 2025\n\n\n\n\n\n\n\nColors Matter: Exploring cols4all for Better Data Visualization\n\n\n\nR\n\nggplot2\n\nData Visualization\n\nColors\n\n\n\nHow the R package cols4all helps you balance aesthetics and accessibility in choosing color palettes.\n\n\n\n\n\nSep 13, 2025\n\n\n\n\n\n\n\nTakeaways from Learning Programming and AI Tools - Part 1\n\n\n\nProgramming\n\nAI\n\nLearning\n\n\n\nIntroduction\n\n\n\n\n\nJul 30, 2025\n\n\n\n\n\n\n\nLesser-known but crucial role - Statistical Programmer\n\n\n\nStatistical Programmer\n\nCareer\n\n\n\n\n\n\n\n\nJul 6, 2025\n\n\n\n\n\n\n\nPlot-Table Highlighting in Shiny\n\n\n\nR\n\nDT\n\nShiny\n\nplotly\n\n\n\n\n\n\n\n\nMay 4, 2025\n\n\n\n\n\n\n\nCollaborating with ChatGPT in Coding\n\n\n\nAI\n\nChatGPT\n\nProgramming\n\n\n\nWhat I’ve Learned So Far\n\n\n\n\n\nApr 5, 2025\n\n\n\n\n\n\n\n🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍\n\n\n\nR\n\nhash\n\nZodiac\n\n\n\n\n\n\n\n\nFeb 1, 2025\n\n\n\n\n\n\n\nGenerate Dynamic Text Results with glue and lapply in R\n\n\n\nR\n\nTidyverse\n\nglue\n\n\n\n\n\n\n\n\nJan 2, 2025\n\n\n\n\n\n\n\nEfficiently Apply the Same Function to Multiple Datasets in R\n\n\n\nR\n\nlapply\n\ngsub\n\n\n\n\n\n\n\n\nJun 23, 2024\n\n\n\n\n\nNo matching items"
+    "text": "🎯 ggplot2 & Data Visualization Design\nBased on “Data Visualization in R Using ggplot2 & Friends” by Statistics Globe / Joachim Schork and “Fundamentals of Data Visualization” by Claus O. Wilke,\nI embarked on a 30-day data visualization challenge — a journey that gradually shifted my focus from technical plotting to visual thinking.\nThis challenge was part of the 2025 iThome Ironman Competition in Taiwan,\nwhere participants commit to publishing one IT-related article every day for 30 consecutive days.\nYou can view my full series here: iThome Ironman Challenge – 30 Days of ggplot2.\nMy process followed a simple rhythm:\nThis rhythm turned out to be one of the most effective ways to internalize new skills and transform passive knowledge into creative output. Every day, I learned something new about how data could be shaped, expressed, and communicated visually."
   },
   {
-    "objectID": "blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html",
-    "href": "blog/04-MAY-2025-Plot-Table Highlighting in Shiny.html",
-    "title": "Plot-Table Highlighting in Shiny",
+    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#the-grammar-of-graphics-mindset",
+    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#the-grammar-of-graphics-mindset",
+    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
+    "section": "🧩 The Grammar of Graphics Mindset",
+    "text": "🧩 The Grammar of Graphics Mindset\nAt its core, ggplot2 embodies the Grammar of Graphics — a philosophy of building visualizations through syntax, layer by layer.\nIt reminds me of SAS PROC SGPLOT and TEMPLATE:\nboth rely on layered composition, where each layer is independent yet harmonized.\nConnecting data to visuals is not merely about stacking code —\nit’s about understanding how data structure meets visual semantics.\nThrough exploring the philosophy of aes() and the logic behind each geom_xx() layer,\nI came to realize that data visualization is not just a skill — it’s a way of thinking.\nThroughout the series, I used real-world open datasets — from Taiwan’s energy, postal, and demographic data, to built-in R datasets — making each example grounded, contextual, and relatable."
+  },
+  {
+    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#extensions-and-ggplot2-4.0.0-highlights",
+    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#extensions-and-ggplot2-4.0.0-highlights",
+    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
+    "section": "🌈 Extensions and ggplot2 4.0.0 Highlights",
+    "text": "🌈 Extensions and ggplot2 4.0.0 Highlights\nBeyond the classic chart types (scatter, density, boxplot, heatmap, line chart, etc.),\nI explored several extensions that greatly expand ggplot2’s expressive power:\n\nggrepel — for non-overlapping labels\n\nggpointdensity — for high-density scatter plots\n\nggstatsplot — for integrated statistical testing\n\npatchwork — for elegant multi-plot layouts\n\nOne major highlight during the challenge was the release of ggplot2 4.0.0,\nwhich marked a significant evolution in the package’s design and structure.\nHere are some key updates from the official announcement:\n1️⃣ Transition from S3 to S7 object system — offering stricter type validation and more flexibility for developers.\n2️⃣ Theme system overhaul — introducing ink/paper/accent logic and new helpers like theme_sub_axis().\n3️⃣ Integration of palettes and scales into themes — ensuring consistent and harmonious visual design across plots.\nThese updates reflect how ggplot2 continues to balance stability and innovation, remaining one of the most elegant tools in the R ecosystem."
+  },
+  {
+    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#balancing-color-and-design",
+    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#balancing-color-and-design",
+    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
+    "section": "🎨 Balancing Color and Design",
+    "text": "🎨 Balancing Color and Design\nAs Cara Thompson mentioned at Shiny in Production 2023,\nthe goal of visualization isn’t simply to make it pretty, but to make it instantly understandable.\nColor choices, typography, and text hierarchy all serve a purpose —\nto guide the reader’s eye, emphasize the story, and support comprehension.\n\nClarity is not a constraint — it’s an act of design.\n\nThroughout this challenge, I found myself constantly adjusting palettes and contrasts,\nbalancing scientific precision with aesthetic intuition."
+  },
+  {
+    "objectID": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#personal-reflection",
+    "href": "blog/15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.html#personal-reflection",
+    "title": "A Journey into Data Visualization: From ggplot2 Techniques to Visual Design",
+    "section": "✨ Personal Reflection",
+    "text": "✨ Personal Reflection\nThis 30-day journey reminded me that data visualization lives at the intersection of science and art.\nAccuracy ensures integrity, but aesthetics guide attention and memory.\nA great visualization doesn’t just display information —\nit tells a story, connects people, and makes insights memorable.\nFinally, I want to express my gratitude to the R community, the iThome Ironman platform,\nand all mentors who make learning, sharing, and creating so much more accessible and inspiring.\nTheir openness is what makes this journey truly rewarding.\n\n\n_“Data visualization is not the end of analysis — it’s the beginning of understanding.”"
+  },
+  {
+    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#introduction",
+    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#introduction",
+    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
+    "section": "Introduction",
+    "text": "Introduction\nWhen preparing statistical summaries, we often need to create dummy data to maintain consistent structures.For example, ensuring all combinations of categorical variables appear in a summary table. This post introduces two simple approaches to fill dummy rows into your dataset using R and the tidyverse."
+  },
+  {
+    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#example-dataset",
+    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#example-dataset",
+    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
+    "section": "Example Dataset",
+    "text": "Example Dataset\nLet’s start by creating a sample dataset:\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.0     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.2     ✔ tibble    3.3.0\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.0     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nset.seed(2025)\n\ntemp1 &lt;- tibble(\n  treatment = sample(c(\"g1\", \"g2\"), size = 10, replace = TRUE),\n  sub       = sample(c(\"x1\", \"x2\", \"x3\"), size = 10, replace = TRUE),\n  id        = 1:10\n)\n\ntemp1\n\n# A tibble: 10 × 3\n   treatment sub      id\n   &lt;chr&gt;     &lt;chr&gt; &lt;int&gt;\n 1 g1        x1        1\n 2 g2        x3        2\n 3 g2        x3        3\n 4 g2        x3        4\n 5 g1        x1        5\n 6 g1        x3        6\n 7 g2        x3        7\n 8 g1        x3        8\n 9 g2        x3        9\n10 g1        x2       10\n\n\nThis dataset contains three variables:\n\ntreatment with values “g1” and “g2”,\nsub with values “x1”, “x2”, and “x3”,\nid as a sequential index.\n\n👉 Now imagine we need to count records by treatment and sub, but we also want to include a new category — y1 — under sub, even if it doesn’t appear in the data. How can we achieve that?"
+  },
+  {
+    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#method-1-using-crossing",
+    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#method-1-using-crossing",
+    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
+    "section": "Method 1 — Using crossing()",
+    "text": "Method 1 — Using crossing()\nThis approach manually builds a dummy dataset and merges it with the existing summary.\nSteps:\n1️⃣ Obtain unique treatment values.\n2️⃣ Create all desired combinations using crossing().\n3️⃣ Combine the dummy and original counts.\n\n# Count the original combinations\n\ntemp2 &lt;- temp1 %&gt;%\ncount(treatment, sub, name = \"count\")\n\n# Extract unique treatments\n\ntemp2_nodup &lt;- temp2 %&gt;%\n  arrange(treatment, sub, count) %&gt;%\n  group_by(treatment) %&gt;%\n  mutate(id = row_number()) %&gt;%\n  filter(row_number() == 1) %&gt;%\n  select(treatment) %&gt;%\n  ungroup()\n\n\n# Create dummy data with all sub categories, including y1\n\ndummy &lt;- crossing(\n  temp2_nodup,\n  sub = c(\"x1\", \"x2\", \"x3\", \"y1\"),\n  count = 0\n)\n\n# Combine and keep the latest record per combination\n\ntemp3 &lt;- temp2 %&gt;%\n  rbind(dummy) %&gt;%\n  arrange(treatment, sub, count) %&gt;%\n  group_by(treatment, sub) %&gt;%\n  mutate(id1 = row_number(), id2 = n()) %&gt;%\n  filter(row_number() == n()) %&gt;%\n  select(-matches(\"^id\")) %&gt;%\n  ungroup()\n\ntemp3\n\n# A tibble: 8 × 3\n  treatment sub   count\n  &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;\n1 g1        x1        2\n2 g1        x2        1\n3 g1        x3        2\n4 g1        y1        0\n5 g2        x1        0\n6 g2        x2        0\n7 g2        x3        5\n8 g2        y1        0"
+  },
+  {
+    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#method-2-using-complete",
+    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#method-2-using-complete",
+    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
+    "section": "Method 2 — Using complete()",
+    "text": "Method 2 — Using complete()\nA cleaner and more concise way uses tidyr::complete(), which automatically fills missing combinations.\nSteps:\n1️⃣ Count existing records by group.\n2️⃣ Use complete() to add the missing combinations.\n\n\nway2 &lt;- temp1 %&gt;%\n  count(treatment, sub, name = \"count\") %&gt;%\n  complete(\n    treatment,\n    sub = c(\"x1\", \"x2\", \"x3\", \"y1\"),\n    fill = list(count = 0)\n    )\n\nway2 \n\n# A tibble: 8 × 3\n  treatment sub   count\n  &lt;chr&gt;     &lt;chr&gt; &lt;int&gt;\n1 g1        x1        2\n2 g1        x2        1\n3 g1        x3        2\n4 g1        y1        0\n5 g2        x1        0\n6 g2        x2        0\n7 g2        x3        5\n8 g2        y1        0"
+  },
+  {
+    "objectID": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#conclusion",
+    "href": "blog/12-Nov-2025-Two Simple Ways to Fill Dummy Data into the Right Rows.html#conclusion",
+    "title": "Two Simple Ways to Fill Dummy Data into the Right Rows",
+    "section": "🎨Conclusion",
+    "text": "🎨Conclusion\nThis is a common requirement in data processing — ensuring all expected categories appear in your summaries or reports. Both crossing() and complete() from the tidyverse provide efficient ways to generate dummy data and maintain structural integrity.\n\nUse crossing() when you need full control over combinations and want to manually build the structure.\nUse complete() for a more concise, declarative approach that integrates naturally into tidy pipelines.\n\nIn short, crossing() gives you full control to build combinations manually, while complete() offers a cleaner, automatic way to fill missing categories in your data."
+  },
+  {
+    "objectID": "blog/23-JUN-2024-lapply_gsub.html#introduction",
+    "href": "blog/23-JUN-2024-lapply_gsub.html#introduction",
+    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
+    "section": "🔁 Introduction",
+    "text": "🔁 Introduction\nIn data analysis, we often encounter situations where we need to perform the same transformation or calculation on multiple datasets — such as datasets grouped by age, treatment, or study phase.\nRather than repeating the same code block over and over, R provides a more efficient, less error-prone solution: the lapply() function."
+  },
+  {
+    "objectID": "blog/23-JUN-2024-lapply_gsub.html#why-use-lapply",
+    "href": "blog/23-JUN-2024-lapply_gsub.html#why-use-lapply",
+    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
+    "section": "✨ Why Use lapply()?",
+    "text": "✨ Why Use lapply()?\nWhen you have more than 5 or even 10 datasets to process, using a loop or manually running the same function can quickly become tedious and risky. By placing all target datasets in a list and applying a custom function via lapply(), you can:\n\nMinimize code repetition\n\nReduce the chance of mistakes\n\nImprove code scalability and clarity"
+  },
+  {
+    "objectID": "blog/23-JUN-2024-lapply_gsub.html#example-adjust-units-and-calculate-bmi",
+    "href": "blog/23-JUN-2024-lapply_gsub.html#example-adjust-units-and-calculate-bmi",
+    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
+    "section": "🔧 Example: Adjust Units and Calculate BMI",
+    "text": "🔧 Example: Adjust Units and Calculate BMI\nLet’s say you have datasets containing weight (in 公斤) and height (in 公尺) for different age groups. The goal is to:\n\nConvert the units from Chinese characters to standard abbreviations (kg, m)\n\nCalculate the Body Mass Index (BMI) using the formula:\n\n\\[\n\\text{BMI} = \\frac{\\text{weight (kg)}}{\\text{height (m)}^2}\n\\]\n\n📦 Step 1: Create Sample Datasets\n# Sample data for three age groups\ngroup1 &lt;- data.frame(Height = c(\"1.65公尺\", \"1.70公尺\"), Weight = c(\"60公斤\", \"65公斤\"))\n\ngroup2 &lt;- data.frame(Height = c(\"1.60公尺\", \"1.75公尺\"), Weight = c(\"55公斤\", \"70公斤\"))\n\ngroup3 &lt;- data.frame(Height = c(\"1.72公尺\", \"1.80公尺\"), Weight = c(\"68公斤\", \"75公斤\"))\n# Combine them into a list\ngroups &lt;- list(group1, group2, group3)\n🔧 Step 2: Define a Custom Function\n# Function to convert units and calculate BMI\nreplace_function &lt;- function(df) {\n  df$Height &lt;- as.numeric(gsub(\"公尺\", \"\", df$Height))  # Remove '公尺' and convert to numeric\n  df$Weight &lt;- as.numeric(gsub(\"公斤\", \"\", df$Weight))  # Remove '公斤' and convert to numeric\n  df$BMI &lt;- round(df$Weight / (df$Height^2), 1)         # Calculate BMI\n  return(df)\n}\n🚀 Step 3: Apply the Function Using lapply()\n# Apply the same function to all groups\nresults &lt;- lapply(groups, replace_function)\n\n# Preview the result for group1\nresults[[1]]\n✅ Output (example)\n  Height Weight  BMI\n1   1.65     60  22.0\n2   1.70     65  22.5"
+  },
+  {
+    "objectID": "blog/23-JUN-2024-lapply_gsub.html#final-thoughts",
+    "href": "blog/23-JUN-2024-lapply_gsub.html#final-thoughts",
+    "title": "Efficiently Apply the Same Function to Multiple Datasets in R",
+    "section": "💡 Final Thoughts",
+    "text": "💡 Final Thoughts\nThe combination of lapply() and gsub() demonstrates a powerful pattern in R: clean, consistent, and reproducible operations across datasets.\nWhether you’re dealing with different demographic groups or multiple study arms, putting your datasets in a list and defining a reusable function can save time and prevent mistakes — especially in clinical trial data preparation or large-scale reporting tasks.\nHappy coding!"
+  },
+  {
+    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#學習心得程式設計與-ai-工具-learning-reflections-programming-and-ai-tools",
+    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#學習心得程式設計與-ai-工具-learning-reflections-programming-and-ai-tools",
+    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
+    "section": "🧠 學習心得：程式設計與 AI 工具 | Learning Reflections: Programming and AI Tools",
+    "text": "🧠 學習心得：程式設計與 AI 工具 | Learning Reflections: Programming and AI Tools\n截至 2025 年年中，AI 工具的發展相較於 2024 年又呈現出全新的面貌。\n這次有幸參加由台灣 五倍學院 舉辦的 AI 工具應用分享會，獲得許多寶貴的觀念與實戰經驗，讓我在這個 AI 快速演進的階段中，得以深入觀察與體驗不同工具的應用方式。\n\nAs of mid-2025, the development of AI tools has taken on a new look compared to 2024.\nI had the opportunity to attend an AI tools application sharing session organized by 五倍學院 in Taiwan, and gained many valuable ideas and hands-on insights. In this rapidly evolving era of AI, this experience allowed me to better explore and try out various tool applications."
+  },
+  {
+    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#發展與限制並存-coexistence-of-advancement-and-limitations",
+    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#發展與限制並存-coexistence-of-advancement-and-limitations",
+    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
+    "section": "⚖️ 發展與限制並存 | Coexistence of Advancement and Limitations",
+    "text": "⚖️ 發展與限制並存 | Coexistence of Advancement and Limitations\n\n程式開發的流程正在轉變: 從過去每一行程式碼都需由開發者親自撰寫，到如今，AI 成為得力的協作助手，顯著提升開發效率與產量。其中一位講者分享，他在與 AI 協作的情況下，一個月就能產出數萬行程式碼，這在以往幾乎是難以想像的效率。\nThe software development process is evolving - from the days when every line of code was written manually, to now where AI acts as a capable assistant, greatly improving speed and productivity. One speaker shared that, with the help of AI, they were able to generate tens of thousands of lines of code within a single month - something hardly imaginable in the past.\n然而，AI 工具在應用過程中仍存在不少挑戰，例如：\n\n程式碼缺乏目標，胡亂撰寫內容\n大型語言模型（LLM）知識未更新到當下的時間點\n容易忘記上下文對話\nToken 數限制帶來上下文瓶頸\n\n\nHowever, there are still several challenges when applying AI tools:\n\nCode may lack direction and be generated randomly\nLLMs are not trained with the most up-to-date data\nThe AI can easily forget previous conversations\nToken limits can cause loss of context"
+  },
+  {
+    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#解決-ai-工具限制的三個關鍵做法-three-key-strategies-to-overcome-ai-limitations",
+    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#解決-ai-工具限制的三個關鍵做法-three-key-strategies-to-overcome-ai-limitations",
+    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
+    "section": "🔧 解決 AI 工具限制的三個關鍵做法 | Three Key Strategies to Overcome AI Limitations",
+    "text": "🔧 解決 AI 工具限制的三個關鍵做法 | Three Key Strategies to Overcome AI Limitations\n這場分享會提出了許多實用策略，我將其歸納為三個核心重點：\nThe session provided several practical strategies. I summarize them into three key actions:\n\n1️⃣ 先理解任務，再拆解行動 | Understand the task, then break it down\n使用 AI 撰寫程式前，應先釐清整體任務內容，撰寫 PRD（產品需求文件），再將任務切分成多個小目標，逐步交由 AI 執行。這不僅能提升成功率，也能更有系統地控管開發進度與品質。\nBefore asking AI to write code, clarify the overall goal and prepare a PRD (Product Requirements Document). Then break down the task into smaller sub-tasks, and let AI handle them step by step. This ensures both higher success rates and more manageable project progress.\n\n\n2️⃣ 明確定義 Role、Rules 與 Prompt | Clearly define Role, Rules, and Promp\n這部分是我個人收穫最大的區塊，建議開發者可從以下三點著手：\nThis was the most valuable part for me. Developers can start by defining the following:\n\n角色：\n定義 AI 模型在對話中的專業知識與語言習慣。例如：限定使用 JavaScript 撰寫，且專注於前端開發的相關邏輯，幫助 AI 更聚焦產出方向。\nRole:\nDefine the model’s expertise and response tone. For example, restrict output to JavaScript, focusing on frontend logic, so the AI stays on track.\n規則：\n除了要明確定義專案的程式風格與架構，更要設定「不允許執行的行為」，例如：嘗試兩次失敗後應中止並回報人員; 嚴禁執行 rm -rf 等危險指令.\n這些規則可根據公司標準、團隊風格或個人開發習慣自行制定，也能參考以下資源調整：\n\nCursor Rules Directory\nGitHub Copilot Best Practices\n\nRules:\nBesides coding style and project structure, define things AI should NOT do, such as: Stop and report after two failed attempts, Never run dangerous commands like rm -rf\nThese rules can be based on company standards, team preferences, or personal habits. We can also refer to these resources for inspiration:\n\nCursor Rules Directory\nGitHub Copilot Best Practices\n\n提示語：\n重點不在「套用範本」，而是清楚表達需求。只要明確說出你要什麼、使用哪種語言、預期的輸出形式，AI 就能有效理解與執行。\nPrompt:\nThe key is to clearly state your needs. No need to memorize templates and just explain what you want, which language to use, and what output you expect.\n\n\n\n3️⃣ 對話內容過長時，善用摘要與上下文引用 | Manage long conversations with summaries and context reference\n當與 AI 對話時間拉長，容易超出 token 限制。\n建議將對話摘要紀錄為 .md 檔案，或使用 AI 工具的記憶功能（如 Cursor 的 @file 標記），在新對話中引用上下文，讓 AI 延續思路，提升整體協作品質。\nWhen conversations get too long, you may hit token limits.\nTo manage this, summarize the key points into .md files or use memory features (like Cursor’s @file tag) to carry context across sessions.\nThis helps maintain continuity and improves AI collaboration quality."
+  },
+  {
+    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#工具選擇的多元與策略-choosing-the-right-tools",
+    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#工具選擇的多元與策略-choosing-the-right-tools",
+    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
+    "section": "🧰 工具選擇的多元與策略 | Choosing the Right Tools",
+    "text": "🧰 工具選擇的多元與策略 | Choosing the Right Tools\n這次分享會介紹了許多常見的 AI coding 工具，包括：\n\nChatGPT\nGitHub Copilot\nCursor\nClaude Code\nCline / RooCode\nGemini CLI\n\n每個工具都有不同特色，選擇上應視個人工作流程與專案需求而定。\nAI 工具發展變化快速，不需要追求「最好」，而是找到最適合你使用習慣的那一個。當然，是否收費也是需要納入考量的因素。\nThe session introduced many popular AI coding tools, including:\n\nChatGPT\nGitHub Copilot\nCursor\nClaude Code\nCline / RooCode\nGemini CLI\n\nEach tool has its strengths. Choose based on your personal workflow and project needs.\nGiven how fast AI tools evolve, there’s no need to chase “the best”—just pick the one that fits you best. Also, remember to factor in cost differences."
+  },
+  {
+    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#實例啟發定義讓-ai-發揮得更好-practical-insight-help-ai-help-you",
+    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#實例啟發定義讓-ai-發揮得更好-practical-insight-help-ai-help-you",
+    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
+    "section": "🧪 實例啟發：定義讓 AI 發揮得更好 | Practical Insight: Help AI Help You",
+    "text": "🧪 實例啟發：定義讓 AI 發揮得更好 | Practical Insight: Help AI Help You\n透過 Cursor 首席工程師 Ryo Lu 的經驗分享 (https://x.com/ryolu_/status/1914384195138511142)，更加深我對 Role 與 Rules 設定的重要性理解。他強調：「AI 是手，不是腦。你要教會它，才會成為神隊友。」\nThrough the experience shared by Cursor’s lead engineer Ryo Lu (https://x.com/ryolu_/status/1914384195138511142), I gained a deeper understanding of how defining Role and Rules can significantly improve AI output.\n同時，反覆測試、優化 prompt、提升對程式的理解，仍是每位開發者的基本功。當 AI 無法給出正確答案時，仍需有能力親自下場撰寫，甚至反過來讓 AI 向你學習。\nRepeated testing, prompt refinement, and improving your own coding understanding remain essential. When AI fails, developers still need to write code themselves—and even help AI learn from you."
+  },
+  {
+    "objectID": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#收穫-takeaways",
+    "href": "blog/01-AUG-2025-Takeaways from Learning Programming and AI Tools.html#收穫-takeaways",
+    "title": "Takeaways from Learning Programming and AI Tools - Part 1",
+    "section": "📌 收穫 |Takeaways",
+    "text": "📌 收穫 |Takeaways\n\n1️⃣ 講者分享「AI 是 Copilot，我們是 Pilot」，我認為我們執行一項專案時，必須認知到 AI 始終僅是工具，我們必須清楚掌握專案的主軸，並適時給予調整與反覆確認正確性。\nThe speaker mentioned, “AI is the copilot, and we are the pilot.”\nI believe that when working on a project, we must always remember that AI is just a tool. We, as humans, should stay in control - clearly understanding the goals, making adjustments as needed, and constantly verifying the correctness of outcomes.\n\n\n2️⃣ 「AI 使我們寫程式的肌肉記憶消失」、「AI 讓人喪失思考能力」等負面研究結果的出現，提醒我們必須不斷思考如何持續在自己的專業領域成長，以及如何在必要時也有能力繼續編輯程式。\nResearch has raised concerns that AI may cause us to lose our “muscle memory” for coding and weaken our problem-solving abilities. This reminds us to keep improving in our fields, and ensure we can still code when needed.\n我認為，偶爾需要停下操作協作工具，看看這些 AI 工具產出的流程與程式內容，自己是否能大部分掌握；甚至自己是否可以在不依賴工具的狀況下，產出一樣的結果。換句話說，讓自己維持一定的掌握度是很重要的。\nSometimes, it’s good to pause and review the AI’s output:\n“Do I understand the logic? Could I write this myself without the tool?”\nMaintaining a certain level of independence is essential.\n\n\n3️⃣ AI 時代下，技術的更新十分快速，自己與這些工具之間各扮演的角色也不會一成不變。持續了解潮流的變化以及透過邏輯思考讓自己工作更有效率，是維持競爭力的重點之一。\nIn the age of AI, technologies are evolving rapidly, and our roles in relation to these tools are also shifting.　Staying up-to-date with trends and using logical thinking to work more efficiently is one of the keys to staying competitive.\n\n\n4️⃣ 繼續探索有價值的領域知識。AI 幫我們省去許多撰寫程式的時間，我們可以利用這些時間去探索專業領域的細節。這將讓我們提出更明確且更創新的想法，進而讓 AI 工具幫助我們創造出更有價值的成果。\nWe should use the time saved by AI coding to explore deeper domain knowledge. With better understanding, we can ask smarter questions and give clearer instructions - enabling AI to help us create results that are more valuable and more innovative."
+  },
+  {
+    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html",
+    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html",
+    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
     "section": "",
-    "text": "When working with large volumes of clinical trial data, it’s easy to get lost in hundreds—or even thousands—of records. To support more intuitive data review, I’ve recently been exploring ways to combine visual plots with interactive data tables in Shiny. This approach can help reviewers quickly grasp key insights and trace them back to the raw data.\nOne idea I tested recently is a “highlight record” function, which links points on a plot to specific rows in a data listing. This functionality is built using three powerful R packages: {ggplot2}, {plotly}, and {DT}.\n🔍 How It Works: Interactive Highlighting Step-by-Step Here’s a breakdown of the mechanism:\n\n🕯️ Step 1: Create the Base Plot with ggplot2\nThe visualization starts with a standard ggplot chart—for example, plotting subject-level events by date and domain. This gives us full control over the aesthetics and data structure.\n\n\n🕯️ Step 2: Make the Plot Interactive with plotly\nNext, I use ggplotly() from the {plotly} package to convert the static ggplot into an interactive chart. With this transformation, the plot becomes clickable and dynamic, enabling deeper user interaction.\n\n\n🕯️ Step 3: Capture User Clicks Using event_data(“plotly_click”)\nThanks to plotly_click event data, I can capture exactly which point a user clicks on—such as the domain, event date, or subject ID. This click event generates metadata we can use to match against the underlying dataset.\n\n\n🕯️ Step 4: Highlight the Matched Record in DT::datatable()\nThe final step is to link the clicked point to a specific row in the data table rendered with the {DT} package. When a match is found (based on selected key values like date and domain), the corresponding row is automatically highlighted, drawing the reviewer’s attention to the source record.\n\n\n🚀 Why This Matters\nThis interaction model significantly improves the reviewer experience:\nVisual-first exploration: Users can spot patterns and anomalies visually.\nSeamless data tracing: Clicking on a point takes you straight to the corresponding record—no need to scroll through the full table.\nFaster reviews: Especially useful when reviewing patient timelines, safety events, or domain-specific findings.\n\n\n⚠️ One Caveat: Handle Factor Conversion with Care\nOne challenge I encountered involves the matching logic. Since ggplot may internally convert character variables (like domain) into factors, you must be very cautious when comparing click event values to original data values.\nA mismatch—say, due to different data types or formatting—can easily break the highlight feature. This is a common area for debugging, especially when your plot aesthetics depend on factor() transformations or custom labeling.\n\n\nFinal Thoughts\nThis approach is still evolving, but the integration of plot interactivity and table linking is already proving to be a valuable enhancement for Shiny apps, especially in clinical data review contexts. If you’re working with multi-domain datasets or timeline-based visualizations, this pattern might be worth exploring. If you have built something similar or have ideas to improve this logic, I would love to hear your thoughts! —"
+    "text": "My old laptop had a strange problem. Even after a professional repair, it kept shutting down by itself. For someone who works with data every day, this was too risky to ignore. So I decided to get a new computer.\nThis was also a good chance to rename my personal website from Winkode to WinSual, and rebuild my development environment from scratch."
   },
   {
-    "objectID": "blog/05-APR-2025-Collaborating with ChatGPT.html",
-    "href": "blog/05-APR-2025-Collaborating with ChatGPT.html",
-    "title": "Collaborating with ChatGPT in Coding",
-    "section": "",
-    "text": "Lately, I’ve been exploring how to work more effectively with ChatGPT when writing code—mostly in R and Python—to boost my productivity and reach my goals faster.\nTo be honest, it hasn’t always been smooth sailing. While AI can be a powerful assistant, working with it efficiently takes practice and intention. I’m still learning and fine-tuning my process, but I’ve picked up a few lessons along the way that I’d like to share. And of course, I’d love to hear your thoughts too 🪇\n💡 1. Define the Programming Goal Clearly Before asking AI for help, I’ve found it crucial to clearly explain what I’m trying to achieve. The more specific and outcome-oriented the request, the more helpful the response. When I start with a well-defined goal, ChatGPT can often propose a clean structure or even a solid template for the task.\n💡 2. Understand the AI-Generated Code This might sound obvious, but it’s tempting to copy and paste without fully understanding the AI’s output. In reality, taking the time to read and grasp the logic is essential. It helps me make sure the code aligns with my intent—and gives me a much better chance at troubleshooting if something goes wrong later on.\n💡 3. Debug Step by Step Initially, I asked ChatGPT to revise big chunks of code at once, but that often led to confusion. I’ve since learned that breaking things down into smaller parts works much better. By reviewing and applying changes step by step, I stay in control and reduce the risk of introducing new errors. It also allows me to better evaluate the AI’s reasoning behind each suggestion.\n💡 4. Restart If the Conversation Gets Stuck There are times when ChatGPT just doesn’t seem to “get it”—no matter how I phrase my question. In those cases, I’ve found it helpful to summarize the issue clearly and start a fresh conversation. A clean slate often results in clearer, more accurate responses.\n🚧 Still a Work in Progress I’m still experimenting, reflecting, and learning through this process. For me, working with AI has been more than just about writing code—it’s been a way to sharpen how I think and communicate as a developer.\nIf you’ve had similar experiences—or totally different ones—I’d love to hear how you collaborate with AI when coding. Let’s share ideas and make this learning journey smarter, together. 🔍🔍🔍"
+    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#what-i-did-tonight",
+    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#what-i-did-tonight",
+    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
+    "section": "What I Did Tonight",
+    "text": "What I Did Tonight\nWhen I moved my files to the new MacBook, the files came over — but the tools did not. Here is what I had to check:\n\nGit: Already built into macOS. Just run git --version to confirm.\nR, Python, and project folders: Moved over fine and worked without problems.\nQuarto: Not included in the move. I downloaded it from the official website and installed it in about five minutes."
   },
   {
-    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html",
-    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html",
-    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
-    "section": "",
-    "text": "In clinical trials, data is abundant and critical. Understanding, interpreting, analyzing, and presenting data — there are already many established approaches in our field. But visualization has always been the area I find most interesting, because it is the most intuitive way to communicate findings.\nI used to present clinical data through Shiny applications. Now I am exploring how to bring interactive visualization directly into a real web environment. This is still a work in progress, and today I am sharing an early draft — I feel there is a lot of potential here worth exploring further."
+    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#things-that-went-wrong",
+    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#things-that-went-wrong",
+    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
+    "section": "Things That Went Wrong",
+    "text": "Things That Went Wrong\nThe most surprising problem was a folder name. My R folder was saved with a full-width “Ｒ” — a character from the Chinese input method — instead of a normal English “R”. Terminal could not find the path at all. It took a while to figure out why. Renaming the folder to a regular English letter fixed it right away.\nAnother thing: R packages do not move to a new computer automatically. When I ran quarto render, it showed an error saying tidyverse was missing. After installing it, everything worked. If other blog posts use different packages, I will need to install those too.\nFor GitHub login, passwords are no longer supported. You must use a Personal Access Token (PAT) instead. Once you set it up, Mac’s osxkeychain saves it for you, so you do not need to enter it every time you push."
   },
   {
-    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#what-i-built",
-    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#what-i-built",
-    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
-    "section": "What I Built",
-    "text": "What I Built\nAn interactive patient timeline using R and D3.js, integrating:\n\nScreening & Enrollment\nMedication records (First Dose / Last Dose)\nAdverse Events (with severity)\nSurvival status\n\nAll in a single view — so reviewers can see a patient’s complete journey at a glance.\n\n\n\nPatient Timeline Demo"
+    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#dont-forget-to-sync-github-on-a-new-machine",
+    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#dont-forget-to-sync-github-on-a-new-machine",
+    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
+    "section": "Don’t Forget to Sync GitHub on a New Machine",
+    "text": "Don’t Forget to Sync GitHub on a New Machine\nThis is easy to forget. On a new computer, your local Git history is empty. You need to connect it to GitHub again:\n\ngit init — set up a new local repo\ngit remote add origin — link it to your GitHub repo\nFirst git push needs --force — because your local repo has no history yet, GitHub will block a normal push\n\nAfter that, everything is back to normal. Just use git add, git commit, and git push each time you make changes. See the diagram below:\n\n\n\nGit Workflow Diagram"
   },
   {
-    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#how-it-works",
-    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#how-it-works",
-    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
-    "section": "How It Works",
-    "text": "How It Works\nThe R side is simple: a data frame with event types, study days, and severity is passed directly into a D3.js script using the r2d3 package. No CDISC-formatted datasets required — raw CRF data goes in, and the timeline comes out.\nOn the JavaScript side, r2d3 automatically converts the R data frame into a row-oriented JSON array. Each event is plotted as a colored circle on a time axis, with labels alternating above and below to avoid overlap.\nOne key design choice: study day zero is excluded from the axis, since Day 0 has no clinical meaning in this context."
-  },
-  {
-    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#why-this-matters",
-    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#why-this-matters",
-    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
-    "section": "Why This Matters",
-    "text": "Why This Matters\nIn clinical data review, reviewers often need to switch between multiple reports to piece together one patient’s story. A timeline view solves this by putting everything in one place — clearly and interactively."
-  },
-  {
-    "objectID": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#whats-next",
-    "href": "blog/03-MAR-2026-Patient-Timeline-Visualization- Bringing-Clinical-Data-to-Life-with-R-and-D3.html#whats-next",
-    "title": "Patient Timeline Visualization: Bringing Clinical Data to Life with R and D3.js",
-    "section": "What’s Next",
-    "text": "What’s Next\nThis is an early draft. The next steps include:\n\nAdding tooltip interactions\nBuilding a population-level view for cross-patient comparison\nAdding filtering and zoom functionality\n\nIf you are also thinking about clinical data visualization, I would love to connect and exchange ideas!"
+    "objectID": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#final-thoughts",
+    "href": "blog/25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.html#final-thoughts",
+    "title": "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website",
+    "section": "Final Thoughts",
+    "text": "Final Thoughts\nWinSual is now live 👉 https://winklelu.github.io/WinSual/\nThe direction is clear — turning complex data into something people can actually understand. That is what I will keep doing."
   },
   {
     "objectID": "blog/06-JUL-2025-Statistical Programmer.html#什麼是統計程式設計師-what-is-a-statistical-programmer-sp",
