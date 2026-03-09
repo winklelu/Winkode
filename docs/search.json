@@ -11,7 +11,7 @@
     "href": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html",
     "title": "WBC 2026: the Chart Every Taiwan Fan Was Watching",
     "section": "",
-    "text": "Patient Timeline Demo\nThe World Baseball Classic 2026 has been the hottest topic in Taiwan these past few days. Whenever Taiwan plays, the whole country is glued to the screen.\nTaiwan, Japan, Korea, Czech Republic, and Australia are in the same group. The top 2 teams by wins advance to the Super Round in the US. If teams are tied on wins, the tiebreaker goes to runs allowed in head-to-head matchups — a rule that is honestly hard to explain and even harder to calculate on the fly.\nTaiwan ended up in exactly that situation:\nSo when Korea faced Australia, one chart became the most-shared image among Taiwan fans — a matrix showing every possible score combination and who advances.\nI rebuilt it in R using ggplot2."
+    "text": "WBC 2026 advancement matrix\nThe World Baseball Classic 2026 has been the hottest topic in Taiwan these past few days. Whenever Taiwan plays, the whole country is glued to the screen.\nTaiwan, Japan, Korea, Czech Republic, and Australia are in the same group. The top 2 teams by wins advance to the Super Round in the US. If teams are tied on wins, the tiebreaker goes to runs allowed in head-to-head matchups — a rule that is honestly hard to explain and even harder to calculate on the fly.\nTaiwan ended up in exactly that situation:\nSo when Korea faced Australia, one chart became the most-shared image among Taiwan fans — a matrix showing every possible score combination and who advances.\nI rebuilt it in R using ggplot2."
   },
   {
     "objectID": "blog/09-MAR-2026-WBC2026-Advancement-Chart-with-R.html#the-chart",

@@ -6,7 +6,7 @@ description: "How I rebuilt the WBC 2026 advancement matrix in ggplot2 — and w
 format: html
 ---
 
-![Patient Timeline Demo](../images/WBCpng.png){style="border-radius: 10px;" width="800"}
+![WBC 2026 advancement matrix](../images/WBCpng.png){style="border-radius: 10px;" width="800"}
 
 ---
 
