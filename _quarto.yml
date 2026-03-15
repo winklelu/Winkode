@@ -12,3 +12,5 @@ website:
         text: Presentations
       - href: blog/index.qmd
         text: Blog
+      - href: winviz.html
+        text: WinViz Lab

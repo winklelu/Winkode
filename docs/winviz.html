@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinViz Lab — WinSual</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17;
+    --bg2: #0f1520;
+    --bg3: #151d2e;
+    --accent: #00d4aa;
+    --accent2: #3b82f6;
+    --accent3: #f59e0b;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --border: rgba(255,255,255,0.06);
+    --card-bg: rgba(15, 21, 32, 0.8);
+    --glow: rgba(0, 212, 170, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Background grid ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(10, 14, 23, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span {
+    color: var(--accent);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: var(--accent);
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 10rem 3rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 212, 170, 0.08);
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    border-radius: 2rem;
+    padding: 0.35rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 .highlight {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 550px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .stat-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Filter bar ── */
+  .filter-section {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem 3rem;
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0, 212, 170, 0.05);
+  }
+
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+  }
+
+  /* ── Grid ── */
+  .viz-grid {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem 6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* ── Card ── */
+  .viz-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+  }
+
+  .viz-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(0,212,170,0.15), transparent, rgba(59,130,246,0.1));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .viz-card:hover::before { opacity: 1; }
+
+  .viz-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 212, 170, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px var(--glow);
+  }
+
+  /* Card preview area */
+  .card-preview {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: var(--bg3);
+  }
+
+  .card-preview svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 0.3rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .tag-survival { background: rgba(0,212,170,0.15); color: var(--accent); }
+  .tag-efficacy { background: rgba(59,130,246,0.15); color: var(--accent2); }
+  .tag-safety { background: rgba(245,158,11,0.15); color: var(--accent3); }
+  .tag-patient { background: rgba(168,85,247,0.15); color: #a855f7; }
+  .tag-coming { background: rgba(100,116,139,0.15); color: var(--text-muted); }
+
+  .card-new {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Card body */
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-tech {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .tech-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.25rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-code, .btn-try {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-code {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .btn-code:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text);
+  }
+
+  .btn-try {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+  }
+
+  .btn-try:hover {
+    background: #00b894;
+    transform: scale(1.03);
+  }
+
+  .btn-try:disabled,
+  .btn-code:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ── Coming Soon card ── */
+  .viz-card.coming-soon {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .viz-card.coming-soon:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border);
+  }
+
+  .coming-soon-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10,14,23,0.5);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ── Section divider ── */
+  .section-label {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    padding: 0 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── KM Curve SVG Preview ── */
+  .km-preview {
+    padding: 1rem;
+  }
+
+  /* ── Footer ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .footer-brand span { color: var(--accent); }
+
+  .footer-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Animations ── */
+  .viz-card {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .viz-card:nth-child(1) { animation-delay: 0.05s; }
+  .viz-card:nth-child(2) { animation-delay: 0.10s; }
+  .viz-card:nth-child(3) { animation-delay: 0.15s; }
+  .viz-card:nth-child(4) { animation-delay: 0.20s; }
+  .viz-card:nth-child(5) { animation-delay: 0.25s; }
+  .viz-card:nth-child(6) { animation-delay: 0.30s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 8rem 1.5rem 3rem; }
+    .filter-section { padding: 0 1.5rem 2rem; }
+    .viz-grid { padding: 0 1.5rem 4rem; grid-template-columns: 1fr; }
+    .section-label { padding: 0 1.5rem; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">Win<span>Sual</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#" class="active">WinViz Lab</a></li>
+    <li><a href="#">Presentations</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">Free Visualization Tools — WinViz Lab</div>
+  <h1>
+    Win<span class="highlight">Viz</span><br>
+    Lab
+  </h1>
+  <p class="hero-sub">
+    Production-ready data visualizations built with open-source tools.<br>
+    Template code included — free to use.<br>
+    <em style="color: var(--accent); opacity: 0.85; font-style: italic; font-size: 0.95em;">"The contributions I long to make."</em>
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">06</span>
+      <span class="stat-label">Tools</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" style="font-size:1.1rem;letter-spacing:-0.02em">R · Python · D3 · Others</span>
+      <span class="stat-label">Languages</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">Open</span>
+      <span class="stat-label">Spirit</span>
+    </div>
+  </div>
+</section>
+
+<!-- Filter -->
+<div class="filter-section">
+  <div class="filter-bar">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Figure</button>
+    <button class="filter-btn">Table</button>
+    <button class="filter-btn">Dataset</button>
+    <button class="filter-btn">Other</button>
+  </div>
+</div>
+
+<!-- Section label -->
+<div class="section-label">
+  <span>Available Now</span>
+</div>
+
+<!-- Grid -->
+<div class="viz-grid">
+  <!-- Card: KM Curve Generator -->
+  <div class="viz-card coming-soon">
+    <div class="card-preview">
+      <span class="card-tag tag-coming">Coming Soon</span>
+      <div class="coming-soon-overlay">In Development</div>
+      <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="340" height="200" fill="#151d2e"/>
+        <text x="170" y="95" text-anchor="middle" fill="rgba(100,116,139,0.3)" font-size="48" font-family="Syne">◎</text>
+        <text x="170" y="130" text-anchor="middle" fill="rgba(100,116,139,0.4)" font-size="11" font-family="DM Sans">KM Curve Generator</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">KM Curve Generator</h3>
+      <p class="card-desc">Kaplan-Meier survival curves with confidence intervals, risk table, and p-value. Built on ADTTE structure.</p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">ggplot2</span><span class="tech-pill">survminer</span><span class="tech-pill">ADTTE</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-code" disabled>⌥ Code</button>
+          <button class="btn-try" disabled>Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Card: Forest Plot -->
+  <div class="viz-card coming-soon">
+    <div class="card-preview">
+      <span class="card-tag tag-coming">Coming Soon</span>
+      <div class="coming-soon-overlay">In Development</div>
+      <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="340" height="200" fill="#151d2e"/>
+        <text x="170" y="95" text-anchor="middle" fill="rgba(100,116,139,0.3)" font-size="48" font-family="Syne">◎</text>
+        <text x="170" y="130" text-anchor="middle" fill="rgba(100,116,139,0.4)" font-size="11" font-family="DM Sans">Forest Plot</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Forest Plot</h3>
+      <p class="card-desc">Subgroup analysis visualization with hazard ratios and confidence intervals. Submission-ready formatting.</p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">ggplot2</span><span class="tech-pill">forestplot</span><span class="tech-pill">ADTTE</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-code" disabled>⌥ Code</button>
+          <button class="btn-try" disabled>Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Card: Patient Timeline -->
+  <div class="viz-card coming-soon">
+    <div class="card-preview">
+      <span class="card-tag tag-coming">Coming Soon</span>
+      <div class="coming-soon-overlay">In Development</div>
+      <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="340" height="200" fill="#151d2e"/>
+        <text x="170" y="95" text-anchor="middle" fill="rgba(100,116,139,0.3)" font-size="48" font-family="Syne">◎</text>
+        <text x="170" y="130" text-anchor="middle" fill="rgba(100,116,139,0.4)" font-size="11" font-family="DM Sans">Patient Timeline</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Patient Timeline</h3>
+      <p class="card-desc">Interactive swimmer plot showing individual patient exposure, adverse events, and outcomes. D3.js powered.</p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">r2d3</span><span class="tech-pill">D3.js</span><span class="tech-pill">ADSL+ADAE</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-code" disabled>⌥ Code</button>
+          <button class="btn-try" disabled>Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Card: Waterfall Plot -->
+  <div class="viz-card coming-soon">
+    <div class="card-preview">
+      <span class="card-tag tag-coming">Coming Soon</span>
+      <div class="coming-soon-overlay">In Development</div>
+      <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="340" height="200" fill="#151d2e"/>
+        <text x="170" y="95" text-anchor="middle" fill="rgba(100,116,139,0.3)" font-size="48" font-family="Syne">◎</text>
+        <text x="170" y="130" text-anchor="middle" fill="rgba(100,116,139,0.4)" font-size="11" font-family="DM Sans">Waterfall Plot</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Waterfall Plot</h3>
+      <p class="card-desc">Best overall response visualization ordered by magnitude of change. Standard in oncology submissions.</p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">ggplot2</span><span class="tech-pill">ADRS</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-code" disabled>⌥ Code</button>
+          <button class="btn-try" disabled>Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Card: Spider Plot -->
+  <div class="viz-card coming-soon">
+    <div class="card-preview">
+      <span class="card-tag tag-coming">Coming Soon</span>
+      <div class="coming-soon-overlay">In Development</div>
+      <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="340" height="200" fill="#151d2e"/>
+        <text x="170" y="95" text-anchor="middle" fill="rgba(100,116,139,0.3)" font-size="48" font-family="Syne">◎</text>
+        <text x="170" y="130" text-anchor="middle" fill="rgba(100,116,139,0.4)" font-size="11" font-family="DM Sans">Spider Plot</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Spider Plot</h3>
+      <p class="card-desc">Individual patient tumor response over time. Longitudinal oncology visualization with target lesion data.</p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">ggplot2</span><span class="tech-pill">ADTR</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-code" disabled>⌥ Code</button>
+          <button class="btn-try" disabled>Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Card: Swimmer Plot -->
+  <div class="viz-card coming-soon">
+    <div class="card-preview">
+      <span class="card-tag tag-coming">Coming Soon</span>
+      <div class="coming-soon-overlay">In Development</div>
+      <svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="340" height="200" fill="#151d2e"/>
+        <text x="170" y="95" text-anchor="middle" fill="rgba(100,116,139,0.3)" font-size="48" font-family="Syne">◎</text>
+        <text x="170" y="130" text-anchor="middle" fill="rgba(100,116,139,0.4)" font-size="11" font-family="DM Sans">Swimmer Plot</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Swimmer Plot</h3>
+      <p class="card-desc">Duration of response visualization with event markers. Shows treatment benefit at individual patient level.</p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">ggplot2</span><span class="tech-pill">ADRS</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-code" disabled>⌥ Code</button>
+          <button class="btn-try" disabled>Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-brand">Win<span>Viz</span> Lab</div>
+  <div class="footer-note">Open Source · Template-ready · Open Spirit</div>
+</footer>
+
+<script>
+  // Filter buttons
+  const btns = document.querySelectorAll('.filter-btn');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
