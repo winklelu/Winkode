@@ -529,10 +529,10 @@
 <nav>
   <div class="nav-logo">Win<span>Sual</span></div>
   <ul class="nav-links">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Blog</a></li>
+    <li><a href="https://winklelu.github.io/WinSual/">Home</a></li>
+    <li><a href="https://winklelu.github.io/WinSual/blog/">Blog</a></li>
     <li><a href="#" class="active">WinViz Lab</a></li>
-    <li><a href="#">Presentations</a></li>
+    <li><a href="https://winklelu.github.io/WinSual/Speaker.html">Presentations</a></li>
   </ul>
 </nav>
 
@@ -577,13 +577,13 @@
 
 <!-- Section label -->
 <div class="section-label">
-  <span>Available Now</span>
+  <span>In Development</span>
 </div>
 
 <!-- Grid -->
 <div class="viz-grid">
   <!-- Card: KM Curve Generator -->
-  <div class="viz-card coming-soon">
+  <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
       <div class="coming-soon-overlay">In Development</div>
@@ -608,7 +608,7 @@
     </div>
   </div>
   <!-- Card: Forest Plot -->
-  <div class="viz-card coming-soon">
+  <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
       <div class="coming-soon-overlay">In Development</div>
@@ -633,7 +633,7 @@
     </div>
   </div>
   <!-- Card: Patient Timeline -->
-  <div class="viz-card coming-soon">
+  <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
       <div class="coming-soon-overlay">In Development</div>
@@ -658,7 +658,7 @@
     </div>
   </div>
   <!-- Card: Waterfall Plot -->
-  <div class="viz-card coming-soon">
+  <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
       <div class="coming-soon-overlay">In Development</div>
@@ -683,7 +683,7 @@
     </div>
   </div>
   <!-- Card: Spider Plot -->
-  <div class="viz-card coming-soon">
+  <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
       <div class="coming-soon-overlay">In Development</div>
@@ -708,7 +708,7 @@
     </div>
   </div>
   <!-- Card: Swimmer Plot -->
-  <div class="viz-card coming-soon">
+  <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
       <div class="coming-soon-overlay">In Development</div>
@@ -742,12 +742,51 @@
 </footer>
 
 <script>
-  // Filter buttons
   const btns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.viz-card');
+  const grid = document.querySelector('.viz-grid');
+
+  // 建立「no results」提示
+  const noResult = document.createElement('div');
+  noResult.id = 'no-result';
+  noResult.style.cssText = `
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: rgba(100,116,139,0.6);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    display: none;
+  `;
+  noResult.innerHTML = `
+    <div style="font-size:2rem;margin-bottom:1rem;opacity:0.3">◎</div>
+    NO TOOLS IN THIS CATEGORY YET<br>
+    <span style="opacity:0.5;font-size:0.75rem;margin-top:0.5rem;display:block">Coming soon — stay tuned</span>
+  `;
+  grid.appendChild(noResult);
+
   btns.forEach(btn => {
     btn.addEventListener('click', () => {
       btns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+
+      const filter = btn.textContent.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        if (card.id === 'no-result') return;
+        const cat = card.getAttribute('data-category') || '';
+
+        if (filter === 'all' || cat === filter) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      noResult.style.display = visibleCount === 0 ? 'block' : 'none';
     });
   });
 </script>
