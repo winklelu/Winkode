@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-03-17">
+<meta name="description" content="How I used R to rebuild Define-XML v2.1 from scratch — and what I finally understood about XML after 12 years as a statistical programmer.">
+
+<title>From XPT to Define-XML v2.1: A Hands-On Walkthrough with R – WinSual</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ff63373b1067ca6f91cf1456aa1f00a2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">WinSual</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Speaker.html"> 
+<span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../winviz.html"> 
+<span class="menu-text">WinViz Lab</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">From XPT to Define-XML v2.1: A Hands-On Walkthrough with R</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">CDISC</div>
+    <div class="quarto-category">Define-XML</div>
+    <div class="quarto-category">Clinical Data</div>
+    <div class="quarto-category">xml2</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    How I used R to rebuild Define-XML v2.1 from scratch — and what I finally understood about XML after 12 years as a statistical programmer.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 17, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<hr>
+<div class="quarto-figure quarto-figure-center" style="border-radius: 10px;">
+<figure class="figure">
+<p><img src="../images/defineimg.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>SDTM AE</figcaption>
+</figure>
+</div>
+<p>For me, define.xml has always been both familiar and mysterious.</p>
+<p>Familiar — because I started working with it in my second year in clinical trials, and have been involved in submission work ever since.</p>
+<p>Mysterious — because I had never actually built one from scratch. In most CROs and pharmaceutical companies, define.xml is generated through company macros, Pinnacle 21, or a dedicated team. The structure was always there, but I had never taken it apart myself.</p>
+<p>This time, I did.</p>
+<hr>
+<section id="what-is-define.xml" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-define.xml">What is define.xml?</h2>
+<p>define.xml is a required submission document for most regulatory authorities. It helps reviewers understand the content of clinical trial datasets. It stores metadata in XML format and allows reviewers to check whether the data follows CDISC standards.</p>
+<p>Most importantly — it turns metadata into a human-readable HTML page, showing dataset lists, variable descriptions, data sources, and controlled terminology.</p>
+<blockquote class="blockquote">
+<p>If helping people see data more clearly is data visualization, then Define-XML is the most important visualization tool for clinical trial data.</p>
+</blockquote>
+<hr>
+</section>
+<section id="xml-as-a-puzzle" class="level2">
+<h2 class="anchored" data-anchor-id="xml-as-a-puzzle">XML as a Puzzle</h2>
+<p>Before writing any code, I had to understand the basic structure of XML.</p>
+<p>There are two things in XML that are often confused:</p>
+<p><strong>Element</strong> — a container with an opening and closing tag, which can be nested inside other elements:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">ItemDef</span>&gt;</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">Description</span>&gt;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">Description</span>&gt;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">ItemDef</span>&gt;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Attribute</strong> — a description written inside the opening tag:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">ItemDef</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ot">  OID</span>      <span class="ot">=</span> <span class="st">"IT.AE.AETERM"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ot">  DataType</span> <span class="ot">=</span> <span class="st">"text"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ot">  Length</span>   <span class="ot">=</span> <span class="st">"200"</span>&gt;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>An Element is a container. An Attribute is a label on that container.</p>
+<p>Once this distinction is clear, the full Define-XML structure becomes readable:</p>
+<pre><code>&lt;ODM&gt;                    ← Root of the document, declares namespace
+  &lt;Study&gt;                ← Study identification
+    &lt;MetaDataVersion&gt;    ← Container for all definitions
+      &lt;def:Standards&gt;    ← Declares SDTMIG version
+      &lt;ItemGroupDef&gt;     ← Dataset level (AE / DM)
+        &lt;ItemRef&gt;        ← List of variable references
+        &lt;def:Class&gt;      ← EVENTS / FINDINGS...
+        &lt;def:leaf&gt;       ← ★ XPT file location (must be inside here)
+      &lt;ItemDef&gt;          ← Variable level (one per variable)
+        &lt;def:Origin&gt;     ← CRF / Derived / Protocol</code></pre>
+<p>Each piece has a fixed position. Put it in the wrong place and something breaks.</p>
+<p>I experienced this myself — I placed <code>def:leaf</code> outside of <code>ItemGroupDef</code>, and the result was <code>[unresolved: LF.AE]</code> in define.html. It took me a while to trace the problem back to <strong>Section 6 — Global Element Ordering</strong> in the CDISC Define-XML Specification.</p>
+<p>That section is only one page long, but it shows the correct order of every element in the document. I think it should be placed at the beginning, not the end.</p>
+<hr>
+</section>
+<section id="what-the-r-program-does" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-r-program-does">What the R Program Does</h2>
+<p>The program works through three parts working together:</p>
+<pre><code>R list   → Storage: holds all metadata from XPT files
+do loop  → Engine: takes out and processes each dataset and variable
+xml2     → Output: writes data as XML nodes, builds the nested structure</code></pre>
+<p><strong>R list</strong> stores all metadata after reading XPT files with <code>haven::read_xpt()</code>. XPT files already contain metadata built in — each column carries a <code>label</code> and <code>width</code>. Using <code>attr(col, "label")</code> gets this information directly, with no manual input needed.</p>
+<p><strong>do loop</strong> uses two nested loops to process each dataset and each variable one by one. If AE has 30 variables, the loop runs 30 times and creates 30 <code>ItemDef</code> elements automatically.</p>
+<p><strong>xml2</strong> uses <code>xml_add_child()</code> to add a child node under an existing node and fill in attribute values at the same time — creating an Element and its Attributes in one line. For every level of nesting in the XML, there is one call to <code>xml_add_child()</code>.</p>
+<hr>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Using AE and DM as examples, the program reads all XPT files from a <code>dataset/</code> folder, automatically determines Domain Class, Key variables, and Origin, and outputs both <code>define.xml</code> and <code>define.html</code>.</p>
+<p>The full output looks like this in the browser:</p>
+<ul>
+<li><p><strong>Dataset overview</strong>: shows AE / DM Class, Structure, Key Variables, and Location <img src="../images/datastructure.png" class="img-fluid" style="border-radius: 10px;" width="600" alt="Dataset overview"></p></li>
+<li><p><strong>Variable list</strong>: shows Label, DataType, Length, and Origin for each variable</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center" style="border-radius: 10px;">
+<figure class="figure">
+<p><img src="../images/sdtmae.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>SDTM AE</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="a-practical-note" class="level2">
+<h2 class="anchored" data-anchor-id="a-practical-note">A Practical Note</h2>
+<p><code>define.xml</code> is mainly read by machines. Some browsers — including Chrome — cannot open it directly by default.</p>
+<p>It is a good idea to always generate <code>define.html</code> at the same time, which is much easier for reviewers to open and read.</p>
+<hr>
+</section>
+<section id="reflection" class="level2">
+<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
+<p>After 12 years as a statistical programmer, this is the first time I truly understood what XML is about.</p>
+<p>Not because I read the specification from page one, but because I started from an error message — <code>[unresolved: LF.AE]</code> — and followed it all the way to Section 6, until the whole puzzle came together.</p>
+<p>You only really remember something when you use it.</p>
+<hr>
+</section>
+<section id="the-full-program" class="level2">
+<h2 class="anchored" data-anchor-id="the-full-program">The Full Program</h2>
+<blockquote class="blockquote">
+<p>⚠️ <strong>Note</strong>: This program is for demonstration purposes only. It does not include <strong>CodeList</strong>, <strong>Value-Level Metadata</strong>, or <strong>MethodDef</strong> — all of which are required for a complete regulatory submission. For production use, please refer to the <a href="https://www.cdisc.org/standards/data-exchange/define-xml">CDISC Define-XML v2.1 Specification</a>.</p>
+</blockquote>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Define-XML v2.1 Generator  (Revised Edition)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Simultaneously generates define.xml AND define.html</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Key Fixes from Previous Version:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] def:leaf moved INSIDE ItemGroupDef (spec §4.2.1 / §5.3.11)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       → Fixes "[unresolved: LF.XX]" in Location column</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   [2] def:ArchiveLocationID &amp; def:StandardOID written as proper</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#       XML attributes with correct namespace handling</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   [3] Standard version updated to SDTMIG 3.4</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   [4] def:DefineVersion corrected to "2.1.0" (full version string)</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   [5] MetaDataVersion attributes aligned with spec example</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Folder Structure (Mac):</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   ~/R/R_work/Practice/</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   ├── prog/       ← this script</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   ├── dataset/    ← put ALL xpt files here</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   └── output/     ← define.xml + define2-1.xsl + define.html</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># How to view:</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   define.html → double-click, opens in any browser directly ✅</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#   define.xml  → for submission / Pinnacle 21 validation</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Reference : CDISC Define-XML Specification v2.1 (2019-05-15)</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Note      : Simplified for the demo — not for production</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">#             CodeList and Value-Level Metadata not included</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 0. Packages ──────────────────────────────────────────────</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("haven", "xml2", "dplyr", "xslt"))</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xml2)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xslt)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 1: Folder Path Setup</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="co"># ★ Only update base_dir if your path is different ★</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>base_dir    <span class="ot">&lt;-</span> <span class="fu">path.expand</span>(<span class="st">"~/R/R_work/Practice"</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>dataset_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(base_dir, <span class="st">"dataset"</span>)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>output_dir  <span class="ot">&lt;-</span> <span class="fu">file.path</span>(base_dir, <span class="st">"output"</span>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(output_dir)) <span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"📁 Base    :"</span>, base_dir,    <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"📁 Dataset :"</span>, dataset_dir, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"📁 Output  :"</span>, output_dir,  <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 2: Utility</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">%||%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(a) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(a) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(a[<span class="dv">1</span>]) <span class="sc">&amp;&amp;</span> a[<span class="dv">1</span>] <span class="sc">!=</span> <span class="st">""</span>) a <span class="cf">else</span> b</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 3: Scan dataset/ and Read ALL XPT Files</span></span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>xpt_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">path        =</span> dataset_dir,</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern     =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.xpt$"</span>,</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names  =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(xpt_files) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>    <span class="st">"❌ No XPT files found in: "</span>, dataset_dir,</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">   Please place xpt files in the dataset/ folder."</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"🔍 Found %d XPT file(s):</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">length</span>(xpt_files)))</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (f <span class="cf">in</span> xpt_files) <span class="fu">cat</span>(<span class="st">"   •"</span>, <span class="fu">basename</span>(f), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Read each XPT and extract metadata ───────────────────────</span></span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>read_xpt_meta <span class="ot">&lt;-</span> <span class="cf">function</span>(xpt_path) {</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>  domain <span class="ot">&lt;-</span> <span class="fu">toupper</span>(tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(xpt_path)))</span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"📂 Reading %s.xpt ...</span><span class="sc">\n</span><span class="st">"</span>, domain))</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">read_xpt</span>(xpt_path)</span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>  vars <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">names</span>(df), <span class="cf">function</span>(var_name) {</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>    col   <span class="ot">&lt;-</span> df[[var_name]]</span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>    label <span class="ot">&lt;-</span> <span class="fu">attr</span>(col, <span class="st">"label"</span>) <span class="sc">%||%</span> var_name</span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>    width <span class="ot">&lt;-</span> <span class="fu">attr</span>(col, <span class="st">"width"</span>) <span class="sc">%||%</span> <span class="cn">NA</span></span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.numeric</span>(col)) {</span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>      data_type <span class="ot">&lt;-</span> <span class="st">"integer"</span></span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>      length    <span class="ot">&lt;-</span> <span class="dv">8</span>L</span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>      data_type <span class="ot">&lt;-</span> <span class="st">"text"</span></span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>      length    <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(width) <span class="sc">&amp;&amp;</span> width <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">as.integer</span>(width) <span class="cf">else</span> <span class="dv">200</span>L</span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>    origin <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>      var_name <span class="sc">==</span> <span class="st">"STUDYID"</span>                  <span class="sc">~</span> <span class="st">"Protocol"</span>,</span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>      var_name <span class="sc">==</span> <span class="st">"DOMAIN"</span>                   <span class="sc">~</span> <span class="st">"Assigned"</span>,</span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>      var_name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"USUBJID"</span>,</span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">paste0</span>(domain, <span class="st">"SEQ"</span>)) <span class="sc">~</span> <span class="st">"Derived"</span>,</span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                                   <span class="sc">~</span> <span class="st">"CRF"</span></span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>      <span class="at">name      =</span> var_name,</span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>      <span class="at">label     =</span> label,</span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>      <span class="at">data_type =</span> data_type,</span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a>      <span class="at">length    =</span> length,</span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a>      <span class="at">origin    =</span> origin,</span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>    <span class="at">domain =</span> domain,</span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a>    <span class="at">label  =</span> <span class="fu">attr</span>(df, <span class="st">"label"</span>) <span class="sc">%||%</span> domain,</span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>    <span class="at">vars   =</span> vars,</span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_vars =</span> <span class="fu">ncol</span>(df),</span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_rows =</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a>all_meta <span class="ot">&lt;-</span> <span class="fu">lapply</span>(xpt_files, read_xpt_meta)</span>
+<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(all_meta) <span class="ot">&lt;-</span> <span class="fu">sapply</span>(all_meta, <span class="st">`</span><span class="at">[[</span><span class="st">`</span>, <span class="st">"domain"</span>)</span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">📊 Domains loaded: %s</span><span class="sc">\n\n</span><span class="st">"</span>,</span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a>            <span class="fu">paste</span>(<span class="fu">names</span>(all_meta), <span class="at">collapse =</span> <span class="st">", "</span>)))</span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 4: Domain Attribute Helpers</span></span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a>get_domain_class <span class="ot">&lt;-</span> <span class="cf">function</span>(domain) {</span>
+<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
+<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a>    domain <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"AE"</span>,<span class="st">"CE"</span>,<span class="st">"DS"</span>,<span class="st">"DV"</span>,<span class="st">"HO"</span>,<span class="st">"MH"</span>)        <span class="sc">~</span> <span class="st">"EVENTS"</span>,</span>
+<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a>    domain <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"EG"</span>,<span class="st">"IE"</span>,<span class="st">"LB"</span>,<span class="st">"MB"</span>,<span class="st">"MS"</span>,<span class="st">"PC"</span>,</span>
+<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"PE"</span>,<span class="st">"PP"</span>,<span class="st">"QS"</span>,<span class="st">"RE"</span>,<span class="st">"SC"</span>,<span class="st">"VS"</span>)         <span class="sc">~</span> <span class="st">"FINDINGS"</span>,</span>
+<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a>    domain <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"AG"</span>,<span class="st">"CM"</span>,<span class="st">"EC"</span>,<span class="st">"EX"</span>,<span class="st">"ML"</span>,<span class="st">"PR"</span>,<span class="st">"SU"</span>)   <span class="sc">~</span> <span class="st">"INTERVENTIONS"</span>,</span>
+<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a>    domain <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"DM"</span>,<span class="st">"CO"</span>,<span class="st">"SE"</span>,<span class="st">"SM"</span>,<span class="st">"SV"</span>,</span>
+<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"RELREC"</span>,<span class="st">"POOLDEF"</span>)                    <span class="sc">~</span> <span class="st">"SPECIAL PURPOSE"</span>,</span>
+<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a>    domain <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"TA"</span>,<span class="st">"TD"</span>,<span class="st">"TE"</span>,<span class="st">"TI"</span>,<span class="st">"TM"</span>,<span class="st">"TS"</span>,<span class="st">"TV"</span>)   <span class="sc">~</span> <span class="st">"TRIAL DESIGN"</span>,</span>
+<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span>                                                 <span class="sc">~</span> <span class="st">"FINDINGS"</span></span>
+<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-159"><a href="#cb5-159" aria-hidden="true" tabindex="-1"></a>get_structure <span class="ot">&lt;-</span> <span class="cf">function</span>(domain) {</span>
+<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
+<span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>    domain <span class="sc">==</span> <span class="st">"DM"</span>                               <span class="sc">~</span></span>
+<span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a>      <span class="st">"One record per subject"</span>,</span>
+<span id="cb5-163"><a href="#cb5-163" aria-hidden="true" tabindex="-1"></a>    domain <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"AE"</span>,<span class="st">"CM"</span>,<span class="st">"EX"</span>,<span class="st">"MH"</span>,<span class="st">"PR"</span>,<span class="st">"DS"</span>) <span class="sc">~</span></span>
+<span id="cb5-164"><a href="#cb5-164" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"One record per "</span>, <span class="fu">tolower</span>(domain), <span class="st">" per subject"</span>),</span>
+<span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a>    domain <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"LB"</span>,<span class="st">"VS"</span>,<span class="st">"EG"</span>,<span class="st">"PC"</span>)           <span class="sc">~</span></span>
+<span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a>      <span class="st">"One record per visit per test per subject"</span>,</span>
+<span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span>                                         <span class="sc">~</span></span>
+<span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a>      <span class="st">"One record per subject"</span></span>
+<span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-170"><a href="#cb5-170" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-171"><a href="#cb5-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-172"><a href="#cb5-172" aria-hidden="true" tabindex="-1"></a>get_repeating <span class="ot">&lt;-</span> <span class="cf">function</span>(domain) {</span>
+<span id="cb5-173"><a href="#cb5-173" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (domain <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"DM"</span>, <span class="st">"RELREC"</span>, <span class="st">"POOLDEF"</span>)) <span class="st">"No"</span> <span class="cf">else</span> <span class="st">"Yes"</span></span>
+<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-178"><a href="#cb5-178" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 5: Build ItemGroupDef</span></span>
+<span id="cb5-179"><a href="#cb5-179" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-180"><a href="#cb5-180" aria-hidden="true" tabindex="-1"></a><span class="co"># FIX [1]: def:leaf is now added INSIDE ItemGroupDef</span></span>
+<span id="cb5-181"><a href="#cb5-181" aria-hidden="true" tabindex="-1"></a><span class="co">#          Per spec §4.2.1 Example 4.1.2.3.1 and §5.3.11:</span></span>
+<span id="cb5-182"><a href="#cb5-182" aria-hidden="true" tabindex="-1"></a><span class="co">#          def:leaf ID="LF.XX" must be a child of ItemGroupDef</span></span>
+<span id="cb5-183"><a href="#cb5-183" aria-hidden="true" tabindex="-1"></a><span class="co">#          so that def:ArchiveLocationID can resolve correctly</span></span>
+<span id="cb5-184"><a href="#cb5-184" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-185"><a href="#cb5-185" aria-hidden="true" tabindex="-1"></a><span class="co"># FIX [2]: def:ArchiveLocationID and def:StandardOID are set</span></span>
+<span id="cb5-186"><a href="#cb5-186" aria-hidden="true" tabindex="-1"></a><span class="co">#          as plain attributes — xml2 serialises namespace</span></span>
+<span id="cb5-187"><a href="#cb5-187" aria-hidden="true" tabindex="-1"></a><span class="co">#          prefixes that are declared on the root ODM element,</span></span>
+<span id="cb5-188"><a href="#cb5-188" aria-hidden="true" tabindex="-1"></a><span class="co">#          so writing them as "def:attr" in xml_add_child()</span></span>
+<span id="cb5-189"><a href="#cb5-189" aria-hidden="true" tabindex="-1"></a><span class="co">#          is sufficient and produces well-formed output.</span></span>
+<span id="cb5-190"><a href="#cb5-190" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-191"><a href="#cb5-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-192"><a href="#cb5-192" aria-hidden="true" tabindex="-1"></a>add_item_group_def <span class="ot">&lt;-</span> <span class="cf">function</span>(mdv, meta) {</span>
+<span id="cb5-193"><a href="#cb5-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-194"><a href="#cb5-194" aria-hidden="true" tabindex="-1"></a>  domain <span class="ot">&lt;-</span> meta<span class="sc">$</span>domain</span>
+<span id="cb5-195"><a href="#cb5-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-196"><a href="#cb5-196" aria-hidden="true" tabindex="-1"></a>  igd <span class="ot">&lt;-</span> <span class="fu">xml_add_child</span>(</span>
+<span id="cb5-197"><a href="#cb5-197" aria-hidden="true" tabindex="-1"></a>    mdv, <span class="st">"ItemGroupDef"</span>,</span>
+<span id="cb5-198"><a href="#cb5-198" aria-hidden="true" tabindex="-1"></a>    <span class="at">OID                     =</span> <span class="fu">paste0</span>(<span class="st">"IG."</span>, domain),</span>
+<span id="cb5-199"><a href="#cb5-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">Name                    =</span> domain,</span>
+<span id="cb5-200"><a href="#cb5-200" aria-hidden="true" tabindex="-1"></a>    <span class="at">Domain                  =</span> domain,</span>
+<span id="cb5-201"><a href="#cb5-201" aria-hidden="true" tabindex="-1"></a>    <span class="at">Purpose                 =</span> <span class="st">"Tabulation"</span>,</span>
+<span id="cb5-202"><a href="#cb5-202" aria-hidden="true" tabindex="-1"></a>    <span class="at">SASDatasetName          =</span> domain,</span>
+<span id="cb5-203"><a href="#cb5-203" aria-hidden="true" tabindex="-1"></a>    <span class="at">Repeating               =</span> <span class="fu">get_repeating</span>(domain),</span>
+<span id="cb5-204"><a href="#cb5-204" aria-hidden="true" tabindex="-1"></a>    <span class="at">IsReferenceData         =</span> <span class="st">"No"</span>,</span>
+<span id="cb5-205"><a href="#cb5-205" aria-hidden="true" tabindex="-1"></a>    <span class="st">"def:Structure"</span>         <span class="ot">=</span> <span class="fu">get_structure</span>(domain),</span>
+<span id="cb5-206"><a href="#cb5-206" aria-hidden="true" tabindex="-1"></a>    <span class="st">"def:ArchiveLocationID"</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">"LF."</span>, domain),</span>
+<span id="cb5-207"><a href="#cb5-207" aria-hidden="true" tabindex="-1"></a>    <span class="st">"def:StandardOID"</span>       <span class="ot">=</span> <span class="st">"STD.SDTMIG-3.4"</span></span>
+<span id="cb5-208"><a href="#cb5-208" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-209"><a href="#cb5-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-210"><a href="#cb5-210" aria-hidden="true" tabindex="-1"></a>  desc_node <span class="ot">&lt;-</span> <span class="fu">xml_add_child</span>(igd, <span class="st">"Description"</span>)</span>
+<span id="cb5-211"><a href="#cb5-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xml_add_child</span>(desc_node, <span class="st">"TranslatedText"</span>, <span class="st">"xml:lang"</span> <span class="ot">=</span> <span class="st">"en"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-212"><a href="#cb5-212" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xml_set_text</span>(meta<span class="sc">$</span>label)</span>
+<span id="cb5-213"><a href="#cb5-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-214"><a href="#cb5-214" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(meta<span class="sc">$</span>vars))) {</span>
+<span id="cb5-215"><a href="#cb5-215" aria-hidden="true" tabindex="-1"></a>    v        <span class="ot">&lt;-</span> meta<span class="sc">$</span>vars[i, ]</span>
+<span id="cb5-216"><a href="#cb5-216" aria-hidden="true" tabindex="-1"></a>    item_oid <span class="ot">&lt;-</span> <span class="cf">if</span> (v<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"STUDYID"</span>) <span class="st">"IT.STUDYID"</span></span>
+<span id="cb5-217"><a href="#cb5-217" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span> <span class="fu">paste0</span>(<span class="st">"IT."</span>, domain, <span class="st">"."</span>, v<span class="sc">$</span>name)</span>
+<span id="cb5-218"><a href="#cb5-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-219"><a href="#cb5-219" aria-hidden="true" tabindex="-1"></a>    key_seq <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-220"><a href="#cb5-220" aria-hidden="true" tabindex="-1"></a>      v<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"STUDYID"</span>             <span class="sc">~</span> <span class="dv">1</span>L,</span>
+<span id="cb5-221"><a href="#cb5-221" aria-hidden="true" tabindex="-1"></a>      v<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"USUBJID"</span>             <span class="sc">~</span> <span class="dv">2</span>L,</span>
+<span id="cb5-222"><a href="#cb5-222" aria-hidden="true" tabindex="-1"></a>      v<span class="sc">$</span>name <span class="sc">==</span> <span class="fu">paste0</span>(domain, <span class="st">"SEQ"</span>) <span class="sc">~</span> <span class="dv">3</span>L,</span>
+<span id="cb5-223"><a href="#cb5-223" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                            <span class="sc">~</span> <span class="cn">NA_integer_</span></span>
+<span id="cb5-224"><a href="#cb5-224" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-225"><a href="#cb5-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-226"><a href="#cb5-226" aria-hidden="true" tabindex="-1"></a>    mandatory <span class="ot">&lt;-</span> <span class="cf">if</span> (</span>
+<span id="cb5-227"><a href="#cb5-227" aria-hidden="true" tabindex="-1"></a>      v<span class="sc">$</span>name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"STUDYID"</span>, <span class="st">"DOMAIN"</span>, <span class="st">"USUBJID"</span>,</span>
+<span id="cb5-228"><a href="#cb5-228" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">paste0</span>(domain, <span class="st">"SEQ"</span>))</span>
+<span id="cb5-229"><a href="#cb5-229" aria-hidden="true" tabindex="-1"></a>    ) <span class="st">"Yes"</span> <span class="cf">else</span> <span class="st">"No"</span></span>
+<span id="cb5-230"><a href="#cb5-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-231"><a href="#cb5-231" aria-hidden="true" tabindex="-1"></a>    ref_args <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-232"><a href="#cb5-232" aria-hidden="true" tabindex="-1"></a>      igd, <span class="st">"ItemRef"</span>,</span>
+<span id="cb5-233"><a href="#cb5-233" aria-hidden="true" tabindex="-1"></a>      <span class="at">ItemOID     =</span> item_oid,</span>
+<span id="cb5-234"><a href="#cb5-234" aria-hidden="true" tabindex="-1"></a>      <span class="at">OrderNumber =</span> <span class="fu">as.character</span>(i),</span>
+<span id="cb5-235"><a href="#cb5-235" aria-hidden="true" tabindex="-1"></a>      <span class="at">Mandatory   =</span> mandatory</span>
+<span id="cb5-236"><a href="#cb5-236" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-237"><a href="#cb5-237" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(key_seq)) ref_args[[<span class="st">"KeySequence"</span>]] <span class="ot">&lt;-</span> <span class="fu">as.character</span>(key_seq)</span>
+<span id="cb5-238"><a href="#cb5-238" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do.call</span>(xml_add_child, ref_args)</span>
+<span id="cb5-239"><a href="#cb5-239" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-240"><a href="#cb5-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-241"><a href="#cb5-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xml_add_child</span>(igd, <span class="st">"def:Class"</span>, <span class="at">Name =</span> <span class="fu">get_domain_class</span>(domain))</span>
+<span id="cb5-242"><a href="#cb5-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-243"><a href="#cb5-243" aria-hidden="true" tabindex="-1"></a>  <span class="co"># FIX [1]: def:leaf INSIDE ItemGroupDef</span></span>
+<span id="cb5-244"><a href="#cb5-244" aria-hidden="true" tabindex="-1"></a>  <span class="co"># def:ArchiveLocationID must resolve to a def:leaf within the same ItemGroupDef.</span></span>
+<span id="cb5-245"><a href="#cb5-245" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Placing def:leaf outside causes [unresolved: LF.XX] in the stylesheet output.</span></span>
+<span id="cb5-246"><a href="#cb5-246" aria-hidden="true" tabindex="-1"></a>  lf <span class="ot">&lt;-</span> <span class="fu">xml_add_child</span>(</span>
+<span id="cb5-247"><a href="#cb5-247" aria-hidden="true" tabindex="-1"></a>    igd, <span class="st">"def:leaf"</span>,</span>
+<span id="cb5-248"><a href="#cb5-248" aria-hidden="true" tabindex="-1"></a>    <span class="at">ID           =</span> <span class="fu">paste0</span>(<span class="st">"LF."</span>, domain),</span>
+<span id="cb5-249"><a href="#cb5-249" aria-hidden="true" tabindex="-1"></a>    <span class="st">"xlink:href"</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="fu">tolower</span>(domain), <span class="st">".xpt"</span>)</span>
+<span id="cb5-250"><a href="#cb5-250" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-251"><a href="#cb5-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xml_add_child</span>(lf, <span class="st">"def:title"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-252"><a href="#cb5-252" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xml_set_text</span>(<span class="fu">paste0</span>(<span class="fu">tolower</span>(domain), <span class="st">".xpt"</span>))</span>
+<span id="cb5-253"><a href="#cb5-253" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-254"><a href="#cb5-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-255"><a href="#cb5-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-256"><a href="#cb5-256" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-257"><a href="#cb5-257" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 6: Build ItemDef</span></span>
+<span id="cb5-258"><a href="#cb5-258" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-259"><a href="#cb5-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-260"><a href="#cb5-260" aria-hidden="true" tabindex="-1"></a>add_item_defs <span class="ot">&lt;-</span> <span class="cf">function</span>(mdv, meta, <span class="at">already_defined =</span> <span class="fu">character</span>(<span class="dv">0</span>)) {</span>
+<span id="cb5-261"><a href="#cb5-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-262"><a href="#cb5-262" aria-hidden="true" tabindex="-1"></a>  domain <span class="ot">&lt;-</span> meta<span class="sc">$</span>domain</span>
+<span id="cb5-263"><a href="#cb5-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-264"><a href="#cb5-264" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(meta<span class="sc">$</span>vars))) {</span>
+<span id="cb5-265"><a href="#cb5-265" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> meta<span class="sc">$</span>vars[i, ]</span>
+<span id="cb5-266"><a href="#cb5-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-267"><a href="#cb5-267" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (v<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"STUDYID"</span> <span class="sc">&amp;&amp;</span> <span class="st">"STUDYID"</span> <span class="sc">%in%</span> already_defined) <span class="cf">next</span></span>
+<span id="cb5-268"><a href="#cb5-268" aria-hidden="true" tabindex="-1"></a>    item_oid <span class="ot">&lt;-</span> <span class="cf">if</span> (v<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"STUDYID"</span>) <span class="st">"IT.STUDYID"</span></span>
+<span id="cb5-269"><a href="#cb5-269" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span> <span class="fu">paste0</span>(<span class="st">"IT."</span>, domain, <span class="st">"."</span>, v<span class="sc">$</span>name)</span>
+<span id="cb5-270"><a href="#cb5-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-271"><a href="#cb5-271" aria-hidden="true" tabindex="-1"></a>    idef_args <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-272"><a href="#cb5-272" aria-hidden="true" tabindex="-1"></a>      mdv, <span class="st">"ItemDef"</span>,</span>
+<span id="cb5-273"><a href="#cb5-273" aria-hidden="true" tabindex="-1"></a>      <span class="at">OID          =</span> item_oid,</span>
+<span id="cb5-274"><a href="#cb5-274" aria-hidden="true" tabindex="-1"></a>      <span class="at">Name         =</span> v<span class="sc">$</span>name,</span>
+<span id="cb5-275"><a href="#cb5-275" aria-hidden="true" tabindex="-1"></a>      <span class="at">DataType     =</span> v<span class="sc">$</span>data_type,</span>
+<span id="cb5-276"><a href="#cb5-276" aria-hidden="true" tabindex="-1"></a>      <span class="at">SASFieldName =</span> v<span class="sc">$</span>name</span>
+<span id="cb5-277"><a href="#cb5-277" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-278"><a href="#cb5-278" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (v<span class="sc">$</span>data_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"text"</span>, <span class="st">"integer"</span>, <span class="st">"float"</span>)) {</span>
+<span id="cb5-279"><a href="#cb5-279" aria-hidden="true" tabindex="-1"></a>      idef_args[[<span class="st">"Length"</span>]] <span class="ot">&lt;-</span> <span class="fu">as.character</span>(v<span class="sc">$</span>length)</span>
+<span id="cb5-280"><a href="#cb5-280" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-281"><a href="#cb5-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-282"><a href="#cb5-282" aria-hidden="true" tabindex="-1"></a>    idef <span class="ot">&lt;-</span> <span class="fu">do.call</span>(xml_add_child, idef_args)</span>
+<span id="cb5-283"><a href="#cb5-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-284"><a href="#cb5-284" aria-hidden="true" tabindex="-1"></a>    desc_node <span class="ot">&lt;-</span> <span class="fu">xml_add_child</span>(idef, <span class="st">"Description"</span>)</span>
+<span id="cb5-285"><a href="#cb5-285" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xml_add_child</span>(desc_node, <span class="st">"TranslatedText"</span>, <span class="st">"xml:lang"</span> <span class="ot">=</span> <span class="st">"en"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-286"><a href="#cb5-286" aria-hidden="true" tabindex="-1"></a>      <span class="fu">xml_set_text</span>(v<span class="sc">$</span>label)</span>
+<span id="cb5-287"><a href="#cb5-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-288"><a href="#cb5-288" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xml_add_child</span>(idef, <span class="st">"def:Origin"</span>, <span class="at">Type =</span> v<span class="sc">$</span>origin)</span>
+<span id="cb5-289"><a href="#cb5-289" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-290"><a href="#cb5-290" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-291"><a href="#cb5-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-292"><a href="#cb5-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-293"><a href="#cb5-293" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-294"><a href="#cb5-294" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 7: Build Full Define-XML v2.1 Document</span></span>
+<span id="cb5-295"><a href="#cb5-295" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-296"><a href="#cb5-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-297"><a href="#cb5-297" aria-hidden="true" tabindex="-1"></a>build_define_xml <span class="ot">&lt;-</span> <span class="cf">function</span>(all_meta) {</span>
+<span id="cb5-298"><a href="#cb5-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-299"><a href="#cb5-299" aria-hidden="true" tabindex="-1"></a>  odm <span class="ot">&lt;-</span> <span class="fu">xml_new_root</span>(</span>
+<span id="cb5-300"><a href="#cb5-300" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ODM"</span>,</span>
+<span id="cb5-301"><a href="#cb5-301" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmlns               =</span> <span class="st">"http://www.cdisc.org/ns/odm/v1.3"</span>,</span>
+<span id="cb5-302"><a href="#cb5-302" aria-hidden="true" tabindex="-1"></a>    <span class="st">"xmlns:def"</span>         <span class="ot">=</span> <span class="st">"http://www.cdisc.org/ns/def/v2.1"</span>,</span>
+<span id="cb5-303"><a href="#cb5-303" aria-hidden="true" tabindex="-1"></a>    <span class="st">"xmlns:xlink"</span>       <span class="ot">=</span> <span class="st">"http://www.w3.org/1999/xlink"</span>,</span>
+<span id="cb5-304"><a href="#cb5-304" aria-hidden="true" tabindex="-1"></a>    <span class="st">"xmlns:xsi"</span>         <span class="ot">=</span> <span class="st">"http://www.w3.org/2001/XMLSchema-instance"</span>,</span>
+<span id="cb5-305"><a href="#cb5-305" aria-hidden="true" tabindex="-1"></a>    <span class="at">FileOID             =</span> <span class="st">"DEFINE.STUDY.001"</span>,</span>
+<span id="cb5-306"><a href="#cb5-306" aria-hidden="true" tabindex="-1"></a>    <span class="at">ODMVersion          =</span> <span class="st">"1.3.2"</span>,</span>
+<span id="cb5-307"><a href="#cb5-307" aria-hidden="true" tabindex="-1"></a>    <span class="at">FileType            =</span> <span class="st">"Snapshot"</span>,</span>
+<span id="cb5-308"><a href="#cb5-308" aria-hidden="true" tabindex="-1"></a>    <span class="at">CreationDateTime    =</span> <span class="fu">format</span>(<span class="fu">Sys.time</span>(), <span class="st">"%Y-%m-%dT%H:%M:%S"</span>),</span>
+<span id="cb5-309"><a href="#cb5-309" aria-hidden="true" tabindex="-1"></a>    <span class="at">Originator          =</span> <span class="st">"Define-XML v2.1 Demo"</span>,</span>
+<span id="cb5-310"><a href="#cb5-310" aria-hidden="true" tabindex="-1"></a>    <span class="st">"def:Context"</span>       <span class="ot">=</span> <span class="st">"Submission"</span></span>
+<span id="cb5-311"><a href="#cb5-311" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-312"><a href="#cb5-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-313"><a href="#cb5-313" aria-hidden="true" tabindex="-1"></a>  study <span class="ot">&lt;-</span> <span class="fu">xml_add_child</span>(odm, <span class="st">"Study"</span>, <span class="at">OID =</span> <span class="st">"STUDY.001"</span>)</span>
+<span id="cb5-314"><a href="#cb5-314" aria-hidden="true" tabindex="-1"></a>  gv    <span class="ot">&lt;-</span> <span class="fu">xml_add_child</span>(study, <span class="st">"GlobalVariables"</span>)</span>
+<span id="cb5-315"><a href="#cb5-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xml_add_child</span>(gv, <span class="st">"StudyName"</span>)        <span class="sc">|&gt;</span> <span class="fu">xml_set_text</span>(<span class="st">"Study 001"</span>)</span>
+<span id="cb5-316"><a href="#cb5-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xml_add_child</span>(gv, <span class="st">"StudyDescription"</span>) <span class="sc">|&gt;</span> <span class="fu">xml_set_text</span>(<span class="st">"Define-XML v2.1 Demo"</span>)</span>
+<span id="cb5-317"><a href="#cb5-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xml_add_child</span>(gv, <span class="st">"ProtocolName"</span>)     <span class="sc">|&gt;</span> <span class="fu">xml_set_text</span>(<span class="st">"STUDY-001"</span>)</span>
+<span id="cb5-318"><a href="#cb5-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-319"><a href="#cb5-319" aria-hidden="true" tabindex="-1"></a>  mdv <span class="ot">&lt;-</span> <span class="fu">xml_add_child</span>(</span>
+<span id="cb5-320"><a href="#cb5-320" aria-hidden="true" tabindex="-1"></a>    study, <span class="st">"MetaDataVersion"</span>,</span>
+<span id="cb5-321"><a href="#cb5-321" aria-hidden="true" tabindex="-1"></a>    <span class="at">OID                 =</span> <span class="st">"MDV.STUDY.001"</span>,</span>
+<span id="cb5-322"><a href="#cb5-322" aria-hidden="true" tabindex="-1"></a>    <span class="at">Name                =</span> <span class="st">"Study 001 Define"</span>,</span>
+<span id="cb5-323"><a href="#cb5-323" aria-hidden="true" tabindex="-1"></a>    <span class="at">Description         =</span> <span class="st">"Study 001 Define-XML v2.1"</span>,</span>
+<span id="cb5-324"><a href="#cb5-324" aria-hidden="true" tabindex="-1"></a>    <span class="st">"def:DefineVersion"</span> <span class="ot">=</span> <span class="st">"2.1.0"</span></span>
+<span id="cb5-325"><a href="#cb5-325" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-326"><a href="#cb5-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-327"><a href="#cb5-327" aria-hidden="true" tabindex="-1"></a>  stds <span class="ot">&lt;-</span> <span class="fu">xml_add_child</span>(mdv, <span class="st">"def:Standards"</span>)</span>
+<span id="cb5-328"><a href="#cb5-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xml_add_child</span>(</span>
+<span id="cb5-329"><a href="#cb5-329" aria-hidden="true" tabindex="-1"></a>    stds, <span class="st">"def:Standard"</span>,</span>
+<span id="cb5-330"><a href="#cb5-330" aria-hidden="true" tabindex="-1"></a>    <span class="at">OID     =</span> <span class="st">"STD.SDTMIG-3.4"</span>,</span>
+<span id="cb5-331"><a href="#cb5-331" aria-hidden="true" tabindex="-1"></a>    <span class="at">Name    =</span> <span class="st">"SDTMIG"</span>,</span>
+<span id="cb5-332"><a href="#cb5-332" aria-hidden="true" tabindex="-1"></a>    <span class="at">Type    =</span> <span class="st">"IG"</span>,</span>
+<span id="cb5-333"><a href="#cb5-333" aria-hidden="true" tabindex="-1"></a>    <span class="at">Version =</span> <span class="st">"3.4"</span>,</span>
+<span id="cb5-334"><a href="#cb5-334" aria-hidden="true" tabindex="-1"></a>    <span class="at">Status  =</span> <span class="st">"Final"</span></span>
+<span id="cb5-335"><a href="#cb5-335" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-336"><a href="#cb5-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-337"><a href="#cb5-337" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (meta <span class="cf">in</span> all_meta) {</span>
+<span id="cb5-338"><a href="#cb5-338" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_item_group_def</span>(mdv, meta)</span>
+<span id="cb5-339"><a href="#cb5-339" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-340"><a href="#cb5-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-341"><a href="#cb5-341" aria-hidden="true" tabindex="-1"></a>  defined <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">0</span>)</span>
+<span id="cb5-342"><a href="#cb5-342" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (meta <span class="cf">in</span> all_meta) {</span>
+<span id="cb5-343"><a href="#cb5-343" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_item_defs</span>(mdv, meta, <span class="at">already_defined =</span> defined)</span>
+<span id="cb5-344"><a href="#cb5-344" aria-hidden="true" tabindex="-1"></a>    defined <span class="ot">&lt;-</span> <span class="fu">union</span>(defined, <span class="st">"STUDYID"</span>)</span>
+<span id="cb5-345"><a href="#cb5-345" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-346"><a href="#cb5-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-347"><a href="#cb5-347" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(odm)</span>
+<span id="cb5-348"><a href="#cb5-348" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-349"><a href="#cb5-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-350"><a href="#cb5-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-351"><a href="#cb5-351" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-352"><a href="#cb5-352" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 8: Execute — Save define.xml AND define.html Together</span></span>
+<span id="cb5-353"><a href="#cb5-353" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-354"><a href="#cb5-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-355"><a href="#cb5-355" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">─────────────────────────────────────────</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-356"><a href="#cb5-356" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"⚙️  Building Define-XML ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-357"><a href="#cb5-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-358"><a href="#cb5-358" aria-hidden="true" tabindex="-1"></a>define_xml <span class="ot">&lt;-</span> <span class="fu">build_define_xml</span>(all_meta)</span>
+<span id="cb5-359"><a href="#cb5-359" aria-hidden="true" tabindex="-1"></a>xml_path   <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="st">"define.xml"</span>)</span>
+<span id="cb5-360"><a href="#cb5-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-361"><a href="#cb5-361" aria-hidden="true" tabindex="-1"></a><span class="fu">write_xml</span>(define_xml, xml_path, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>)</span>
+<span id="cb5-362"><a href="#cb5-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-363"><a href="#cb5-363" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert XSL stylesheet processing instruction at line 2.</span></span>
+<span id="cb5-364"><a href="#cb5-364" aria-hidden="true" tabindex="-1"></a><span class="co"># xml2::write_xml() does not add this automatically.</span></span>
+<span id="cb5-365"><a href="#cb5-365" aria-hidden="true" tabindex="-1"></a><span class="co"># Without it, the browser renders raw XML instead of the formatted HTML view.</span></span>
+<span id="cb5-366"><a href="#cb5-366" aria-hidden="true" tabindex="-1"></a>xml_lines <span class="ot">&lt;-</span> <span class="fu">readLines</span>(xml_path, <span class="at">warn =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-367"><a href="#cb5-367" aria-hidden="true" tabindex="-1"></a>xsl_pi    <span class="ot">&lt;-</span> <span class="st">'&lt;?xml-stylesheet type="text/xsl" href="define2-1.xsl"?&gt;'</span></span>
+<span id="cb5-368"><a href="#cb5-368" aria-hidden="true" tabindex="-1"></a>xml_lines <span class="ot">&lt;-</span> <span class="fu">c</span>(xml_lines[<span class="dv">1</span>], xsl_pi, xml_lines[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb5-369"><a href="#cb5-369" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(xml_lines, xml_path, <span class="at">useBytes =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-370"><a href="#cb5-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-371"><a href="#cb5-371" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"✅ define.xml saved</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-372"><a href="#cb5-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-373"><a href="#cb5-373" aria-hidden="true" tabindex="-1"></a>xsl_path  <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="st">"define2-1.xsl"</span>)</span>
+<span id="cb5-374"><a href="#cb5-374" aria-hidden="true" tabindex="-1"></a>html_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="st">"define.html"</span>)</span>
+<span id="cb5-375"><a href="#cb5-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-376"><a href="#cb5-376" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(xsl_path)) {</span>
+<span id="cb5-377"><a href="#cb5-377" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"⚠️  define2-1.xsl not found — skipping HTML generation</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-378"><a href="#cb5-378" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"   Please place define2-1.xsl in the output/ folder</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-379"><a href="#cb5-379" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb5-380"><a href="#cb5-380" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"🎨 Applying official XSL stylesheet ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-381"><a href="#cb5-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-382"><a href="#cb5-382" aria-hidden="true" tabindex="-1"></a>  xml_doc  <span class="ot">&lt;-</span> <span class="fu">read_xml</span>(xml_path)</span>
+<span id="cb5-383"><a href="#cb5-383" aria-hidden="true" tabindex="-1"></a>  xsl_doc  <span class="ot">&lt;-</span> <span class="fu">read_xml</span>(xsl_path)</span>
+<span id="cb5-384"><a href="#cb5-384" aria-hidden="true" tabindex="-1"></a>  html_doc <span class="ot">&lt;-</span> xslt<span class="sc">::</span><span class="fu">xml_xslt</span>(xml_doc, xsl_doc)</span>
+<span id="cb5-385"><a href="#cb5-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-386"><a href="#cb5-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_html</span>(html_doc, html_path)</span>
+<span id="cb5-387"><a href="#cb5-387" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"✅ define.html saved</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-388"><a href="#cb5-388" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-389"><a href="#cb5-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-390"><a href="#cb5-390" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">─────────────────────────────────────────</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-391"><a href="#cb5-391" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"✅ All files generated successfully!</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-392"><a href="#cb5-392" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"   📄 define.xml  : %s</span><span class="sc">\n</span><span class="st">"</span>, xml_path))</span>
+<span id="cb5-393"><a href="#cb5-393" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(html_path))</span>
+<span id="cb5-394"><a href="#cb5-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"   🌐 define.html : %s</span><span class="sc">\n</span><span class="st">"</span>, html_path))</span>
+<span id="cb5-395"><a href="#cb5-395" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"   Domains        : %s</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb5-396"><a href="#cb5-396" aria-hidden="true" tabindex="-1"></a>            <span class="fu">paste</span>(<span class="fu">names</span>(all_meta), <span class="at">collapse =</span> <span class="st">", "</span>)))</span>
+<span id="cb5-397"><a href="#cb5-397" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"   Datasets       : %d</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb5-398"><a href="#cb5-398" aria-hidden="true" tabindex="-1"></a>            <span class="fu">length</span>(<span class="fu">xml_find_all</span>(define_xml, <span class="st">".//ItemGroupDef"</span>))))</span>
+<span id="cb5-399"><a href="#cb5-399" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"   Variables      : %d</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb5-400"><a href="#cb5-400" aria-hidden="true" tabindex="-1"></a>            <span class="fu">length</span>(<span class="fu">xml_find_all</span>(define_xml, <span class="st">".//ItemDef"</span>))))</span>
+<span id="cb5-401"><a href="#cb5-401" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"─────────────────────────────────────────</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-402"><a href="#cb5-402" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">📖 How to view:</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-403"><a href="#cb5-403" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   define.html → double-click, opens in any browser ✅</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-404"><a href="#cb5-404" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   define.xml  → for submission / Pinnacle 21 validation</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-405"><a href="#cb5-405" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">⚠️  Note: Simplified for demo purposes.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-406"><a href="#cb5-406" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   CodeList and Value-Level Metadata not included.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-407"><a href="#cb5-407" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   Refer to CDISC Define-XML v2.1 spec for production use.</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
