@@ -8,7 +8,7 @@ format: html
 
 ---
 
-![SDTM AE](../images/defineimg.png){style="border-radius: 10px;" width="800"}
+![Elements of define.xml](../images/defineimg.png){style="border-radius: 10px;" width="800"}
 
 For me, define.xml has always been both familiar and mysterious.
 
