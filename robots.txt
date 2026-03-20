@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://winklelu.github.io/WinSual/sitemap.xml

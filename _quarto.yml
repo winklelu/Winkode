@@ -3,7 +3,27 @@ project:
   output-dir: docs
 
 website:
-  title: "WinSual"
+  title: "WinSual – Winkle Lu"
+  site-url: "https://winklelu.github.io/WinSual"
+  description: "Winkle Lu – Statistical Programming Manager specializing in CDISC standards, clinical data visualization, R, Shiny, and regulatory submissions for Pharma and Biotech."
+  favicon: "favicon.ico"
+
+  open-graph:
+    title: "WinSual – Winkle Lu"
+    description: "Clinical data visualization, CDISC standards, R/Shiny tools, and statistical programming for Pharma & Biotech."
+    image: "winkle.jpg"
+    locale: "en_US"
+
+  twitter-card:
+    title: "WinSual – Winkle Lu"
+    description: "Clinical data visualization, CDISC standards, R/Shiny tools, and statistical programming for Pharma & Biotech."
+    image: "winkle.jpg"
+    card-style: summary
+
+  google-analytics:
+    tracking-id: "G-3SYN2DR111"
+    anonymize-ip: true
+
   navbar:
     left:
       - href: index.qmd
@@ -14,3 +34,8 @@ website:
         text: Blog
       - href: winviz.html
         text: WinViz Lab
+
+format:
+  html:
+    theme: cosmo
+    toc: false
