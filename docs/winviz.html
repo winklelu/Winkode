@@ -198,12 +198,22 @@
     backdrop-filter: blur(10px);
     animation: fadeUp 0.5s ease both;
   }
+  .viz-card:not(.coming-soon):hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,212,170,0.15);
+    border-color: rgba(0,212,170,0.2);
+  }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
   .viz-card.coming-soon { opacity: 0.55; cursor: default; }
   .viz-card.coming-soon:hover { transform: none; box-shadow: none; border-color: var(--border); }
+
+  /* ── Available card ── */
+  .viz-card.available {
+    border-color: rgba(0,212,170,0.18);
+  }
   .card-preview {
     position: relative;
     height: 200px;
@@ -212,6 +222,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  /* Preview image for available cards */
+  .card-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .viz-card:not(.coming-soon):hover .card-preview img {
+    transform: scale(1.03);
   }
   .card-tag {
     position: absolute;
@@ -223,8 +245,14 @@
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    z-index: 2;
   }
-  .tag-coming { background: rgba(100,116,139,0.15); color: var(--text-muted); }
+  .tag-coming  { background: rgba(100,116,139,0.15); color: var(--text-muted); }
+  .tag-available {
+    background: rgba(0,212,170,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(0,212,170,0.25);
+  }
   .coming-soon-overlay {
     position: absolute;
     inset: 0;
@@ -297,8 +325,18 @@
     border: none;
     font-family: 'DM Sans', sans-serif;
   }
-  .btn-code { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-dim); }
+  .btn-code {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .btn-code:not([disabled]):hover {
+    background: rgba(0,212,170,0.08);
+    border-color: rgba(0,212,170,0.3);
+    color: var(--accent);
+  }
   .btn-try { background: var(--accent); color: var(--bg); font-weight: 600; }
+  .btn-try:not([disabled]):hover { background: #00e8bb; }
   .btn-try:disabled, .btn-code:disabled { opacity: 0.3; cursor: not-allowed; }
 
   /* No result message */
@@ -416,32 +454,36 @@
 <!-- Grid -->
 <div class="viz-grid" id="viz-grid">
 
-  <div class="viz-card coming-soon" data-category="figure">
+  <!-- ✅ KM Curve — AVAILABLE -->
+  <div class="viz-card available" data-category="figure">
     <div class="card-preview">
-      <span class="card-tag tag-coming">Coming Soon</span>
-      <div class="coming-soon-overlay">
-        <div class="icon">◎</div>
-        <div class="label">In Development</div>
-        <div class="tool-name">KM Curve Generator</div>
-      </div>
+      <span class="card-tag tag-available">Available</span>
+      <img src="tools/km-curve/preview.png" alt="KM Curve Generator preview">
     </div>
     <div class="card-body">
       <h3 class="card-title">KM Curve Generator</h3>
-      <p class="card-desc">Kaplan-Meier survival curves with confidence intervals, risk table, and p-value. Built on ADTTE structure.</p>
+      <p class="card-desc">
+        Kaplan–Meier survival curves with risk table, median lines,
+        HR annotation table, and RTF output. Built on ADTTE structure.
+        Validated against Phase III CSR results.
+      </p>
       <div class="card-footer">
         <div class="card-tech">
           <span class="tech-pill">ggplot2</span>
-          <span class="tech-pill">survminer</span>
+          <span class="tech-pill">survival</span>
+          <span class="tech-pill">reporter</span>
           <span class="tech-pill">ADTTE</span>
         </div>
         <div class="card-actions">
-          <button class="btn-code" disabled>⌥ Code</button>
-          <button class="btn-try" disabled>Soon</button>
+          <a class="btn-code"
+             href="https://github.com/winklelu/WinSual/tree/main/tools/km-curve"
+             target="_blank">⌥ Code</a>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Forest Plot — Coming Soon -->
   <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
@@ -468,6 +510,7 @@
     </div>
   </div>
 
+  <!-- Patient Timeline — Coming Soon -->
   <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
@@ -494,6 +537,7 @@
     </div>
   </div>
 
+  <!-- Waterfall Plot — Coming Soon -->
   <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
@@ -519,6 +563,7 @@
     </div>
   </div>
 
+  <!-- Spider Plot — Coming Soon -->
   <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
@@ -544,6 +589,7 @@
     </div>
   </div>
 
+  <!-- Swimmer Plot — Coming Soon -->
   <div class="viz-card coming-soon" data-category="figure">
     <div class="card-preview">
       <span class="card-tag tag-coming">Coming Soon</span>
@@ -591,7 +637,6 @@
 
   filterBtns.forEach(function(btn) {
     btn.addEventListener('click', function() {
-      // 更新 active 狀態
       filterBtns.forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
 
@@ -608,7 +653,6 @@
         }
       });
 
-      // 顯示或隱藏 no-result
       if (visibleCount === 0) {
         noResult.style.display = 'block';
       } else {
