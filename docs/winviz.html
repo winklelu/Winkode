@@ -392,6 +392,52 @@
     footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
     .hero-stats { gap: 1.5rem; }
   }
+  /* ── Lightbox ── */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.92);
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    backdrop-filter: blur(8px);
+  }
+  .lightbox-overlay.open {
+    display: flex;
+    animation: lbFadeIn 0.2s ease;
+  }
+  @keyframes lbFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .lightbox-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    animation: lbZoomIn 0.25s ease;
+  }
+  @keyframes lbZoomIn {
+    from { transform: scale(0.92); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    color: rgba(255,255,255,0.6);
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    padding: 0.3rem 0.6rem;
+  }
+  .lightbox-close:hover { color: white; }
+
 </style>
 </head>
 <body>
@@ -457,18 +503,22 @@
   <!-- ✅ KM Curve — AVAILABLE -->
   <div class="viz-card available" data-category="figure">
     <div class="card-preview">
-      <span class="card-tag tag-available">Available</span>
-      <img src="tools/km-curve/preview.png" alt="KM Curve Generator preview">
+      <!-- 點擊圖片展開 lightbox -->
+      <img src="tools/km-curve/preview.png"
+           alt="KM Curve Generator preview"
+           class="preview-img"
+           onclick="openLightbox(this.src)"
+           style="cursor: zoom-in;">
     </div>
     <div class="card-body">
       <h3 class="card-title">KM Curve Generator</h3>
       <p class="card-desc">
         Kaplan–Meier survival curves with risk table, median lines,
         HR annotation table, and RTF output. Built on ADTTE structure.
-        Validated against Phase III CSR results.
       </p>
       <div class="card-footer">
         <div class="card-tech">
+          <span class="tech-pill">R Programming</span>
           <span class="tech-pill">ggplot2</span>
           <span class="tech-pill">survival</span>
           <span class="tech-pill">reporter</span>
@@ -624,6 +674,12 @@
 
 </div>
 
+<!-- Lightbox overlay -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="Preview">
+</div>
+
 <!-- Footer -->
 <footer>
   <div class="footer-brand">Win<span>Viz</span> Lab</div>
@@ -659,6 +715,20 @@
         noResult.style.display = 'none';
       }
     });
+  });
+  // Lightbox
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  // Close with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
   });
 </script>
 
