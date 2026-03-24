@@ -1,9 +1,8 @@
 project:
   type: website
   output-dir: docs
-  resources:
-    - winviz.html
-    - tools/
+  pre-render: _pre-render.R
+  post-render: _post-render.R
 
 website:
   title: "WinSual – Winkle Lu"
