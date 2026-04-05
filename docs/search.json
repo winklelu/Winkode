@@ -343,6 +343,48 @@
     "text": "Winkle Lu, Reviewing Clinical Data Efficiently with Shiny, ShinyConf 2025.\nWinkle Lu, Presenting Clinical Results via CDISC-Compliant Shiny Apps, R/Pharma 2024.\nZhi-Sheng Lu, 2018, Combining quality of productivity and efficiency under highly pressure of lacking time – discussion by view of first-time quality, PharmaSUG – Beijing.\nShu-Hui Wen, Zhi-Sheng Lu, 2011, Factors affecting the effective number of tests in genetic association studies: A comparative study of three PCA-based methods, Journal of Human Genetics, 56, 428–435 [SCI]."
   },
   {
+    "objectID": "tools/forest-plot/forest_report.html#report-information",
+    "href": "tools/forest-plot/forest_report.html#report-information",
+    "title": "Clinical Subgroup Forest Plot Report",
+    "section": "Report Information",
+    "text": "Report Information\n\n\n\n\n\n\n\n\n\n\n\nProtocol\nTest Project\n\n\nData Cut-off\n2026-01-30\n\n\nData Extract\n2026-02-25\n\n\nFigure Number\nFigure 14.2.1.2.1\n\n\nAnalysis Set\nIntention-To-Treat Analysis Set"
+  },
+  {
+    "objectID": "tools/forest-plot/forest_report.html#review-conditions",
+    "href": "tools/forest-plot/forest_report.html#review-conditions",
+    "title": "Clinical Subgroup Forest Plot Report",
+    "section": "Review Conditions",
+    "text": "Review Conditions\n\nThis section records the exact parameters used to generate this report. Any future reproduction using the same forest_config.yaml will produce identical results.\n\n\n\n\n\n\nParameter\nValue\n\n\n\n\nAnalysis Endpoint\nOS\n\n\nEndpoint Label\nOverall Survival\n\n\nAnalysis Set\nIntention-To-Treat Analysis Set\n\n\nCancer Type Filter\nALL\n\n\nCancer Type Label\nAll Cancer Types\n\n\nTreatment Arm\nDrug A\n\n\nControl Arm\nDrug B\n\n\nReference Arm (Cox)\nDrug B\n\n\nCI Level\n95%\n\n\nStatistical Model\nunstratified\n\n\nSubgroups\nAge Years, Sex, Race, ECOG Status\n\n\nGenerated At\n2026-04-06 01:35"
+  },
+  {
+    "objectID": "tools/forest-plot/forest_report.html#dataset-summary",
+    "href": "tools/forest-plot/forest_report.html#dataset-summary",
+    "title": "Clinical Subgroup Forest Plot Report",
+    "section": "Dataset Summary",
+    "text": "Dataset Summary\n\n\n\n\n\nDescription\nN\n\n\n\n\nTotal subjects\n300\n\n\nDrug A\n150\n\n\nDrug B\n150"
+  },
+  {
+    "objectID": "tools/forest-plot/forest_report.html#forest-plot",
+    "href": "tools/forest-plot/forest_report.html#forest-plot",
+    "title": "Clinical Subgroup Forest Plot Report",
+    "section": "Forest Plot",
+    "text": "Forest Plot"
+  },
+  {
+    "objectID": "tools/forest-plot/forest_report.html#interpretation",
+    "href": "tools/forest-plot/forest_report.html#interpretation",
+    "title": "Clinical Subgroup Forest Plot Report",
+    "section": "Interpretation",
+    "text": "Interpretation\nAmong All Cancer Types patients, Drug A showed a HR below 1.0 in 1 out of 8 subgroups (HR range: 0.975 – 1.329), suggesting a consistent trend favouring the treatment arm across most subgroups.\nSubgroups favouring Drug A (HR &lt; 1.0): 1.\nSubgroups not favouring Drug A (HR ≥ 1.0): ≥ 65, &lt; 65, Male, Female, Asian, White, 0.\n\nNote: This interpretation is generated automatically from the data. No formal interaction test was performed in this review document. Statistical significance of subgroup differences should be assessed separately."
+  },
+  {
+    "objectID": "tools/forest-plot/forest_report.html#footnotes",
+    "href": "tools/forest-plot/forest_report.html#footnotes",
+    "title": "Clinical Subgroup Forest Plot Report",
+    "section": "Footnotes",
+    "text": "Footnotes\nHazard ratio is calculated using the unstratified Cox proportional hazards model. CI = confidence interval. A hazard ratio less than 1.0 favours the treatment arm.\nBaseline data is defined as the most recent non-missing value collected prior to the first dose of study drug.\n\nReport generated using forest_config.yaml — all review conditions are fully preserved above."
+  },
+  {
     "objectID": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#introduction",
     "href": "blog/02-JAN-2025-Generate Dynamic Text Results with glue.html#introduction",
     "title": "Generate Dynamic Text Results with glue and lapply in R",

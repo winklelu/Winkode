@@ -1,0 +1,155 @@
+# ============================================================
+# forest_config.yaml
+# Forest Plot — Review Configuration
+# Author  : Winkle Lu | WinSual (winklelu.github.io/WinSual)
+#
+# HOW TO USE
+# ----------
+# This file controls all parameters for forest_template.R and
+# forest_report.qmd. Edit values here — do not modify the R script.
+#
+# QUICK CHECKLIST WHEN USING YOUR OWN DATA
+# -----------------------------------------
+# 1. Update report section: protocol, figure number, data cutoff
+# 2. Update endpoint: change param to OS / PFS / EFS as needed
+# 3. Update cancer_filter: set selected to "ALL" or a specific cancer type
+#    Make sure the value matches your CANCERTYPE column values
+# 4. Update treatment: set trt_arm and ctrl_arm to match your TRTA values
+# 5. Update subgroups: set variable names to match your column names
+#    Add or remove levels to match your data
+# 6. Update text: revise footnotes to match your statistical method
+# ============================================================
+
+
+# ── REPORT INFORMATION ────────────────────────────────────
+# Update these fields for each new report
+report:
+  title:         "Forest Plot of Overall Survival (OS) Primary Estimand Analysis by Subgroup"
+  figure_number: "Figure 14.2.1.2.1"
+  analysis_set:  "Intention-To-Treat Analysis Set"
+  data_cutoff:   "2026-01-30"   # Format: YYYY-MM-DD
+  data_extract:  "2026-02-25"   # Format: YYYY-MM-DD
+  protocol:      "Test Project"
+
+
+# ── ANALYSIS ENDPOINT ─────────────────────────────────────
+# Change param to switch endpoint — the full report updates automatically
+# Options: OS / PFS / EFS / DFS (must match PARAMCD in your dataset if applicable)
+endpoint:
+  param:    "OS"
+  label:    "Overall Survival"
+  aval_var: "AVAL"   # Time-to-event column name in your dataset
+  cnsr_var: "CNSR"   # Censoring column name: 0 = event, 1 = censored
+
+
+# ── CANCER TYPE FILTER ────────────────────────────────────
+# selected: "ALL"   = include all cancer types (no filtering)
+# selected: "HCC"   = filter to HCC patients only
+# selected: "CRC"   = filter to CRC patients only
+# selected: "NSCLC" = filter to NSCLC patients only
+# Note: value must match the actual values in your CANCERTYPE column
+cancer_filter:
+  variable: "CANCERTYPE"   # Column name in your dataset
+  selected: "ALL"
+  label:    "All Cancer Types"
+
+
+# ── TREATMENT ARMS ────────────────────────────────────────
+# trt_arm and ctrl_arm must exactly match the values in your TRTA column
+# ref_arm: the reference arm for Cox model (HR is calculated relative to this arm)
+# A HR < 1 means trt_arm has lower event risk than ref_arm (favours treatment)
+treatment:
+  variable: "TRTA"
+  trt_arm:  "Drug A"
+  ctrl_arm: "Drug B"
+  ref_arm:  "Drug B"
+
+
+# ── SUBGROUPS ─────────────────────────────────────────────
+# Each entry defines one subgroup block in the forest plot.
+# group:    Display label for the group header row
+# variable: Column name in your dataset (must match exactly)
+# levels:   List of subgroup levels to display
+#   value:  Actual value in your data column
+#   label:  Display label on the plot (can differ from value)
+#
+# To add a subgroup: copy one block and update group, variable, and levels
+# To remove a subgroup: delete the entire block
+subgroups:
+  - group:    "Age Years"
+    variable: "AGEGR1"
+    levels:
+      - value: ">=65"
+        label: "≥ 65"
+      - value: "<65"
+        label: "< 65"
+
+  - group:    "Sex"
+    variable: "SEX"
+    levels:
+      - value: "Male"
+        label: "Male"
+      - value: "Female"
+        label: "Female"
+
+  - group:    "Race"
+    variable: "RACE"
+    levels:
+      - value: "Asian"
+        label: "Asian"
+      - value: "White"
+        label: "White"
+
+  - group:    "ECOG Status"
+    variable: "ECOG"
+    levels:
+      - value: "0"
+        label: "0"
+      - value: "1"
+        label: "1"
+
+
+# ── STATISTICAL SETTINGS ──────────────────────────────────
+stats:
+  ci_level: 0.95              # Confidence interval level (0.95 = 95% CI)
+  model:    "unstratified"    # unstratified / stratified
+
+
+# ── PLOT APPEARANCE ───────────────────────────────────────
+# x_limits: [min, max] range for the HR axis
+# x_breaks: tick mark positions on the HR axis
+# null_line: position of the vertical reference line (HR = 1)
+# point_size: size of the HR point estimate square
+# colors: hex codes for treatment and control arm
+plot:
+  x_breaks:   [0.25, 0.5, 1.0, 1.5, 2.0]
+  x_limits:   [0.1,  2.5]
+  null_line:  1.0
+  point_size: 3.5
+  colors:
+    trt:  "#BC3C29"   # Treatment arm color
+    ctrl: "#0072B5"   # Control arm color (reserved for future use)
+
+
+# ── FOOTNOTES ─────────────────────────────────────────────
+# Update these to match the statistical method used in your analysis
+text:
+  footnote_method: >
+    Hazard ratio is calculated using the unstratified Cox proportional
+    hazards model. CI = confidence interval. A hazard ratio less than 1.0
+    favours the treatment arm.
+  footnote_data: >
+    Baseline data is defined as the most recent non-missing value
+    collected prior to the first dose of study drug.
+
+
+# ── OUTPUT SETTINGS ───────────────────────────────────────
+# png_width / png_height: PNG dimensions in inches
+# png_dpi: resolution (300 recommended for publication quality)
+# rtf_width / rtf_height: figure size within RTF page (landscape letter)
+output:
+  png_width:  14
+  png_height: 8
+  png_dpi:    300
+  rtf_width:  13
+  rtf_height: 7
