@@ -99,37 +99,37 @@ n <- 300   # Total number of simulated subjects
 
 adsl <- tibble(
   USUBJID    = sprintf("001-%03d", 1:n),
-
+  
   # Treatment arm: alternating assignment (1:1 randomization)
   # Values must match treatment$trt_arm and treatment$ctrl_arm in YAML
   TRTA       = rep(c(config$treatment$trt_arm,
                      config$treatment$ctrl_arm), n/2),
-
+  
   # Cancer type: randomly assigned with specified probabilities
   # Values must match cancer_filter$variable column in YAML
   CANCERTYPE = sample(c("HCC", "CRC", "NSCLC"),
                       n, replace = TRUE,
                       prob = c(0.4, 0.35, 0.25)),
-
+  
   # Age group: dichotomized at age 65
   AGEGR1     = sample(c(">=65", "<65"),
                       n, replace = TRUE, prob = c(0.45, 0.55)),
-
+  
   # Sex
   SEX        = sample(c("Male", "Female"),
                       n, replace = TRUE, prob = c(0.6, 0.4)),
-
+  
   # Race
   RACE       = sample(c("Asian", "White"),
                       n, replace = TRUE, prob = c(0.65, 0.35)),
-
+  
   # ECOG performance status
   ECOG       = sample(c("0", "1"),
                       n, replace = TRUE, prob = c(0.45, 0.55)),
-
+  
   # Survival time (days): exponential distribution, rate = 0.03 → mean ~33 days
   AVAL       = rexp(n, rate = 0.03),
-
+  
   # Censoring indicator: 0 = event (death), 1 = censored (alive / lost to follow-up)
   CNSR       = sample(c(0L, 1L),
                       n, replace = TRUE, prob = c(0.65, 0.35))
@@ -166,29 +166,29 @@ cat(sprintf("Dataset: total=%d, %s=%d (trt=%d, ctrl=%d)\n",
 # Returns HR, 95% CI, and Events/Subjects counts.
 # Returns NULL if sample size < 5 or model fails to converge.
 calc_hr <- function(data, subvar, subval, ref_arm, ci_level) {
-
+  
   df <- data %>%
     filter(.data[[subvar]] == subval) %>%
     mutate(TRTA = relevel(factor(TRTA), ref = ref_arm))
-
+  
   if (nrow(df) < 5) return(NULL)
-
+  
   fit <- tryCatch(
     coxph(Surv(AVAL, CNSR == 0) ~ TRTA, data = df),
     error = function(e) NULL
   )
   if (is.null(fit)) return(NULL)
-
+  
   # HR = exp(β); CI = exp(β ± z * SE)
   hr      <- exp(coef(fit)[1])
   ci_low  <- exp(confint(fit, level = ci_level)[1, 1])
   ci_high <- exp(confint(fit, level = ci_level)[1, 2])
-
+  
   n_e_trt  <- sum(df$TRTA != ref_arm & df$CNSR == 0)  # Treatment events
   n_s_trt  <- sum(df$TRTA != ref_arm)                  # Treatment subjects
   n_e_ctrl <- sum(df$TRTA == ref_arm & df$CNSR == 0)   # Control events
   n_s_ctrl <- sum(df$TRTA == ref_arm)                   # Control subjects
-
+  
   tibble(
     hr       = round(hr, 3),
     ci_low   = round(ci_low, 3),
@@ -208,7 +208,7 @@ calc_hr <- function(data, subvar, subval, ref_arm, ci_level) {
 forest_rows <- list()
 
 for (sg in config$subgroups) {
-
+  
   # Header row: group label (e.g. "Age Years"), no numeric values
   forest_rows[[length(forest_rows) + 1]] <- tibble(
     label     = sg$group,
@@ -221,7 +221,7 @@ for (sg in config$subgroups) {
     trt_es    = NA_character_,
     ctrl_es   = NA_character_
   )
-
+  
   # Data rows: one row per subgroup level, with HR and CI
   for (lv in sg$levels) {
     res <- calc_hr(adsl_sub,
@@ -229,7 +229,7 @@ for (sg in config$subgroups) {
                    subval   = lv$value,
                    ref_arm  = config$treatment$ref_arm,
                    ci_level = config$stats$ci_level)
-
+    
     forest_rows[[length(forest_rows) + 1]] <- tibble(
       label     = paste0("  ", lv$label),   # Two-space indent to distinguish from header
       is_header = FALSE,
@@ -266,32 +266,32 @@ x_ctrl_es  <- x_lim[2] * 1.50   # Control Events/Subjects column
 x_hr_label <- x_lim[2] * 1.95   # HR (95% CI) column
 
 p <- ggplot(forest_df, aes(y = y)) +
-
+  
   # Vertical reference line at HR = 1 (null effect)
   geom_vline(xintercept = config$plot$null_line,
              linetype = "solid", color = "grey40", linewidth = 0.4) +
-
+  
   # Horizontal segments: 95% CI for each subgroup level
   geom_segment(
     data = filter(forest_df, !is_header & !is.na(hr)),
     aes(x = ci_low, xend = ci_high, yend = y),
     color = col_trt, linewidth = 0.8
   ) +
-
+  
   # Square point: HR point estimate (shape 15 = solid square)
   geom_point(
     data = filter(forest_df, !is_header & !is.na(hr)),
     aes(x = hr),
     shape = 15, size = config$plot$point_size, color = col_trt
   ) +
-
+  
   # Left-side labels: bold for group headers, plain for subgroup levels
   geom_text(
     aes(x = x_lim[1] * 0.3, label = label,
         fontface = ifelse(is_header, "bold", "plain")),
     hjust = 0, size = 3.8, color = "grey10"
   ) +
-
+  
   # Column headers (fixed at top of plot area)
   annotate("text", x = x_trt_es,   y = max(forest_df$y) + 1.2,
            label = sprintf("%s\nEvents/Subjects", config$treatment$trt_arm),
@@ -302,7 +302,7 @@ p <- ggplot(forest_df, aes(y = y)) +
   annotate("text", x = x_hr_label, y = max(forest_df$y) + 1.2,
            label = "non-stratified\nHazard Ratio (95% CI)",
            hjust = 0.5, size = 3.2, fontface = "bold", color = "grey10") +
-
+  
   # Data values for each subgroup level
   geom_text(
     data = filter(forest_df, !is_header),
@@ -319,23 +319,19 @@ p <- ggplot(forest_df, aes(y = y)) +
     aes(x = x_hr_label, label = hr_label),
     hjust = 0.5, size = 3.2, color = "grey10"
   ) +
-
+  
   # x-axis: extend range to accommodate right-side annotation columns
   scale_x_continuous(
     breaks = x_breaks,
     limits = c(x_lim[1] * 0.3, x_hr_label * 1.2)
   ) +
-
+  
   # y-axis: padding to prevent clipping of top header and bottom row
   scale_y_continuous(expand = expansion(add = c(0.5, 2))) +
-
+  
   labs(
-    title    = sprintf("%s  %s",
-                       config$report$figure_number,
-                       config$report$title),
-    subtitle = sprintf("Cancer: %s | %s",
-                       config$cancer_filter$label,
-                       config$report$analysis_set),
+    title    = config$report$title,
+    subtitle = sprintf("Dummy ADSL data \u2022 WinViz Lab / WinSual"),
     x        = sprintf("Hazard Ratio (%d%% CI)",
                        as.integer(config$stats$ci_level * 100)),
     caption  = paste0(
@@ -345,7 +341,7 @@ p <- ggplot(forest_df, aes(y = y)) +
       config$text$footnote_data
     )
   ) +
-
+  
   # Theme: hide all y-axis elements; retain x-axis and vertical gridlines
   theme_classic(base_size = 12) +
   theme(
@@ -401,7 +397,7 @@ rpt <- create_report(rtf_path,
   ) %>%
   page_footer(
     left  = sprintf("Data Cut-off: %s", config$report$data_cutoff),
-    right = sprintf("Figure: %s",       config$report$figure_number)
+    right = "WinViz Lab / WinSual"
   )
 
 write_report(rpt)

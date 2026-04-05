@@ -25,7 +25,6 @@
 # Update these fields for each new report
 report:
   title:         "Forest Plot of Overall Survival (OS) Primary Estimand Analysis by Subgroup"
-  figure_number: "Figure 14.2.1.2.1"
   analysis_set:  "Intention-To-Treat Analysis Set"
   data_cutoff:   "2026-01-30"   # Format: YYYY-MM-DD
   data_extract:  "2026-02-25"   # Format: YYYY-MM-DD

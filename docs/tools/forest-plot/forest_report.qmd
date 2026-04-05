@@ -35,11 +35,10 @@ forest_df <- dat$forest_df
 ```{r report-header}
 tibble(
   Field = c("Protocol", "Data Cut-off", "Data Extract",
-            "Figure Number", "Analysis Set"),
+            "Analysis Set"),
   Value = c(config$report$protocol,
             config$report$data_cutoff,
             config$report$data_extract,
-            config$report$figure_number,
             config$report$analysis_set)
 ) %>%
   kable(col.names = c("", ""), align = c("l","l")) %>%
