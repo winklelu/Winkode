@@ -354,7 +354,7 @@
     "href": "tools/forest-plot/forest_report.html#review-conditions",
     "title": "Clinical Subgroup Forest Plot Report",
     "section": "Review Conditions",
-    "text": "Review Conditions\n\nThis section records the exact parameters used to generate this report. Any future reproduction using the same forest_config.yaml will produce identical results.\n\n\n\n\n\n\nParameter\nValue\n\n\n\n\nAnalysis Endpoint\nOS\n\n\nEndpoint Label\nOverall Survival\n\n\nAnalysis Set\nIntention-To-Treat Analysis Set\n\n\nCancer Type Filter\nALL\n\n\nCancer Type Label\nAll Cancer Types\n\n\nTreatment Arm\nDrug A\n\n\nControl Arm\nDrug B\n\n\nReference Arm (Cox)\nDrug B\n\n\nCI Level\n95%\n\n\nStatistical Model\nunstratified\n\n\nSubgroups\nAge Years, Sex, Race, ECOG Status\n\n\nGenerated At\n2026-04-06 02:03"
+    "text": "Review Conditions\n\nThis section records the exact parameters used to generate this report. Any future reproduction using the same forest_config.yaml will produce identical results.\n\n\n\n\n\n\nParameter\nValue\n\n\n\n\nAnalysis Endpoint\nOS\n\n\nEndpoint Label\nOverall Survival\n\n\nAnalysis Set\nIntention-To-Treat Analysis Set\n\n\nCancer Type Filter\nALL\n\n\nCancer Type Label\nAll Cancer Types\n\n\nTreatment Arm\nDrug A\n\n\nControl Arm\nDrug B\n\n\nReference Arm (Cox)\nDrug B\n\n\nCI Level\n95%\n\n\nStatistical Model\nunstratified\n\n\nSubgroups\nAge Years, Sex, Race, ECOG Status\n\n\nGenerated At\n2026-04-07 01:25"
   },
   {
     "objectID": "tools/forest-plot/forest_report.html#dataset-summary",
