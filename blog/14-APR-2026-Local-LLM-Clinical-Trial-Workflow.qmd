@@ -259,6 +259,5 @@ The multi-engine design of `ellmer` is especially practical for pharma workflows
 Human-in-the-loop is not a compromise — it is a necessary design principle for this use case. Confirmed mappings accumulate into a Custom Dictionary, making the system increasingly accurate over time.
 
 `ellmer`'s unified interface gives this tool excellent extensibility — one line of configuration to switch between any supported LLM engine.
-
 ---
 

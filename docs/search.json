@@ -403,7 +403,7 @@
     "href": "tools/forest-plot/forest_report.html#review-conditions",
     "title": "Clinical Subgroup Forest Plot Report",
     "section": "Review Conditions",
-    "text": "Review Conditions\n\nThis section records the exact parameters used to generate this report. Any future reproduction using the same forest_config.yaml will produce identical results.\n\n\n\n\n\n\nParameter\nValue\n\n\n\n\nAnalysis Endpoint\nOS\n\n\nEndpoint Label\nOverall Survival\n\n\nAnalysis Set\nIntention-To-Treat Analysis Set\n\n\nCancer Type Filter\nALL\n\n\nCancer Type Label\nAll Cancer Types\n\n\nTreatment Arm\nDrug A\n\n\nControl Arm\nDrug B\n\n\nReference Arm (Cox)\nDrug B\n\n\nCI Level\n95%\n\n\nStatistical Model\nunstratified\n\n\nSubgroups\nAge Years, Sex, Race, ECOG Status\n\n\nGenerated At\n2026-04-14 17:12"
+    "text": "Review Conditions\n\nThis section records the exact parameters used to generate this report. Any future reproduction using the same forest_config.yaml will produce identical results.\n\n\n\n\n\n\nParameter\nValue\n\n\n\n\nAnalysis Endpoint\nOS\n\n\nEndpoint Label\nOverall Survival\n\n\nAnalysis Set\nIntention-To-Treat Analysis Set\n\n\nCancer Type Filter\nALL\n\n\nCancer Type Label\nAll Cancer Types\n\n\nTreatment Arm\nDrug A\n\n\nControl Arm\nDrug B\n\n\nReference Arm (Cox)\nDrug B\n\n\nCI Level\n95%\n\n\nStatistical Model\nunstratified\n\n\nSubgroups\nAge Years, Sex, Race, ECOG Status\n\n\nGenerated At\n2026-04-14 21:07"
   },
   {
     "objectID": "tools/forest-plot/forest_report.html#dataset-summary",
@@ -697,7 +697,14 @@
     "href": "blog/14-APR-2026-Local-LLM-Clinical-Trial-Workflow.html#takeaways",
     "title": "Running Local LLM in Clinical Trial Workflows: From Setup to Real-World Experience",
     "section": "📌 Takeaways",
-    "text": "📌 Takeaways\nThe LLM’s output is a suggestion, not a final answer.\nHuman-in-the-loop is not a compromise — it is a necessary design principle for this use case. Confirmed mappings accumulate into a Custom Dictionary, making the system increasingly accurate over time.\nellmer’s unified interface gives this tool excellent extensibility — one line of configuration to switch between any supported LLM engine.\n\nFull source code and further details are continuously updated at WinSual\nwinklelu.github.io/WinSual"
+    "text": "📌 Takeaways\nThe LLM’s output is a suggestion, not a final answer.\nHuman-in-the-loop is not a compromise — it is a necessary design principle for this use case. Confirmed mappings accumulate into a Custom Dictionary, making the system increasingly accurate over time."
+  },
+  {
+    "objectID": "blog/14-APR-2026-Local-LLM-Clinical-Trial-Workflow.html#ellmers-unified-interface-gives-this-tool-excellent-extensibility-one-line-of-configuration-to-switch-between-any-supported-llm-engine.",
+    "href": "blog/14-APR-2026-Local-LLM-Clinical-Trial-Workflow.html#ellmers-unified-interface-gives-this-tool-excellent-extensibility-one-line-of-configuration-to-switch-between-any-supported-llm-engine.",
+    "title": "Running Local LLM in Clinical Trial Workflows: From Setup to Real-World Experience",
+    "section": "ellmer’s unified interface gives this tool excellent extensibility — one line of configuration to switch between any supported LLM engine.",
+    "text": "ellmer’s unified interface gives this tool excellent extensibility — one line of configuration to switch between any supported LLM engine."
   },
   {
     "objectID": "blog/06-JUL-2025-Statistical Programmer.html#什麼是統計程式設計師-what-is-a-statistical-programmer-sp",
