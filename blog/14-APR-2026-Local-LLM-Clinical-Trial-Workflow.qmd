@@ -1,0 +1,266 @@
+---
+title: "Running Local LLM in Clinical Trial Workflows: From Setup to Real-World Experience"
+date: 14-APR-2026
+categories: [R, LLM, CDISC, Clinical Trial, Open Source]
+description: "How I used Ollama, Gemma 3, ellmer, and text2vec to automate CRF-to-SDTM mapping — and what I learned after 13 hours of runtime."
+format: html
+---
+
+## 🧠 Background
+
+Last weekend, I attempted to automate SDTM variable mapping using CRF raw data, SDTM IG labels, variable names, and CDISC Notes. Since clinical trial data contains sensitive patient information, keeping data in-house is a fundamental requirement. That's why I turned to a local LLM solution — and ended up with the combination of **Ollama + Gemma 3 + ellmer**.
+
+This post shares the full experience: why I chose these tools, how to set them up, and the limitations I discovered after running the workflow for **13 hours** across approximately 2,000 variables.
+
+---
+
+## 🔒 Why Local LLM?
+
+Cloud-based LLMs like ChatGPT and Claude are convenient for general use, but in the pharmaceutical industry, there are fundamental concerns:
+
+| Local LLM Advantages | Details |
+|---|---|
+| Data never leaves the network | No external API calls |
+| No API key required | Completely free to run |
+| Works fully offline | No internet dependency |
+| Pharma data security compliant | Meets GCP and privacy requirements |
+
+---
+
+## 🛠️ Tool Selection
+
+### Ollama: The Easiest Local LLM Runtime
+
+Ollama is one of the most accessible local LLM runtimes available. Its core advantage is a simple setup with no complex dependency management — very R-user-friendly.
+
+### ellmer: Unified LLM Interface for R
+
+`ellmer` is a unified LLM interface package for R. Its biggest advantage: **change just one parameter to switch between Ollama, Claude, Gemini, or OpenAI — no code changes needed.**
+
+```r
+# Change just this one line to switch engines
+LLM_ENGINE <- "ollama"   # Local, free
+# LLM_ENGINE <- "claude" # Switch to Anthropic Claude
+# LLM_ENGINE <- "gemini" # Switch to Google Gemini
+# LLM_ENGINE <- "openai" # Switch to OpenAI GPT
+```
+
+This design makes it easy to develop and test locally with Ollama, then switch to a cloud model when needed — without touching any other part of the codebase.
+
+### Why Gemma 3?
+
+Based on my machine specs, I settled on this combination:
+
+```
+Gemma 3 12B (Main Model):
+  Strong reasoning, suitable for batch screening
+  Reasonable understanding of CDISC terminology
+  Acceptable speed on Mac
+
+Gemma 3 4B (Lightweight Model):
+  Small size, fast inference
+  Ideal for refinement tasks
+  Stable output quality with reasoning
+```
+
+Why not a larger model? Models with 70B+ parameters require high-end GPUs and run too slowly on a standard work laptop. The 12B + 4B combination strikes the right balance between speed and quality.
+
+---
+
+## ⚙️ Installation
+
+### 1. Install Ollama
+
+Download the installer for your OS from [ollama.com](https://ollama.com). Supports macOS, Windows, and Linux.
+
+### 2. Download Models and Start Service
+
+```bash
+# Start Ollama service
+ollama serve
+
+# Download main model (~8GB)
+ollama pull gemma3:12b
+
+# Download lightweight model (~3GB)
+ollama pull gemma3:4b
+```
+
+> **Note:** Ollama service must be started manually each time. Store the binary in a permanent location to avoid it being cleared by the system.
+
+### 3. Install R Packages
+
+```r
+install.packages("ellmer")
+install.packages("text2vec")
+```
+
+### 4. Create LLM Chat Object
+
+```r
+library(ellmer)
+
+get_llm_chat <- function(engine, model) {
+  switch(engine,
+    "ollama" = chat_ollama(
+      model    = model,
+      base_url = Sys.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    ),
+    "claude" = chat_anthropic(),
+    "gemini" = chat_google_gemini(),
+    "openai" = chat_openai(),
+    stop("Unknown LLM engine: ", engine)
+  )
+}
+
+# Create main 12B model
+chat_12b <- get_llm_chat("ollama", "gemma3:12b")
+
+# Create lightweight 4B model
+chat_4b  <- get_llm_chat("ollama", "gemma3:4b")
+```
+
+All engines share the same `chat$chat(prompt)` interface — switching engines requires zero code changes.
+
+```r
+result <- chat_12b$chat(prompt)
+```
+
+---
+
+## 🏗️ Three-Layer Architecture
+
+### Why Three Layers?
+
+Sending hundreds of SDTM variable candidates directly to an LLM creates two problems:
+
+```
+Problem 1: Hallucination
+  Too many candidates → LLM tends to hallucinate
+  or produce mappings that violate CDISC IG rules
+
+Problem 2: Speed and Stability
+  Very long prompts with hundreds of candidates
+  Slow inference, prone to disconnection
+```
+
+The three-layer architecture is designed to solve both problems.
+
+---
+
+### Layer 1: text2vec Semantic Pre-Filtering
+
+Before sending to the LLM, `text2vec` computes cosine similarity between CRF labels and SDTMIG variable definitions to narrow down candidates.
+
+```r
+library(text2vec)
+
+compute_similarity <- function(query_texts, ref_texts) {
+
+  all_texts  <- c(query_texts, ref_texts)
+  tokens     <- space_tokenizer(str_to_lower(all_texts))
+  it         <- itoken(tokens, progressbar = FALSE)
+  vocab      <- create_vocabulary(it) %>%
+                prune_vocabulary(term_count_min = 1)
+  vectorizer <- vocab_vectorizer(vocab)
+  dtm        <- create_dtm(itoken(tokens, progressbar = FALSE), vectorizer)
+
+  n_query   <- length(query_texts)
+  dtm_query <- dtm[1:n_query, , drop = FALSE]
+  dtm_ref   <- dtm[(n_query + 1):nrow(dtm), , drop = FALSE]
+
+  sim2(dtm_query, dtm_ref, method = "cosine", norm = "l2")
+}
+```
+
+---
+
+### Layer 2: Gemma 3 12B Batch Screening (Top 5)
+
+Low-confidence variables are sent to the 12B model in batches of 5, each producing a Top 5 candidate list with confidence scores. No reasoning required at this stage — speed is the priority.
+
+Sample output:
+
+```
+AESTDTC:0.95,AEENDTC:0.85,AEDTC:0.75,AEDY:0.65,AESEQ:0.50
+SVSTDTC:0.90,SVENDTC:0.80,VISITNUM:0.70,VISIT:0.60,SVPRESP:0.40
+```
+
+---
+
+### Layer 3: Gemma 3 4B Refinement (Best Match + Reasoning)
+
+The Top 5 candidates, along with CDISC IG Notes, are sent to the 4B model to produce the best match with confidence and reasoning.
+
+Key design principles:
+
+```
+Include CDISC IG Notes → Grounds LLM in regulatory standards
+Require JSON output    → Easy to parse in R
+Validation             → Returned variable must exist in candidate list
+```
+
+Sample output:
+
+```json
+[
+  {
+    "variable": "AESTDTC",
+    "confidence": 0.95,
+    "reason": "The CRF variable [AESTDAT] represents AE Start Date.
+               AESTDTC represents Start Date/Time of Adverse Event,
+               which directly captures the start date of the adverse event."
+  }
+]
+```
+
+---
+
+## ⚠️ Limitations
+
+This is the most important part to share honestly.
+
+**① Confidence Scores Are Unreliable**
+
+LLMs tend to output consistently high scores (0.95) regardless of mapping accuracy — a black-box characteristic. The confidence threshold filter was removed; all variables are sent to the refinement layer instead.
+
+**② Non-Deterministic Outputs**
+
+LLM outputs are non-deterministic. The same CRF variable may produce different SDTM mappings at different times. This is precisely why a Human-in-the-loop design is essential — LLM output is a suggestion, not a final answer.
+
+**③ Limited CDISC Domain Knowledge**
+
+Gemma 3 handles general English well, but CDISC IG nuances still require human review — especially SUPP variable assignments, where the LLM frequently makes errors.
+
+**④ Speed**
+
+On a MacBook Pro, 5 variables per batch takes about 30–60 seconds. Running all ~2,200 variables took nearly **13 hours**. On subsequent runs, Custom Dictionary hits skip the LLM entirely — dramatically faster.
+
+**⑤ Unstable JSON Output**
+
+The LLM occasionally produces invalid JSON, requiring cleanup and fallback logic. This is a common challenge for anyone using LLMs to generate structured data.
+
+---
+
+## 🏭 Application in Pharma
+
+The multi-engine design of `ellmer` is especially practical for pharma workflows:
+
+- **Daily development**: Use Ollama — data stays in-house
+- **Non-sensitive testing**: Switch to Claude or Gemini for quality comparison
+- **Production runs**: Return to Ollama to ensure data security
+
+---
+
+## 📌 Takeaways
+
+**The LLM's output is a suggestion, not a final answer.**
+
+Human-in-the-loop is not a compromise — it is a necessary design principle for this use case. Confirmed mappings accumulate into a Custom Dictionary, making the system increasingly accurate over time.
+
+`ellmer`'s unified interface gives this tool excellent extensibility — one line of configuration to switch between any supported LLM engine.
+
+---
+
+*Full source code and further details are continuously updated at WinSual*\
+*[winklelu.github.io/WinSual](https://winklelu.github.io/WinSual/)*
