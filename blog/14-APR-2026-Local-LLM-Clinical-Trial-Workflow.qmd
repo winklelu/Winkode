@@ -262,5 +262,3 @@ Human-in-the-loop is not a compromise — it is a necessary design principle for
 
 ---
 
-*Full source code and further details are continuously updated at WinSual*\
-*[winklelu.github.io/WinSual](https://winklelu.github.io/WinSual/)*
