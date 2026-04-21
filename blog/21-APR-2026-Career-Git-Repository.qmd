@@ -1,0 +1,34 @@
+---
+title: "Career as a Git Repository: Tracking Every Choice You Make"
+date: 2026-04-21
+categories: [Career, Personal Growth, Open Source]
+description: "A career is not like CDISC Compliance. It can be like git — honestly tracking every thought, choice, and change you make."
+format: html
+image: ../images/CareerReflection.jpg
+---
+
+![](../images/CareerReflection.jpg){style="border-radius: 10px;" width="60%"}
+
+Over the past six months, many of my friends went through career changes. Most of them moved in a good direction. I feel lucky to witness this, and it made me think again about my own career and life.
+
+Through conversations with them, I started asking myself:
+
+- What is the core of my career decisions?
+- What do I enjoy?
+- Where am I right now?
+
+A career is not like CDISC Compliance — there are no standard rules to follow. It is not like a program log either — it will not tell you directly if you are right or wrong. And of course, it does not give you as much freedom as an open source tool.
+
+**But it can be like git — honestly tracking every thought, choice, and change you make.**
+
+After nearly 15 years in my career, looking back at my own "commit history," I found that the choices that helped me grow the most were never the safest ones. They were the ones that gave me the space I wanted at that moment — and then I looked for whoever was willing to give me that chance. Haha.
+
+Growth needs space. And space does not come automatically. We have to actively try and challenge ourselves. Yes, there is always a chance of failure.
+
+Today I had a conversation with a manager. He shared a dream he wants to pursue. I told him directly: you should go for it. Even if you only finish part of it, you are already **"someone who is living their dream."**
+
+As for me, I enjoy learning, exploring, sharing, and connecting with others. This is not hard, because in the fields I love — open source and data visualization — people are passionate about exactly these things.
+
+Going back to the questions I asked at the beginning, the answer is not complicated: choose the direction that lets you do what you want right now, even if it is not perfect.
+
+Until the next choice comes — and your career commits will be there, honest and recorded.
