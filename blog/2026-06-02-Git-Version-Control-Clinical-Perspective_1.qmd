@@ -78,8 +78,9 @@ After today's conversation, here is a summary of the core Git concepts I want to
 
 **git reset --hard** is dangerous. It removes commits from the history entirely. In the short term, you may be able to recover using `git reflog`, but this is not guaranteed. Use it only on personal branches, with caution.
 
-**Audit trail** — Every operation should leave a record. Any correction should be documented. This is a good habit that must continue even in the age of AI.
-
 ---
 
-If you also work in pharma or CRO and are starting to explore engineering tools, feel free to share your experience.
+**Every operation should leave a record, Audit trail. Any correction should be documented. This is a good habit that must continue even in the age of AI. If you also work in pharma or CRO and are starting to explore engineering tools, feel free to share your experience.
+
+Email: winsual0512@gmail.com
+** 
