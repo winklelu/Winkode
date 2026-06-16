@@ -1,0 +1,18 @@
+---
+title: "Patient Timeline Visualization: Presenting Individual and Population-Level Clinical Trial Journeys with R and D3.js"
+date: 2026-07-06
+categories: [R, D3.js, Clinical Trials, Data Visualization, Patient Timeline]
+description: "useR! 2026 Poster — An interactive patient timeline system integrating visit records, adverse events, and survival status using R and D3.js"
+format: html
+image: ../images/useR-poster-2026.jpg
+---
+
+Clinical trial data analysis typically focuses on specific analysis datasets, but the complete journey of individual patients — from screening, enrollment, and first dose, through visit records and adverse events, to last dose and survival status — represents critical time-based data points that reviewers prioritize. This fragmentation of information forces reviewers to switch between multiple reports during in-depth case reviews.
+
+This poster presents an interactive patient timeline visualization system built with R and D3.js. The single-patient view integrates visit records, medication history, adverse events, and survival status into a clear timeline, providing a complete picture of each patient's key trial journey.
+
+The system also supports side-by-side timeline comparisons across patient subgroups, with event type filtering and time range zoom functionality to help identify population-level event patterns and safety signals.
+
+The system takes raw CRF data as input and embeds D3.js interactive capabilities directly into the R workflow, without requiring a separate front-end development environment. This poster will demonstrate visualizations generated from simulated clinical trial data and discuss the practical potential of this approach in clinical data review and safety monitoring settings.
+
+---

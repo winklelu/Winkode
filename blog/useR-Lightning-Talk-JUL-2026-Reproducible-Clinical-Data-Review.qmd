@@ -1,0 +1,16 @@
+---
+title: "Reproducible Clinical Data Review: A Modular R and Quarto Workflow for Transparent Reporting"
+date: 2026-07-07
+categories: [R, YAML, Quarto, Clinical Trials, CDISC, Reproducibility]
+description: "useR! 2026 Lightning Talk — A two-layer modular framework for structured, traceable clinical data review"
+format: html
+image: ../images/useR-lightning-talk-2026.jpg
+---
+
+During clinical trials, EDC data must be reviewed regularly — from routine medical review reports to formal audit and inspection scenarios. In these contexts, reviewers do not explore data freely. They follow a predictable, structured process and need a document that clearly records what was seen, under what conditions, and what conclusions were drawn. This core distinction shapes the design philosophy presented in this talk.
+
+This lightning talk introduces a two-layer modular framework built with R and Quarto for clinical data review. The first layer provides pre-built review modules covering demographics, adverse events, medication records, and study endpoints — each encapsulating domain knowledge and visualization logic. The second layer allows reviewers to combine modules and map Case Report Form (CRF) fields through a YAML file, without modifying the main codebase.
+
+A key design decision is to use raw CRF data as input rather than CDISC-compliant datasets. This lowers the cognitive barrier for non-programmer reviewers while maintaining flexibility across different trials. Every Quarto report produced by this workflow is a decision snapshot: YAML parameters and review conditions are fully preserved, creating a natural record without additional effort. The workflow will be demonstrated using simulated CRF data, with discussion of practical design trade-offs in programmer-reviewer collaboration settings.
+
+---
