@@ -82,6 +82,6 @@ After today's conversation, here is a summary of the core Git concepts I want to
 
 *Every operation should leave a record, Audit trail.* Any correction should be documented. This is a good habit that must continue even in the age of AI. If you also work in pharma or CRO and are starting to explore engineering tools, feel free to share your experience.
 
-Email: winsual0512@gmail.com
+Email: winsualviz@gmail.com
 
 

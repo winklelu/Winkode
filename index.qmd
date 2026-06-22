@@ -11,7 +11,7 @@ about:
     - icon: github
       text: Github
       href: https://github.com/winklelu
-    - text: winsual0512@gmail.com 
+    - text: winsualviz@gmail.com
     
 ---
 
