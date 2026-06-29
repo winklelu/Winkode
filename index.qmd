@@ -15,26 +15,28 @@ about:
     
 ---
 
-### Clinical & Regulated Data Visualization | Shiny App Developer for Pharma, Biotech & Beyond | SAS, R, Python, Shiny, Quarto | Automation Tool
+### I help clinical teams work with greater efficiency — through automated workflows and interactive visualizations built with R, Shiny, Quarto, and D3.js.
 
 
 :::{#hero-heading}
 
-With over a decade of experience in clinical trial programming, I specialize in CDISC standards and regulatory deliverable — but I’m not standing still. I’ve embraced open-source tools like R, Shiny, and Python to drive automation and improve data visualization.
+With over a decade of experience in clinical trial programming, I specialize in CDISC standards and regulatory deliverables — but I’m not standing still. I’ve embraced open-source tools like R, Shiny, and D3.js to drive automation and improve data visualization.
+
+Feel free to connect with me on LinkedIn or reach out via email — I’m always happy to exchange ideas.
 
 📘 [Blog/Sharing](blog/)  |  👉 [Presentations](Speaker.qmd)
 
 
-## Experience
+## Current Focus
 
-Clinical Research Organization | Pharmaceutical Company | 
-Statistical Programming
-
-## Education
-
-Master of Public Health | Tzu Chi University
+- Clinical Data Visualization
+- Validation Strategy
+- Modular Workflow Design
 
 ## Performance Summary
+
+Clinical Research Organization | Pharmaceutical Company | Statistical Programming
+
 - 12+ years of clinical trial programming experience with deep expertise in SDTM, ADaM, and regulatory submission.
 
 - Led an 18-member team to complete COVID-19 Phase III programming within 3 months; results published in NEJM.
@@ -49,21 +51,7 @@ Master of Public Health | Tzu Chi University
 
 ## Therapeutic Area
 
-- Allergy / Immunology: Allergic Rhinitis
-
-- Cardiovascular: Cardiovascular Disease
-
-- COVID-19
-
-- Dermatology: Actinic keratosis, Angiosarcoma of Skin (disorder), Preventing Hypertrophic Scar, Psoriasis
-
-- Endocrinology: Diabetes Mellitus Type 2
-
-- Nephrology: Renal Impairment
-
-- Oncology: Multiple myeloma, Non-Small Cell Lung Cancer, Small Cell Carcinoma of Lung, Hepatocellular Carcinoma, Gastrointestinal Cancer, Malignant Melanoma, Malignant Neoplastic Disease
-
-- Transplantation: Rheumatoid Arthritis
+Oncology, Cardiovascular, Immunology, Dermatology, Endocrinology, Nephrology, and more — across 12+ years of clinical trial programming.
 
 ## Publications
 
