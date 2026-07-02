@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-07-06">
+<meta name="dcterms.date" content="2026-07-08">
 <meta name="description" content="useR! 2026 Poster — An interactive patient timeline system integrating visit records, adverse events, and survival status using R and D3.js">
 
 <title>Patient Timeline Visualization: Presenting Individual and Population-Level Clinical Trial Journeys with R and D3.js – WinSual – Winkle Lu</title>
@@ -21,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -166,7 +201,7 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 6, 2026</p>
+      <p class="date">July 8, 2026</p>
     </div>
   </div>
   
@@ -178,13 +213,260 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
 </header>
 
 
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Abstract
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Clinical trial data analysis typically focuses on specific analysis datasets, but the complete journey of individual patients — from screening, enrollment, and first dose, through visit records and adverse events, to last dose and survival status — represents critical time-based data points that reviewers prioritize. This fragmentation of information forces reviewers to switch between multiple reports during in-depth case reviews.</p>
 <p>This poster presents an interactive patient timeline visualization system built with R and D3.js. The single-patient view integrates visit records, medication history, adverse events, and survival status into a clear timeline, providing a complete picture of each patient’s key trial journey.</p>
 <p>The system also supports side-by-side timeline comparisons across patient subgroups, with event type filtering and time range zoom functionality to help identify population-level event patterns and safety signals.</p>
 <p>The system takes raw CRF data as input and embeds D3.js interactive capabilities directly into the R workflow, without requiring a separate front-end development environment. This poster will demonstrate visualizations generated from simulated clinical trial data and discuss the practical potential of this approach in clinical data review and safety monitoring settings.</p>
+</div>
+</div>
 <hr>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">1. Background</h2>
+<p>In clinical trial data exploration, the right visualization makes it easier to find and understand important information. However, a patient’s complete trial journey — from enrollment and first dose, through visits and adverse events, to survival status — is often spread across multiple reports. Reviewers need to switch back and forth between different outputs just to piece together what happened to one patient.</p>
+<p>D3.js is a JavaScript library that works directly at the level of SVG elements. It does not offer ready-made chart types. Instead, it gives you the tools to bind data to visual elements and control every detail of the output. The customization is almost unlimited.</p>
+<blockquote class="blockquote">
+<p><strong>A SAS analogy:</strong> D3.js is to ggplot2 what <code>PROC TEMPLATE / GTL</code> is to <code>PROC SGPLOT</code> — complete control, complete responsibility.</p>
+</blockquote>
+<hr>
+</section>
+<section id="design-philosophy" class="level2">
+<h2 class="anchored" data-anchor-id="design-philosophy">2. Design Philosophy</h2>
+<p>This poster uses a simulated oncology clinical trial as a demonstration.</p>
+<p>The design focuses on four strengths:</p>
+<p><strong>Highly customizable visual language</strong></p>
+<p>D3.js uses different DOM elements — rectangles, paths, lines, and text — to build visual structures that standard statistical plotting tools cannot easily produce. In this poster’s timeline chart, five event types (AE, medication, Lab, disease progression, survival) are drawn as separate layers. The position, color, and shape of each layer is fully independent.</p>
+<p><strong>Seamless integration between R and JavaScript</strong></p>
+<p>The <code>r2d3</code> package lets R pass data directly to a D3.js script as JSON. No separate front-end environment is needed. The entire workflow runs inside a Quarto document and produces a single self-contained HTML file.</p>
+<p><strong>Responsive chart interactions</strong></p>
+<p>D3.js updates SVG element attributes directly. When you zoom in, the chart does not redraw from scratch — it just updates the coordinates of each element. The browser then refreshes only what changed. This makes interactions feel fast and smooth, which is useful for live demonstrations.</p>
+<p><strong>A data structure that works well with multiple layers</strong></p>
+<p>In this demo, different types of events — AE, medication (EX), Lab (LB), disease progression (PD), and overall survival (OS) — are stored in one flat table. In the chart, each event type is its own independent layer. Showing or hiding a layer requires only a small change.</p>
+<hr>
+</section>
+<section id="core-program-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="core-program-architecture">3. Core Program Architecture</h2>
+<p>The system is built from four core files, each with a clear responsibility:</p>
+<p><img src="../images/useR-poster-workflow.png" class="img-fluid" style="border-radius: 10px;;width:200.0%"></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Layer</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>R/prep_timeline_data.R</code></td>
+<td>Data</td>
+<td>Read 6 SAS7BDAT files → select patients → combine 6 event types → output <code>timeline_df</code></td>
+</tr>
+<tr class="even">
+<td><code>d3/timeline.js</code></td>
+<td>Visual (interactive)</td>
+<td>Receive JSON → draw interactive timeline (zoom, highlight, filter, tooltip)</td>
+</tr>
+<tr class="odd">
+<td><code>d3/poster.js</code></td>
+<td>Visual (static)</td>
+<td>Receive the same JSON → draw a static 4-panel poster figure (★1–★4)</td>
+</tr>
+<tr class="even">
+<td><code>patient-timeline.qmd</code></td>
+<td>Presentation</td>
+<td>Run R data prep → call two r2d3 → output self-contained HTML</td>
+</tr>
+</tbody>
+</table>
+<section id="data-layer-prep_timeline_data.r" class="level3">
+<h3 class="anchored" data-anchor-id="data-layer-prep_timeline_data.r">Data Layer: <code>prep_timeline_data.R</code></h3>
+<p>The data layer reads 6 SAS7BDAT files (dm, ae, ex, os, tumor, lb). It selects patients and combines all event records into one flat, long-format data frame called <code>timeline_df</code>. Each row represents one event.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine 6 event types into one table</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>timeline_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(ae_events, ex_events, visit_events,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                         os_events, pd_events, lb_events) <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trtsdtc =</span> <span class="fu">as.character</span>(trtsdtc))  <span class="co"># Convert Date to string for JSON</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>All events share a common time axis: <strong>Study Day</strong> (Day 1 = first dose date). The 10 columns cover event type, start and end day, AE grade, drug action, and survival status.</p>
+</section>
+<section id="visual-layer-timeline.js-interactive-and-poster.js-static" class="level3">
+<h3 class="anchored" data-anchor-id="visual-layer-timeline.js-interactive-and-poster.js-static">Visual Layer: <code>timeline.js</code> (interactive) and <code>poster.js</code> (static)</h3>
+<p>Both D3.js scripts receive the same <code>timeline_df</code>, but serve different purposes:</p>
+<ul>
+<li><strong><code>timeline.js</code></strong>: Used for live demonstration. Includes full interactive features — zoom, cross-layer highlight, data class filter, and tooltip.</li>
+<li><strong><code>poster.js</code></strong>: Used for the printed poster. Draws 4 static panels using a <code>drawPanel()</code> function, each showing the result of one interactive feature as a snapshot.</li>
+</ul>
+</section>
+<section id="presentation-layer-patient-timeline.qmd" class="level3">
+<h3 class="anchored" data-anchor-id="presentation-layer-patient-timeline.qmd">Presentation Layer: <code>patient-timeline.qmd</code></h3>
+<p>The presentation layer has only 10 lines of effective code. Its job is simple:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"prep_timeline_data.R"</span>))   <span class="co"># Run data prep; timeline_df enters the environment</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">r2d3</span>(<span class="at">data =</span> timeline_df, <span class="at">script =</span> <span class="fu">here</span>(<span class="st">"d3"</span>, <span class="st">"timeline.js"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">width =</span> <span class="dv">1840</span>, <span class="at">height =</span> <span class="dv">1696</span>, <span class="at">d3_version =</span> <span class="dv">6</span>)   <span class="co"># Interactive chart</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">r2d3</span>(<span class="at">data =</span> timeline_df, <span class="at">script =</span> <span class="fu">here</span>(<span class="st">"d3"</span>, <span class="st">"poster.js"</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">width =</span> <span class="dv">840</span>, <span class="at">height =</span> <span class="dv">3160</span>, <span class="at">d3_version =</span> <span class="dv">6</span>)    <span class="co"># Static 4-panel chart</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>timeline_df</code> is computed only once. Both <code>r2d3</code> calls share the same data. When Quarto renders the document, the two SVG widgets are placed one after another in the same HTML page.</p>
+<hr>
+</section>
+</section>
+<section id="from-code-to-browser-what-happens-at-each-step" class="level2">
+<h2 class="anchored" data-anchor-id="from-code-to-browser-what-happens-at-each-step">4. From Code to Browser — What Happens at Each Step</h2>
+<pre><code>prep_timeline_data.R
+  └─ Produces timeline_df (R data frame)
+        │
+        ├─ r2d3() serializes timeline_df to JSON
+        │    └─ Bundles the D3 script, JSON data, and svg/width/height into an HTML widget
+        │
+        ├─ Quarto render
+        │    └─ Places the two widgets one after another, applies YAML format settings
+        │    └─ self-contained: true → all JS, CSS, and data are inlined into one HTML file
+        │
+        └─ User opens patient-timeline.html
+             └─ Browser runs the D3 script, reads JSON data, renders SVG in real time</code></pre>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Where it runs</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>prep_timeline_data.R</code></td>
+<td>Your computer (R)</td>
+<td><code>timeline_df</code> (R data frame)</td>
+</tr>
+<tr class="even">
+<td><code>r2d3()</code></td>
+<td>Your computer (R)</td>
+<td>HTML widget (JSON + script bundled)</td>
+</tr>
+<tr class="odd">
+<td><code>quarto render</code></td>
+<td>Your computer (Quarto)</td>
+<td><code>patient-timeline.html</code> (single file)</td>
+</tr>
+<tr class="even">
+<td>Open HTML</td>
+<td>User’s browser (JavaScript)</td>
+<td>SVG rendered live, interactions ready</td>
+</tr>
+</tbody>
+</table>
+<p>The key point is: <strong>the HTML file contains no image pixels — only data and drawing instructions</strong>. The actual drawing happens in the browser. This is why interactions feel so fast. Zooming and highlighting only update the coordinate attributes of SVG elements. No request is sent to a server, and no image is re-generated.</p>
+<blockquote class="blockquote">
+<p>This HTML file works completely offline — no internet, no R, no server of any kind.</p>
+</blockquote>
+<hr>
+</section>
+<section id="four-key-interactive-features" class="level2">
+<h2 class="anchored" data-anchor-id="four-key-interactive-features">5. Four Key Interactive Features</h2>
+<p><img src="../images/useR-poster-timeline.png" class="img-fluid" style="border-radius: 8px;;width:100.0%"></p>
+<p><a href="../images/useR-poster-patient-timeline.html" class="btn btn-outline-primary" target="_blank" style="font-size:0.9em; margin-bottom:1em;">▶ Open the interactive timeline (opens in new tab)</a></p>
+<section id="per-patient-dual-axis-calendar-dates-on-top-study-days-on-bottom" class="level3">
+<h3 class="anchored" data-anchor-id="per-patient-dual-axis-calendar-dates-on-top-study-days-on-bottom">★1 Per-patient Dual Axis (calendar dates on top / study days on bottom)</h3>
+<p>The bottom x-axis shows a shared Study Day scale for all patients (starting from Day 1). The top axis shows each patient’s own calendar dates, calculated from their individual first dose date. At the same x position, different patients show different calendar dates.</p>
+<p>D3.js makes this possible by drawing a separate top axis for each patient inside the rendering loop, using that patient’s first dose date as the starting point.</p>
+</section>
+<section id="semantic-zoom" class="level3">
+<h3 class="anchored" data-anchor-id="semantic-zoom">★2 Semantic Zoom</h3>
+<p>When you scroll to zoom in, the bottom axis automatically recalculates its tick spacing based on the new visible range. The top axis calendar dates update at the same time. When the zoom level reaches 3× or more, Grade 1–2 AE events fade in. Zooming back out returns to the overview showing only Grade ≥3.</p>
+<p>This is called semantic zoom: the chart responds to zoom level with a change in what is displayed, not just a change in scale. D3.js achieves this with <code>rescaleX()</code>, which produces a new scale function based on the current zoom transform.</p>
+</section>
+<section id="cross-layer-highlight" class="level3">
+<h3 class="anchored" data-anchor-id="cross-layer-highlight">★3 Cross-layer Highlight</h3>
+<p>Hovering over any event belonging to a patient — an AE triangle, a medication bar, a Lab diamond, or a PD line — highlights all layers for that patient at once (opacity = 1). All other patients fade to 8%. The top axis follows along too.</p>
+<p>The key is <strong>DOM class design</strong>. Every SVG element carries two classes: one for the event type (for example, <code>ev-ae</code>) and one for the patient (for example, <code>subj-001_005</code>). On hover, the code first sets all <code>.ev</code> elements to 8%, then pulls back all elements with the matching patient class to 100%. One line covers all layers at once.</p>
+</section>
+<section id="data-class-filter" class="level3">
+<h3 class="anchored" data-anchor-id="data-class-filter">★4 Data Class Filter</h3>
+<p>Five clickable filter buttons appear at the bottom of the legend: <code>AE</code>, <code>EX</code>, <code>LB</code>, <code>PD</code>, and <code>OS</code>. Clicking a button highlights that event type and dims the others to 8%. Multiple selections are supported. This helps reviewers focus on specific event types in a busy multi-patient view — for example, looking at AE events and Lab abnormalities side by side.</p>
+<p>The filter state and the highlight state work correctly together. On mouseout, the code does not simply set opacity back to 1. Instead, it calls <code>applyTypeFilter()</code> to re-apply the current filter state, so the two effects do not conflict.</p>
+<hr>
+</section>
+</section>
+<section id="static-poster-figure-poster.js" class="level2">
+<h2 class="anchored" data-anchor-id="static-poster-figure-poster.js">6. Static Poster Figure (<code>poster.js</code>)</h2>
+<p>Interactive features cannot be printed on paper. <code>poster.js</code> captures the effect of each feature as a static snapshot, arranged in four vertical panels:</p>
+<p><img src="../images/useR-poster-4panel.png" class="img-fluid" style="border-radius: 8px;;width:60.0%"></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Panel</th>
+<th>Feature shown</th>
+<th>How it is captured</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>★1</td>
+<td>Per-patient dual axis</td>
+<td>Full time range, Grade ≥3 only, top axis visible</td>
+</tr>
+<tr class="even">
+<td>★2</td>
+<td>Semantic zoom</td>
+<td><code>xDomain = [29, 84]</code> (Week 4–12), all grades shown</td>
+</tr>
+<tr class="odd">
+<td>★3</td>
+<td>Cross-layer highlight</td>
+<td>PD patients at full opacity, others at 8%</td>
+</tr>
+<tr class="even">
+<td>★4</td>
+<td>Data class filter</td>
+<td>AE + LB highlighted, EX / PD / OS at 8%</td>
+</tr>
+</tbody>
+</table>
+<p>All the variable behavior for each panel — x-axis range, grade filter, highlight target — is passed as a config object to <code>drawPanel()</code>. The drawing logic itself does not change:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">drawPanel</span>({</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">panelIdx</span><span class="op">:</span>      <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">xDomain</span><span class="op">:</span>       [<span class="dv">29</span><span class="op">,</span> <span class="dv">84</span>]<span class="op">,</span>       <span class="co">// Zoomed in to Week 4–12</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">gradeFilter</span><span class="op">:</span>   () <span class="kw">=&gt;</span> <span class="kw">true</span><span class="op">,</span>     <span class="co">// Show all grades (simulates zoomed-in view)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">highlightSubj</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">highlightTypes</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">showTopAxis</span><span class="op">:</span>   <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span>         <span class="st">"★2  Semantic Zoom"</span><span class="op">,</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">subtitle</span><span class="op">:</span>      <span class="st">"W4–W12 · all AE grades + Lab (CS) visible"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="closing-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="closing-thoughts">7. Closing Thoughts</h2>
+<p>D3.js has a steeper learning curve than most R plotting tools. It requires more code, and a basic understanding of how SVG elements work. But for the data exploration phase of a clinical trial, its high flexibility and rich interactive features offer something that standard tools cannot easily match. When a chart can show the data in more ways, different insights and decisions tend to follow.</p>
+<p>For <strong>Statistical Programmers</strong>: through the <code>r2d3</code> package, D3.js fits directly into an existing R and Quarto workflow. No separate front-end environment is needed. R handles the data; D3.js handles the visual output. Each does what it does best.</p>
+<p>For <strong>clinical data reviewers</strong>: an interactive timeline brings a patient’s full trial journey — medication, adverse events, Lab abnormalities, disease progression, and survival — into one view. Less time switching between reports, more time understanding the data.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
