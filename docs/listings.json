@@ -2,8 +2,8 @@
   {
     "listing": "/blog/index.html",
     "items": [
-      "/blog/useR-Lightning-Talk-JUL-2026-Reproducible-Clinical-Data-Review.html",
       "/blog/useR-Poster-JUL-2026-Patient-Timeline-Visualization.html",
+      "/blog/useR-Lightning-Talk-JUL-2026-Reproducible-Clinical-Data-Review.html",
       "/blog/02-JUN-2026-Git-Version-Control-Clinical-Perspective_1.html",
       "/blog/29-APR-2026-Clinical-Data-Viewer-ShinyConf2025.html",
       "/blog/28-APR-2026-Shiny-Hepatotoxicity-Safety-Monitor.html",
