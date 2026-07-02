@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -179,12 +214,235 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
 </header>
 
 
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Abstract
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>During clinical trials, EDC data must be reviewed regularly — from routine medical review reports to formal audit and inspection scenarios. In these contexts, reviewers do not explore data freely. They follow a predictable, structured process and need a document that clearly records what was seen, under what conditions, and what conclusions were drawn. This core distinction shapes the design philosophy presented in this talk.</p>
 <p>This lightning talk introduces a two-layer modular framework built with R and Quarto for clinical data review. The first layer provides pre-built review modules covering demographics, adverse events, medication records, and study endpoints — each encapsulating domain knowledge and visualization logic. The second layer allows reviewers to combine modules and map Case Report Form (CRF) fields through a YAML file, without modifying the main codebase.</p>
-<p>A key design decision is to use raw CRF data as input rather than CDISC-compliant datasets. This lowers the cognitive barrier for non-programmer reviewers while maintaining flexibility across different trials. Every Quarto report produced by this workflow is a decision snapshot: YAML parameters and review conditions are fully preserved, creating a natural record without additional effort. The workflow will be demonstrated using simulated CRF data, with discussion of practical design trade-offs in programmer-reviewer collaboration settings.</p>
+<p>A key design decision is to use raw CRF data as input rather than CDISC-compliant datasets. This lowers the cognitive barrier for non-programmer reviewers while maintaining flexibility across different trials. Every Quarto report produced by this workflow is a decision snapshot: YAML parameters and review conditions are fully preserved, creating a natural record without additional effort.</p>
+</div>
+</div>
 <hr>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">1. Background</h2>
+<p>Clinical trials can take months or even years to complete. During this time, Statistical Programmers are mainly responsible for submission-ready deliverables — SDTM, ADaM, TLF, and define.xml — all following CDISC standards.</p>
+<p>At the same time, another important task is running in parallel: <strong>Data Monitoring</strong>. The Medical team leads this work, and the Statistical Programmer supports by producing tables, listings, and figures (TLFs). These outputs typically cover Protocol-defined endpoints and safety indicators — such as adverse event grade, outcome, relationship, and action taken. They are produced regularly until the Clinical Study Report (CSR) is finalized.</p>
+<p>Data Monitoring TLFs have a few clear characteristics:</p>
+<ul>
+<li><strong>Small in number</strong>: usually fewer than 20 outputs</li>
+<li><strong>Fixed core variables</strong>: the required fields are focused, and less complex than SDTM or ADaM work</li>
+<li><strong>Time-sensitive</strong>: results should reflect the latest data as quickly as possible</li>
+</ul>
+<p>This creates a practical problem. Following the full SDTM → ADaM → TLF process takes too long. But producing outputs directly from raw CRF data — without any standardization — makes the code hard to maintain and difficult to reuse across trials.</p>
+<p>There is another challenge. Every time the Medical team needs a new data cut, the process looks like this: extract data, map variables, write code, generate output, send it back. This back-and-forth typically takes days. And the output often cannot be traced back to the exact filters that were applied.</p>
+<hr>
+</section>
+<section id="design-philosophy" class="level2">
+<h2 class="anchored" data-anchor-id="design-philosophy">2. Design Philosophy</h2>
+<p>This Modular Workflow was built to solve these problems — without relying on a full CDISC pipeline. The goal is a framework that is <strong>standardized, reusable, and fully traceable</strong>. Here are the four core design decisions:</p>
+<p><strong>YAML configuration drives the entire workflow</strong></p>
+<p>All field mappings, filter conditions, and subject scope are defined in one YAML file. The R code never hardcodes any field names or filter logic. When the data structure changes or the filter conditions need to be updated, only the YAML needs to change — the R code stays the same. This also means Medical reviewers can adjust conditions themselves, without asking the Statistical Programmer to modify the code every time.</p>
+<p><strong>Each TLF type is a separate R function</strong></p>
+<p>This example uses an oncology study. Each output — demographics table, KM plot, waterfall chart, Patient Timeline, and listing — is an independent R function. Adding a new output only requires adding one new module. Changing the style of one chart does not affect any other. This makes the workflow easy to extend, maintain, and reuse.</p>
+<p><strong>All packages are loaded in one place</strong></p>
+<p>All required packages are loaded in a single file, <code>packages.R</code>. This avoids repeated declarations across modules and keeps the setup consistent and efficient.</p>
+<p><strong>Every report captures its own filter conditions</strong></p>
+<p>This is the most distinctive part of this design. Every time the Quarto report is rendered, it automatically records at the top: the population condition used, the number of subjects at each filter step, the final subject count, the generation time, and the YAML file path. No extra effort is needed to maintain a review log — the report itself is the audit trail.</p>
+<hr>
+</section>
+<section id="workflow-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-architecture">3. Workflow Architecture</h2>
+<p>The workflow is made up of several layers, each with a clear responsibility:</p>
+<p><img src="../images/useR-lt-workflow.png" class="img-fluid" style="border-radius: 10px;;width:70.0%"></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 20%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Configuration</td>
+<td><code>config/config.yaml</code></td>
+<td>Field mapping, filter conditions, chart settings</td>
+</tr>
+<tr class="even">
+<td>Data</td>
+<td><code>R/00_load_data.R</code></td>
+<td>Data loading, subject filtering, shared dataset</td>
+</tr>
+<tr class="odd">
+<td>Preprocessing</td>
+<td><code>R/02_preprocess.R</code></td>
+<td>Format conversion</td>
+</tr>
+<tr class="even">
+<td>Module</td>
+<td><code>R/mod_*.R</code></td>
+<td>Individual TLF outputs</td>
+</tr>
+<tr class="odd">
+<td>Presentation</td>
+<td><code>report.qmd</code></td>
+<td>Connects all modules and renders the report</td>
+</tr>
+</tbody>
+</table>
+<p>The key design principle is <strong>one-way dependency</strong>: each layer only takes data from the layer below it. <code>report.qmd</code> calls the modules, modules get data from <code>load_data()</code>, and the data layer reads from config. When anything changes, the impact is always predictable.</p>
+<section id="data-layer-00_load_data.r" class="level3">
+<h3 class="anchored" data-anchor-id="data-layer-00_load_data.r">Data Layer: <code>00_load_data.R</code></h3>
+<p>This workflow uses dummy SAS data for demonstration. This reflects real-world practice — most EDC systems can export SAS datasets to the Statistical Programmer.</p>
+<p>The data layer handles the most complex logic in the workflow. The key steps are: date standardization (handling SAS Date, haven_labelled, and character formats), a four-step subject filtering process, and building a shared dataset (<code>common</code>) so that each module does not need to join the DM data separately.</p>
+<p><img src="../images/useR-lt-fig01-load-data-flow.png" class="img-fluid" style="border-radius: 10px;;width:65.0%"></p>
+<p>The four-step filtering is fully driven by the <code>filters</code> section in the config: base population → specific sites → specific subjects → subject criteria (supporting OR / AND logic). At each step, the number of subjects is recorded in a <code>filter_log</code>, which is then displayed in the audit callout at the top of the report.</p>
+<p><img src="../images/useR-lt-fig02-subject-filter.png" class="img-fluid" style="border-radius: 10px;;width:65.0%"></p>
+</section>
+<section id="preprocessing-layer-02_preprocess.r" class="level3">
+<h3 class="anchored" data-anchor-id="preprocessing-layer-02_preprocess.r">Preprocessing Layer: <code>02_preprocess.R</code></h3>
+<p>The preprocessing layer has a narrow, focused responsibility: <strong>format conversion only — no filtering, joining, or renaming</strong>. Three conversions are applied: age field type conversion, AE grade numeric extraction, and lab value string-to-numeric conversion. Each conversion checks whether the column exists before running. If the column is not found, it skips rather than errors — which improves flexibility across different trials.</p>
+<p><img src="../images/useR-lt-fig04-preprocess.png" class="img-fluid" style="border-radius: 10px;;width:65.0%"></p>
+</section>
+<section id="module-layer-mod_.r" class="level3">
+<h3 class="anchored" data-anchor-id="module-layer-mod_.r">Module Layer: <code>mod_*.R</code></h3>
+<p>All <code>mod_*</code> functions follow a consistent interface of <code>(data, config)</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_demographic</span>(data, cfg)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_os</span>(data, cfg)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_tumor</span>(data, cfg)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_timeline</span>(data, cfg)      <span class="co"># Interactive Patient Timeline (Plotly)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_listing</span>(df, listing_cfg) <span class="co"># Interactive Listing (DT)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Wrapping each output in a function keeps internal variables inside their own scope. Modules are independent from each other and can be called multiple times — for example, <code>mod_listing</code> is called once for AE and once for LB.</p>
+<p>The Patient Timeline module uses an <strong>Adapter Pattern</strong>: <code>mod_timeline.R</code> handles only the rendering logic, while each domain’s data transformation is handled by its own adapter — <code>adapter_ae.R</code> and <code>adapter_lb.R</code>. Adding a new domain only requires creating a new adapter file and registering it. <code>mod_timeline.R</code> itself does not need to change.</p>
+</section>
+<section id="presentation-layer-report.qmd" class="level3">
+<h3 class="anchored" data-anchor-id="presentation-layer-report.qmd">Presentation Layer: <code>report.qmd</code></h3>
+<p>The presentation layer is intentionally simple — <strong>it is the coordinator, not the calculator</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">load_data</span>()   <span class="co"># All loading, filtering, and joining happens here</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cfg  <span class="ot">&lt;-</span> data<span class="sc">$</span>config</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_demographic</span>(data, cfg)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_os</span>(data, cfg)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_tumor</span>(data, cfg)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_timeline</span>(data, cfg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>load_data()</code> is called only once. All modules read from the same list, which avoids repeated loading and filtering, and prevents inconsistencies that could come from each module reading data separately. The report uses <code>embed-resources: true</code>, producing a single self-contained HTML file that is easy to share and archive.</p>
+<hr>
+<p>Want to see what the output looks like? Here is a sample report generated from dummy data:</p>
+<p><a href="../images/useR-lt-report.html" target="_blank">View Sample Report</a></p>
+<hr>
+</section>
+</section>
+<section id="key-technical-design" class="level2">
+<h2 class="anchored" data-anchor-id="key-technical-design">4. Key Technical Design</h2>
+<section id="the-four-sections-of-config.yaml" class="level3">
+<h3 class="anchored" data-anchor-id="the-four-sections-of-config.yaml">The Four Sections of config.yaml</h3>
+<p>The YAML file is the central control point of the entire workflow. It is divided into four sections:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Section 1: fields — field mapping</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fields</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ae</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">subject_col</span><span class="kw">:</span><span class="at"> PT</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">term_col</span><span class="kw">:</span><span class="at">    AETERM_FUL</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">grade_col</span><span class="kw">:</span><span class="at">   AETOXGR_FUL</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Section 2: filters — filter conditions</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">filters</span><span class="kw">:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">global</span><span class="kw">:</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">population</span><span class="kw">:</span><span class="at"> </span><span class="st">"SAFFL == 'Y'"</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">subject_criteria</span><span class="kw">:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">combine</span><span class="kw">:</span><span class="at"> </span><span class="st">"OR"</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">criteria</span><span class="kw">:</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">label</span><span class="kw">:</span><span class="at"> </span><span class="st">"Grade 3+ AE"</span><span class="kw">,</span><span class="at"> </span><span class="fu">domain</span><span class="kw">:</span><span class="at"> ae</span><span class="kw">,</span><span class="at"> </span><span class="fu">condition</span><span class="kw">:</span><span class="at"> </span><span class="st">"GRADE_NUM &gt;= 3"</span><span class="kw">}</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Section 3: timeline — Patient Timeline layer settings</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">timeline</span><span class="kw">:</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">reference_date_col</span><span class="kw">:</span><span class="at"> RFSTDTC</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">layers</span><span class="kw">:</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">domain</span><span class="kw">:</span><span class="at"> ae</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">type</span><span class="kw">:</span><span class="at"> bar</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">color_by</span><span class="kw">:</span><span class="at"> AETOXGR_FUL</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Section 4: listings — listing columns and sort order</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">listings</span><span class="kw">:</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">domain</span><span class="kw">:</span><span class="at"> ae</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">sort_by</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">PT</span><span class="kw">,</span><span class="at"> AESTDAT_FUL</span><span class="kw">]</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">columns</span><span class="kw">:</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">col</span><span class="kw">:</span><span class="at"> AETERM_FUL</span><span class="kw">,</span><span class="at"> </span><span class="fu">label</span><span class="kw">:</span><span class="at"> </span><span class="st">"AE Term"</span><span class="kw">}</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">col</span><span class="kw">:</span><span class="at"> AETOXGR_FUL</span><span class="kw">,</span><span class="at"> </span><span class="fu">label</span><span class="kw">:</span><span class="at"> </span><span class="st">"Grade"</span><span class="kw">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Changing filter conditions, switching subject scope, or adjusting listing columns — all of this is done in the YAML. The R code does not change.</p>
+</section>
+<section id="the-traceable-audit-callout" class="level3">
+<h3 class="anchored" data-anchor-id="the-traceable-audit-callout">The Traceable Audit Callout</h3>
+<p>Every Quarto report automatically generates a full record of review conditions at the top:</p>
+<pre><code>Base Population: SAFFL == 'Y' — 45 subjects
+Subject Criteria (OR):
+  - Grade 3+ AE → 12 subjects
+Final Subject List: 12 subjects
+Generated: 2026-06-15 14:32:05 | Config: config/config.yaml</code></pre>
+<p>This record is generated automatically from <code>filter_log</code>. No extra maintenance is needed. When someone asks “what did we see at last check, and under what conditions?” — the answer is always in the file.</p>
+<hr>
+</section>
+</section>
+<section id="five-r-functions-worth-knowing" class="level2">
+<h2 class="anchored" data-anchor-id="five-r-functions-worth-knowing">5. Five R Functions Worth Knowing</h2>
+<p>These five functions are the key tools that make this workflow config-driven and portable. They are also useful in any R workflow that needs to be shared or reused across projects.</p>
+<section id="herehere-portable-file-paths" class="level3">
+<h3 class="anchored" data-anchor-id="herehere-portable-file-paths"><code>here::here()</code> — Portable file paths</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"packages.R"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>here()</code> finds the project root by looking for a <code>.git</code> or <code>.Rproj</code> file, then builds paths from there. Whether you run the code from RStudio, a terminal, or a different computer, the path always works. This is what makes the whole project easy to share and reproduce.</p>
+</section>
+<section id="sym-dynamic-column-names" class="level3">
+<h3 class="anchored" data-anchor-id="sym-dynamic-column-names"><code>!!sym()</code> — Dynamic column names</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># age_col is a string read from config, with value "AGE_FUL"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="sc">!!</span><span class="fu">sym</span>(age_col) <span class="sc">:</span><span class="er">=</span> <span class="fu">as.numeric</span>(<span class="sc">!!</span><span class="fu">sym</span>(age_col)))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Same as: mutate(AGE_FUL = as.numeric(AGE_FUL))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>sym()</code> converts a string into a column symbol. <code>!!</code> unpacks it inside a dplyr verb. <code>:=</code> is required when the left side uses <code>!!</code>. This lets all dplyr operations be driven by column names from the config, instead of being hardcoded.</p>
+<p><img src="../images/useR-lt-fig03-sym-explanation.png" class="img-fluid" style="border-radius: 10px;;width:65.0%"></p>
+</section>
+<section id="map_chr-extract-values-from-a-nested-list" class="level3">
+<h3 class="anchored" data-anchor-id="map_chr-extract-values-from-a-nested-list"><code>map_chr()</code> — Extract values from a nested list</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># col_specs is a list of lists read from the columns: section in config</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map_chr</span>(col_specs, <span class="st">"col"</span>)    <span class="co"># → c("PT", "ARM", "AETERM_FUL", ...)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map_chr</span>(col_specs, <span class="st">"label"</span>)  <span class="co"># → c("Subject ID", "Treatment", "AE Term", ...)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>purrr::map_chr()</code> applies the same key to every element in a list and returns a character vector. This makes it easy to flatten the nested structure that comes from reading YAML into R.</p>
+</section>
+<section id="setnames-a-named-vector-for-forward-and-reverse-lookup" class="level3">
+<h3 class="anchored" data-anchor-id="setnames-a-named-vector-for-forward-and-reverse-lookup"><code>setNames()</code> — A named vector for forward and reverse lookup</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>col_map <span class="ot">&lt;-</span> <span class="fu">setNames</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_chr</span>(col_specs, <span class="st">"col"</span>),    <span class="co"># values = actual column names</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_chr</span>(col_specs, <span class="st">"label"</span>)   <span class="co"># names  = display labels</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Result: c("Subject ID" = "PT", "Treatment" = "ARM", "AE Term" = "AETERM_FUL", ...)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This named vector supports both directions: <code>select(all_of(col_map))</code> selects and renames columns in one step. <code>names(col_map)[col_map == "PT"]</code> looks up the display label for a given column name — which is needed when applying <code>sort_by</code> after the columns have already been renamed.</p>
+</section>
+<section id="keep-filter-a-list-by-condition" class="level3">
+<h3 class="anchored" data-anchor-id="keep-filter-a-list-by-condition"><code>keep()</code> — Filter a list by condition</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ae_listing_cfg <span class="ot">&lt;-</span> <span class="fu">keep</span>(cfg<span class="sc">$</span>listings, <span class="sc">~</span>.x<span class="sc">$</span>domain <span class="sc">==</span> <span class="st">"ae"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mod_listing</span>(data<span class="sc">$</span>ae, ae_listing_cfg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>purrr::keep()</code> applies a condition to each element of a list and returns only the ones that match. Here, it finds the listing config where <code>domain == "ae"</code> and passes it to <code>mod_listing()</code>. Adding a new listing only requires updating the YAML — <code>report.qmd</code> does not need to change.</p>
+<hr>
+</section>
+</section>
+<section id="closing-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="closing-thoughts">6. Closing Thoughts</h2>
+<p>Time savings, traceability, reusability, and a low adoption barrier — these four advantages make this Modular Reporting Workflow a practical improvement for both the Medical team and the Statistical Programmer in Data Monitoring tasks.</p>
+<p>For <strong>Statistical Programmers</strong>: once the workflow is built, the next trial only needs a new YAML file and raw data. The core R code stays the same. Data Monitoring reports that used to take days can now be produced in hours.</p>
+<p>For <strong>decision makers</strong>: every report comes with a complete record of its filter conditions. There is no need to maintain a separate review log. Reviewing historical results or preparing for an audit becomes much simpler. The tools are built on open-source R packages — no additional licensing cost, and no high adoption barrier.</p>
+<p>This workflow was demonstrated using simulated CRF data, but the design is trial-agnostic. Field names, filter conditions, and TLF types are all controlled through YAML. The same framework can be applied directly to a different trial.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
