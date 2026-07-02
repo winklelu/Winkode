@@ -61,7 +61,21 @@ This is the most distinctive part of this design. Every time the Quarto report i
 
 ## 3. Workflow Architecture
 
-The workflow is made up of several layers, each with a clear responsibility:
+At the top level, this workflow is a **two-layer modular framework**:
+
+::: {.callout-tip icon=false}
+## Two-Layer Design
+
+**Layer 1 — Module Library** (built by the Statistical Programmer)
+Pre-built R functions, one per output type, taking common outputs in the oncology studies as example: demographics table, KM plot, waterfall chart, Patient Timeline, and listing. Each function encapsulates its own domain knowledge and visualization logic. Once written, they do not need to change.
+
+**Layer 2 — YAML Configuration** (adjustable by users, such as the reviewer or programmer)
+A single YAML file maps CRF field names, defines filter conditions, and selects which modules to include. Reviewers can change the subject scope or filter conditions here — without touching any R code.
+:::
+
+In practice, the Statistical Programmer builds Layer 1 once. After that, a Medical reviewer can adjust Layer 2 on their own — for example, changing a population filter from `SAFFL == 'Y'` to a specific site — and re-render the report to get updated results immediately.
+
+Internally, the workflow is made up of five technical layers that support this two-layer design:
 
 ![](../images/useR-lt-workflow.png){style="border-radius: 10px;" width="70%"}
 

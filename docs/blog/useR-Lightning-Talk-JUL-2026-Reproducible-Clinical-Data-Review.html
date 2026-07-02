@@ -259,7 +259,23 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
 </section>
 <section id="workflow-architecture" class="level2">
 <h2 class="anchored" data-anchor-id="workflow-architecture">3. Workflow Architecture</h2>
-<p>The workflow is made up of several layers, each with a clear responsibility:</p>
+<p>At the top level, this workflow is a <strong>two-layer modular framework</strong>:</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Two-Layer Design
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Layer 1 — Module Library</strong> (built by the Statistical Programmer) Pre-built R functions, one per output type, taking common outputs in the oncology studies as example: demographics table, KM plot, waterfall chart, Patient Timeline, and listing. Each function encapsulates its own domain knowledge and visualization logic. Once written, they do not need to change.</p>
+<p><strong>Layer 2 — YAML Configuration</strong> (adjustable by users, such as the reviewer or programmer) A single YAML file maps CRF field names, defines filter conditions, and selects which modules to include. Reviewers can change the subject scope or filter conditions here — without touching any R code.</p>
+</div>
+</div>
+<p>In practice, the Statistical Programmer builds Layer 1 once. After that, a Medical reviewer can adjust Layer 2 on their own — for example, changing a population filter from <code>SAFFL == 'Y'</code> to a specific site — and re-render the report to get updated results immediately.</p>
+<p>Internally, the workflow is made up of five technical layers that support this two-layer design:</p>
 <p><img src="../images/useR-lt-workflow.png" class="img-fluid" style="border-radius: 10px;;width:70.0%"></p>
 <table class="caption-top table">
 <colgroup>
