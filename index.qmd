@@ -37,23 +37,35 @@ Feel free to connect with me on LinkedIn or reach out via email — I’m always
 
 Clinical Research Organization | Pharmaceutical Company | Statistical Programming
 
-- 12+ years of clinical trial programming experience with deep expertise in SDTM, ADaM, and regulatory submission.
+- 12 years of clinical trial programming experience with deep expertise in SDTM, ADaM, and regulatory submission.
 
 - Led an 18-member team to complete COVID-19 Phase III programming within 3 months; results published in NEJM.
 
+- Co-led a regulatory-requested RWE study during the COVID-19 program; standardized unstructured hospital RWD through a complete SDTM, ADaM, and TLF pipeline in alignment with regulatory data governance requirements.
+
 - Skilled at cross-functional collaboration, providing medical-monitor support and creating publication-ready output.
 
-- Developed automation tools including an aCRF mapping system and review validation tools, boosting efficiency by 70%. 
+- Developed automation tools including an aCRF mapping system and review validation tools, boosting efficiency by 60%.
 
 - Presented at R/Pharma 2024 and ShinyConf 2025, demonstrating advanced R Shiny proficiency.
 
-- Recognized for consistently delivering high-quality work with exceptional efficiency, I have earned promotions at nearly every company I have worked for.
+- Delivered two presentations at useR! 2026 in Warsaw: a Lightning Talk, "Reproducible Clinical Data Review: A Modular R and Quarto Workflow for Transparent Reporting," and a Poster, "Patient Timeline Visualization: Presenting Individual and Population-Level Clinical Trial Journeys with R and D3.js."
+
+- Promoted at three consecutive companies (PAREXEL, Athenex, Junshi), advancing from Programmer to Statistical Programming Manager.
 
 ## Therapeutic Area
 
 Oncology, Cardiovascular, Immunology, Dermatology, Endocrinology, Nephrology, and more — across 12+ years of clinical trial programming.
 
 ## Publications
+
+- Winkle Lu, Upstream Detection of CDISC-Compliant Issues: Raw Data Quality Review with Local LLM and R, R/Pharma 2026 APAC (accepted, forthcoming).
+
+- Yuqi He, Winkle Lu, Interactive QTL/KRI Risk Monitoring with Python, R/Pharma 2026 APAC (accepted, forthcoming).
+
+- Winkle Lu, Reproducible Clinical Data Review: A Modular R and Quarto Workflow for Transparent Reporting (Lightning Talk), useR! 2026.
+
+- Winkle Lu, Patient Timeline Visualization: Presenting Individual and Population-Level Clinical Trial Journeys with R and D3.js (Poster), useR! 2026.
 
 - Winkle Lu, Reviewing Clinical Data Efficiently with Shiny, ShinyConf 2025.
 

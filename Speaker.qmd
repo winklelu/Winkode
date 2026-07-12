@@ -5,7 +5,36 @@ format: html
 
 ---
 
-### 🔹 ShinyConf 2025  
+### 🔹 useR! 2026 (Poster)
+
+**Title:** Patient Timeline Visualization: Presenting Individual and Population-Level Clinical Trial Journeys with R and D3.js
+📍 *Status:* Accepted, forthcoming — Warsaw, 2026
+
+---
+
+### 🔹 useR! 2026 (Lightning Talk)
+
+**Title:** Reproducible Clinical Data Review: A Modular R and Quarto Workflow for Transparent Reporting
+📍 *Status:* Accepted, forthcoming — Warsaw, 2026
+
+---
+
+### 🔹 R/Pharma 2026 APAC
+
+**Title:** Interactive QTL/KRI Risk Monitoring with Python
+*Co-authored with Yuqi He*
+📍 *Status:* Accepted, forthcoming
+
+---
+
+### 🔹 R/Pharma 2026 APAC
+
+**Title:** Upstream Detection of CDISC-Compliant Issues: Raw Data Quality Review with Local LLM and R
+📍 *Status:* Accepted, forthcoming
+
+---
+
+### 🔹 ShinyConf 2025
 
 [![](slides/thumb_shinyconf2025.png){width=300px}](slides/shinyconf2025_Reviewing_Clinical_Data_Efficiently_with_Shiny.pdf)
 
