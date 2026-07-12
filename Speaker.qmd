@@ -10,7 +10,7 @@ format: html
 [![](slides/thumb_useR2026_poster.png){width=300px}](slides/useR2026_Poster_Patient_Timeline_Visualization.pdf)
 
 **Title:** Patient Timeline Visualization: Presenting Individual and Population-Level Clinical Trial Journeys with R and D3.js
-📍 *Status:* Accepted, forthcoming — Warsaw, 2026
+📍 *Status:* 2026-07-08 — Warsaw
 📝 *Summary:*
 Clinical trial data analysis typically focuses on specific analysis datasets, but the complete journey of individual patients — from screening, enrollment, and first dose, through visit records and adverse events, to last dose and survival status — represents critical time-based data points that reviewers prioritize. This fragmentation of information forces reviewers to switch between multiple reports during in-depth case reviews.
 
@@ -29,7 +29,7 @@ The system takes raw CRF data as input and embeds D3.js interactive capabilities
 [![](slides/thumb_useR2026_lightning.png){width=300px}](slides/useR2026_Lightning_Talk_Reproducible_Clinical_Data_Review.pdf)
 
 **Title:** Reproducible Clinical Data Review: A Modular R and Quarto Workflow for Transparent Reporting
-📍 *Status:* Accepted, forthcoming — Warsaw, 2026
+📍 *Status:* 2026-07-07 — Warsaw
 📝 *Summary:*
 During clinical trials, EDC data must be reviewed regularly — from routine medical review reports to formal audit and inspection scenarios. In these contexts, reviewers do not explore data freely. They follow a predictable, structured process and need a document that clearly records what was seen, under what conditions, and what conclusions were drawn. This core distinction shapes the design philosophy presented in this talk.
 
