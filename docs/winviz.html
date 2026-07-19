@@ -660,28 +660,34 @@
     </div>
   </div>
 
-  <!-- Patient Timeline — Coming Soon -->
-  <div class="viz-card coming-soon" data-category="figure">
+  <!-- Patient Timeline — Available -->
+  <div class="viz-card available" data-category="figure">
     <div class="card-preview">
-      <span class="card-tag tag-coming">Coming Soon</span>
-      <div class="coming-soon-overlay">
-        <div class="icon">◎</div>
-        <div class="label">In Development</div>
-        <div class="tool-name">Patient Timeline</div>
-      </div>
+      <img src="tools/patient-timeline/preview.png"
+           alt="Patient Timeline preview"
+           class="preview-img"
+           onclick="openLightbox(this.src)"
+           style="cursor: zoom-in;">
     </div>
     <div class="card-body">
       <h3 class="card-title">Patient Timeline</h3>
-      <p class="card-desc">Interactive swimmer plot showing individual patient exposure, adverse events, and outcomes. D3.js powered.</p>
+      <p class="card-desc">
+        Multi-domain patient event timeline — standardizes AE, EX, CM, and LB
+        onto one shared time axis, faceted by subject. Interactive tooltips
+        via plotly.
+      </p>
       <div class="card-footer">
         <div class="card-tech">
-          <span class="tech-pill">r2d3</span>
-          <span class="tech-pill">D3.js</span>
-          <span class="tech-pill">ADSL+ADAE</span>
+          <span class="tech-pill">R Programming</span>
+          <span class="tech-pill">ggplot2</span>
+          <span class="tech-pill">dplyr</span>
+          <span class="tech-pill">plotly</span>
+          <span class="tech-pill">AE+EX+CM+LB</span>
         </div>
         <div class="card-actions">
-          <button class="btn-code" disabled>⌥ Code</button>
-          <button class="btn-try" disabled>Soon</button>
+          <a class="btn-code"
+             href="https://github.com/winklelu/WinSual/tree/main/tools/patient-timeline"
+             target="_blank">⌥ Code</a>
         </div>
       </div>
     </div>
