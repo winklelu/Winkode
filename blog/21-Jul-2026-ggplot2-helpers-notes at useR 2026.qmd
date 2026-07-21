@@ -12,6 +12,9 @@ format:
 draft: false
 ---
 
+![](../images/ Reusing ggplot2.png){style="border-radius: 10px;" width="400"}
+
+
 ::: {.callout-note}
 These are notes from a talk at useR! 2026 (Warsaw, July 6–9).
 
@@ -19,7 +22,7 @@ These are notes from a talk at useR! 2026 (Warsaw, July 6–9).
 - **Speaker**: Cynthia A. Huang (postdoctoral researcher at the Social Data Science and AI Lab, LMU Munich, working with Prof. Frauke Kreuter; organizer of the "Grand Unified Grammar of Graphics" workshop at IEEE VIS 2026)
 :::
 
-![](../images/ Reusing ggplot2.png){style="border-radius: 10px;" width="400"}
+
 ## 1. Background and Motivation
 
 Cynthia's research interests include "alternative" data for social science research, using LLMs and generative AI in data science work, and grammar-of-graphics visualization systems.

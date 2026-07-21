@@ -178,7 +178,8 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#five-common-ways-to-reuse-ggplot2-code" id="toc-five-common-ways-to-reuse-ggplot2-code" class="nav-link active" data-scroll-target="#five-common-ways-to-reuse-ggplot2-code">2. Five Common Ways to Reuse ggplot2 Code</a></li>
+  <li><a href="#background-and-motivation" id="toc-background-and-motivation" class="nav-link active" data-scroll-target="#background-and-motivation">1. Background and Motivation</a></li>
+  <li><a href="#five-common-ways-to-reuse-ggplot2-code" id="toc-five-common-ways-to-reuse-ggplot2-code" class="nav-link" data-scroll-target="#five-common-ways-to-reuse-ggplot2-code">2. Five Common Ways to Reuse ggplot2 Code</a></li>
   <li><a href="#case-study-three-calendar-packages-three-design-problems" id="toc-case-study-three-calendar-packages-three-design-problems" class="nav-link" data-scroll-target="#case-study-three-calendar-packages-three-design-problems">3. Case Study: Three Calendar Packages, Three Design Problems</a></li>
   <li><a href="#better-complete-plot-helpers-design-goals-and-three-principles" id="toc-better-complete-plot-helpers-design-goals-and-three-principles" class="nav-link" data-scroll-target="#better-complete-plot-helpers-design-goals-and-three-principles">4. Better Complete Plot Helpers: Design Goals and Three Principles</a></li>
   <li><a href="#worked-example-ggtilecal" id="toc-worked-example-ggtilecal" class="nav-link" data-scroll-target="#worked-example-ggtilecal">5. Worked Example: ggtilecal</a></li>
@@ -232,6 +233,7 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
 </header>
 
 
+<p><img src="../images/ Reusing ggplot2.png" class="img-fluid" style="border-radius: 10px;" width="400"></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -249,9 +251,11 @@ Note
 </ul>
 </div>
 </div>
-<p><img src="../images/ Reusing ggplot2.png" class="img-fluid" style="border-radius: 10px;" width="400"> ## 1. Background and Motivation</p>
+<section id="background-and-motivation" class="level2">
+<h2 class="anchored" data-anchor-id="background-and-motivation">1. Background and Motivation</h2>
 <p>Cynthia’s research interests include “alternative” data for social science research, using LLMs and generative AI in data science work, and grammar-of-graphics visualization systems.</p>
 <p>The talk starts from a problem almost every ggplot2 user knows well: we often need to reuse plotting code we wrote before. A helper function can turn a long, complex piece of ggplot2 code into a single function call. But if that function is not designed well, <strong>the early convenience can turn into frustration later</strong>. This happens because the helper hides the layered grammar underneath, which makes it harder to customize or fine-tune the plot afterward.</p>
+</section>
 <section id="five-common-ways-to-reuse-ggplot2-code" class="level2">
 <h2 class="anchored" data-anchor-id="five-common-ways-to-reuse-ggplot2-code">2. Five Common Ways to Reuse ggplot2 Code</h2>
 <ol type="1">

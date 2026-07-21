@@ -77,11 +77,11 @@
     "text": "The Final Result\nKorea finished 2nd. They advanced alongside Japan.\nTaiwan’s journey ended there — but the chart lived on. ⚾"
   },
   {
-    "objectID": "blog/21-Jul-2026-ggplot2-helpers-notes at useR 2026.html",
-    "href": "blog/21-Jul-2026-ggplot2-helpers-notes at useR 2026.html",
+    "objectID": "blog/21-Jul-2026-ggplot2-helpers-notes at useR 2026.html#background-and-motivation",
+    "href": "blog/21-Jul-2026-ggplot2-helpers-notes at useR 2026.html#background-and-motivation",
     "title": "useR! 2026 Notes: Reusing ‘ggplot2’ code: how to design better plot helper functions",
-    "section": "",
-    "text": "Note\n\n\n\nThese are notes from a talk at useR! 2026 (Warsaw, July 6–9).\n\nTalk title: Reusing ‘ggplot2’ code: how to design better plot helper functions\nSpeaker: Cynthia A. Huang (postdoctoral researcher at the Social Data Science and AI Lab, LMU Munich, working with Prof. Frauke Kreuter; organizer of the “Grand Unified Grammar of Graphics” workshop at IEEE VIS 2026)\n## 1. Background and Motivation\nCynthia’s research interests include “alternative” data for social science research, using LLMs and generative AI in data science work, and grammar-of-graphics visualization systems.\nThe talk starts from a problem almost every ggplot2 user knows well: we often need to reuse plotting code we wrote before. A helper function can turn a long, complex piece of ggplot2 code into a single function call. But if that function is not designed well, the early convenience can turn into frustration later. This happens because the helper hides the layered grammar underneath, which makes it harder to customize or fine-tune the plot afterward."
+    "section": "1. Background and Motivation",
+    "text": "1. Background and Motivation\nCynthia’s research interests include “alternative” data for social science research, using LLMs and generative AI in data science work, and grammar-of-graphics visualization systems.\nThe talk starts from a problem almost every ggplot2 user knows well: we often need to reuse plotting code we wrote before. A helper function can turn a long, complex piece of ggplot2 code into a single function call. But if that function is not designed well, the early convenience can turn into frustration later. This happens because the helper hides the layered grammar underneath, which makes it harder to customize or fine-tune the plot afterward."
   },
   {
     "objectID": "blog/21-Jul-2026-ggplot2-helpers-notes at useR 2026.html#five-common-ways-to-reuse-ggplot2-code",
@@ -543,7 +543,7 @@
     "href": "tools/forest-plot/forest_report.html#review-conditions",
     "title": "Clinical Subgroup Forest Plot Report",
     "section": "Review Conditions",
-    "text": "Review Conditions\n\nThis section records the exact parameters used to generate this report. Any future reproduction using the same forest_config.yaml will produce identical results.\n\n\n\n\n\n\nParameter\nValue\n\n\n\n\nAnalysis Endpoint\nOS\n\n\nEndpoint Label\nOverall Survival\n\n\nAnalysis Set\nIntention-To-Treat Analysis Set\n\n\nCancer Type Filter\nALL\n\n\nCancer Type Label\nAll Cancer Types\n\n\nTreatment Arm\nDrug A\n\n\nControl Arm\nDrug B\n\n\nReference Arm (Cox)\nDrug B\n\n\nCI Level\n95%\n\n\nStatistical Model\nunstratified\n\n\nSubgroups\nAge Years, Sex, Race, ECOG Status\n\n\nGenerated At\n2026-07-21 17:37"
+    "text": "Review Conditions\n\nThis section records the exact parameters used to generate this report. Any future reproduction using the same forest_config.yaml will produce identical results.\n\n\n\n\n\n\nParameter\nValue\n\n\n\n\nAnalysis Endpoint\nOS\n\n\nEndpoint Label\nOverall Survival\n\n\nAnalysis Set\nIntention-To-Treat Analysis Set\n\n\nCancer Type Filter\nALL\n\n\nCancer Type Label\nAll Cancer Types\n\n\nTreatment Arm\nDrug A\n\n\nControl Arm\nDrug B\n\n\nReference Arm (Cox)\nDrug B\n\n\nCI Level\n95%\n\n\nStatistical Model\nunstratified\n\n\nSubgroups\nAge Years, Sex, Race, ECOG Status\n\n\nGenerated At\n2026-07-21 17:40"
   },
   {
     "objectID": "tools/forest-plot/forest_report.html#dataset-summary",
