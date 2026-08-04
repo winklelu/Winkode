@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/04-Aug-2026-Quarto-and-AI-for-Reproducible-Reports-at-useR-2026.html",
       "/blog/28-Jul-2026-Git-Based-Workflow-for-R-Package-Validation-at-useR-2026_1.html",
       "/blog/21-Jul-2026-ggplot2-helpers-notes at useR 2026.html",
       "/blog/17-Jul-2026-Analyzing Sports Data with R at useR 2026.html",
