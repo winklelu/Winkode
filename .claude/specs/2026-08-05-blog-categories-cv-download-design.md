@@ -81,6 +81,37 @@
 - `01-AUG-2025-Takeaways from Learning Programming and AI Tools.qmd`
 - `06-JUL-2025-Statistical Programmer.qmd`
 
+### 2b. 跨分類文章（額外歸類）
+
+以上對應表是每篇文章的**主分類**。逐篇看過標題、既有標籤與描述後，判斷
+以下 4 篇內容確實橫跨兩個以上專業領域，額外加入第二（或第三）分類，讓它
+們在對應的篩選結果裡都會出現：
+
+| 文章 | 主分類 | 額外加入的分類 | 理由 |
+|---|---|---|---|
+| `07-APR-2026-Forest-Plot-YAML-Quarto-Workflow.qmd` | Automation & Reproducible Workflows | **Data Review & Visualization**、**Clinical Programming & Regulatory Delivery** | 可重複的參數化工作流程是核心，但產出的是法規/臨床常用的 Forest Plot，且該工作流程本身就是為了產出法規交付成果而設計 |
+| `14-APR-2026-Local-LLM-Clinical-Trial-Workflow.qmd` | Automation & Reproducible Workflows | **Clinical Programming & Regulatory Delivery** | LLM 自動化的對象是 CRF-to-SDTM mapping，本身就是核心法規交付工作，不只是工具展示 |
+| `28-Jul-2026-Git-Based-Workflow-for-R-Package-Validation-at-useR-2026_1.qmd` | Automation & Reproducible Workflows | **Clinical Programming & Regulatory Delivery** | 主題是把 unit test 轉成正式的 validation 文件，屬於法規/QC 交付的一環 |
+| `useR-Lightning-Talk-JUL-2026-Reproducible-Clinical-Data-Review.qmd` | Automation & Reproducible Workflows | **Data Review & Visualization** | 標題本身就是「Reproducible *Clinical Data Review*」——架構是自動化議題，但目的明確是資料檢閱 |
+
+其餘 25 篇維持單一分類（包含 `From XPT to Define-XML v2.1` 仍只放
+Clinical Programming 一類——沿用 PDF 自己的判斷：雖然用了 R，但真正解決
+的是法規交付問題）。
+
+**加入額外分類後，各分類篩選出來的實際文章數**（同一篇文章可能被算在
+多個分類裡，總篇數仍是 29）：
+
+- Clinical Programming & Regulatory Delivery：2 → **5**
+  （原本 2 篇 + Forest-Plot + Local-LLM + Git-Package-Validation）
+- Data Review & Visualization：11 → **13**
+  （原本 11 篇 + Forest-Plot + useR-Lightning-Talk）
+- Automation & Reproducible Workflows：13（不變，4 篇跨分類文章本來就都
+  屬於這一類）
+- Quality, Leadership & Industry Practice：3（不變）
+
+這個調整順帶緩解了先前討論過的「核心身分展示篇數太少」問題——不用另外
+寫新文章，Clinical Programming 分類篩選出來就從 2 篇變成 5 篇。
+
 ### 3. YAML 改動方式
 
 每篇文章既有的 `categories:` 欄位**附加**（不是取代）一項對應的主分類全名，
@@ -97,6 +128,9 @@ categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & 
 **已知的連帶影響（使用者已確認可接受）**：因為每篇文章自己頁面上方會把
 `categories:` 全部內容顯示成標籤列，改動後那一列會混雜短標籤（如 `R`）跟
 完整分類全名（如 `Clinical Programming & Regulatory Delivery`），長度不一致。
+
+第 2b 節列出的 4 篇跨分類文章，附加的是兩個（`07-APR-2026-Forest-Plot-YAML-Quarto-Workflow.qmd`
+是三個）分類全名，其餘做法相同——都是附加到既有陣列裡，不取代任何內容。
 
 ### 4. Blog 頁面實作
 
