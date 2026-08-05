@@ -1,73 +1,56 @@
-# Blog Four-Category Landing + CV Download — Design Spec
+# Blog 四大分類頁面 + CV 下載 — 設計規格
 
-Date: 2026-08-05
-Status: Approved by user, ready for implementation planning
+日期：2026-08-05
+狀態：使用者已核准，可進入實作規劃階段
 
-## Goal
+## 目標
 
-Two independent, low-risk additions to the WinSual site (`/Users/winkle/__Projects/R/Winkode`), both driven by a "個人網站修改建議" PDF the user reviewed but only wanted to act on in part:
+針對 WinSual 網站（`/Users/winkle/__Projects/R/Winkode`）進行兩項獨立、低風險的新增功能。這兩項是使用者看過一份「個人網站修改建議」PDF 之後，決定只採用的部分：
 
-1. Let visitors on the Blog page find the right article faster by grouping
-   the 29 existing posts under four top-down category headings.
-2. Add a CV download link next to LinkedIn / GitHub on the homepage.
+1. 讓瀏覽 Blog 頁面的訪客能更快找到合適的文章，把現有 29 篇文章依四個由上而下排列的分類標題分組呈現。
+2. 在首頁的 LinkedIn / GitHub 旁邊加上一個 CV 下載連結。
 
-**Hard constraint: no existing URL may change.** Nothing about article
-routing, filenames, or navbar links should move.
+**硬性限制：不能改變任何現有網址。** 不論是文章路由、檔名，或導覽列連結，都不應該被搬動。
 
-## Non-goals (explicitly ruled out by the user)
+## 明確排除的範圍（使用者確認不做的部分）
 
-- No rewrite of the homepage Hero/About Me/Core Expertise text (covered by
-  the earlier PDF review conversation, but the user chose not to act on it
-  now).
-- No navbar changes (`Home | Presentations | Blog | WinViz Lab` stays as-is).
-- No per-article YAML changes. The existing `categories:` field on each post
-  (a mixed bag of tools/standards/topics, e.g.
-  `categories: [R, CDISC, Define-XML, Clinical Data, xml2]`) is untouched —
-  it keeps driving the tag display on each individual post page.
-- No new frontmatter field (e.g. no `main-category:`) added to any post.
-- No tag/category two-tier system (Category vs Tags) — that was in the PDF
-  but is out of scope; this spec only covers the four top-level groupings.
+- 不重寫首頁的 Hero / About Me / Core Expertise 文案（雖然前面討論那份 PDF 時有提過，但使用者這次選擇先不動）。
+- 不更動導覽列（`Home | Presentations | Blog | WinViz Lab` 維持原樣）。
+- 不修改任何文章本身的 YAML。現有每篇文章的 `categories:` 欄位（目前混雜了工具、標準、主題等，例如 `categories: [R, CDISC, Define-XML, Clinical Data, xml2]`）維持不動——它仍然負責驅動每篇文章頁面上原有的標籤顯示。
+- 不新增任何 frontmatter 欄位（例如不新增 `main-category:`）到任何文章。
+- 不做「Category（大分類）vs Tags（細標籤）」的雙層系統——這是 PDF 裡提到的內容，但不在這次規劃範圍內；這份規格只涵蓋四個頂層分類分組。
 
-## Design
+## 設計
 
-### 1. Blog four-category landing (stacked blocks)
+### 1. Blog 四大分類頁面（堆疊區塊）
 
-Single file changed: `blog/index.qmd`.
+只改一個檔案：`blog/index.qmd`。
 
-Replace the current single auto-listing (`listing: contents: . / sort: date
-desc / categories: true`) with **four separate Quarto listing blocks**, each
-using an explicit `contents:` file list (not folder auto-discovery). Layout
-top-to-bottom, each with its own `##` heading, so a visitor sees all four
-groups and their articles on one page without needing to click a filter:
+把目前單一的自動 listing（`listing: contents: . / sort: date desc / categories: true`）換成**四個獨立的 Quarto listing 區塊**，每個區塊都用明確列出檔名的 `contents:` 清單（而不是自動掃描資料夾）。版面由上而下排列，每個區塊各自有一個 `##` 標題，讓訪客不需要點擊篩選，就能一次看到四個分類群組及各自的文章：
 
 ```
 ## Clinical Programming & Regulatory Delivery
-[listing: contents: <2 files>]
+[listing: contents: <2 個檔案>]
 
 ## Clinical Data Review & Visualization
-[listing: contents: <11 files>]
+[listing: contents: <11 個檔案>]
 
 ## Automation & Reproducible Workflows
-[listing: contents: <13 files>]
+[listing: contents: <13 個檔案>]
 
 ## Quality, Leadership & Industry Practice
-[listing: contents: <3 files>]
+[listing: contents: <3 個檔案>]
 ```
 
-Because `contents:` lists exact filenames rather than scanning the folder,
-no `.qmd` file is renamed or moved, and each listing block still links to
-the exact same rendered URL each post already has. This is the reason the
-"no URL changes" constraint is easy to guarantee here.
+因為 `contents:` 是列出明確檔名，而不是掃描資料夾，所以不會有任何 `.qmd` 檔案被重新命名或搬移，每個 listing 區塊連到的仍然是每篇文章原本已經存在的那個網址。這就是為什麼「網址不變」這個限制在這個做法下很容易保證。
 
-Category taxonomy and per-article assignment: taken as-is from the PDF's
-existing 29-article breakdown (2 / 11 / 13 / 3 = 29, confirmed against the
-actual files in `blog/`):
+分類命名與每篇文章的分配方式：直接沿用 PDF 裡既有的 29 篇文章分配結果（2 / 11 / 13 / 3 = 29，已對照 `blog/` 資料夾裡實際的檔案清單確認過無誤）：
 
-**Clinical Programming & Regulatory Delivery (2)**
+**Clinical Programming & Regulatory Delivery（2 篇）**
 - `adamct-2014-09-26.qmd` — "You Need a Placebo Comparison"
 - `17-MAR-2026 -define-xml-v21-walkthrough.qmd` — "From XPT to Define-XML v2.1"
 
-**Clinical Data Review & Visualization (11)**
+**Clinical Data Review & Visualization（11 篇）**
 - `useR-Poster-JUL-2026-Patient-Timeline-Visualization.qmd`
 - `29-APR-2026-Clinical-Data-Viewer-ShinyConf2025.qmd`
 - `28-APR-2026-Shiny-Hepatotoxicity-Safety-Monitor.qmd`
@@ -80,7 +63,7 @@ actual files in `blog/`):
 - `15-OCT-2025-A Journey into Data Visualization - From ggplot2 Techniques to Visual Design.qmd`
 - `13-Sep-2025-Exploring cols4all for Better Data Visualization.qmd`
 
-**Automation & Reproducible Workflows (13)**
+**Automation & Reproducible Workflows（13 篇）**
 - `04-Aug-2026-Quarto-and-AI-for-Reproducible-Reports-at-useR-2026.qmd`
 - `28-Jul-2026-Git-Based-Workflow-for-R-Package-Validation-at-useR-2026_1.qmd`
 - `useR-Lightning-Talk-JUL-2026-Reproducible-Clinical-Data-Review.qmd`
@@ -95,50 +78,33 @@ actual files in `blog/`):
 - `25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.qmd`
 - `01-FEB-2025-Lets Code the Zodiac in R.qmd`
 
-**Quality, Leadership & Industry Practice (3)**
+**Quality, Leadership & Industry Practice（3 篇）**
 - `21-APR-2026-Career-Git-Repository.qmd`
 - `01-AUG-2025-Takeaways from Learning Programming and AI Tools.qmd`
 - `06-JUL-2025-Statistical Programmer.qmd`
 
-Future flexibility: since assignment lives entirely in `blog/index.qmd`'s
-four `contents:` lists, moving an article to a different category later is a
-one-line cut-and-paste between listing blocks — no other file touched.
+未來調整彈性：由於分類的分配完全存在於 `blog/index.qmd` 裡這四個 `contents:` 清單中，之後要把某篇文章換到別的分類，只需要在幾個 listing 區塊之間剪貼一行，不需要動到其他任何檔案。
 
-Each listing block keeps `sort: "date desc"` within its own group, and
-`type: default` (or whichever default listing style the current blog index
-already renders with) for visual consistency with the current page.
+每個 listing 區塊各自維持 `sort: "date desc"`（區塊內部依日期排序），並沿用 `type: default`（或目前 Blog 首頁既有的預設 listing 樣式），以維持與現有頁面一致的視覺風格。
 
-### 2. CV download
+### 2. CV 下載
 
-- User will supply a finished CV PDF (not created by this project).
-- File placed at `files/CV_Winkle_Lu.pdf` (new folder; naming can be
-  finalized once the actual file arrives).
-- One new entry added to `about.links` in `index.qmd`, alongside the
-  existing LinkedIn / GitHub / Email entries — homepage only, no navbar
-  change.
+- CV PDF 由使用者提供完成好的檔案，不在這個專案內製作內容。
+- 檔案放在 `files/CV_Winkle_Lu.pdf`（新資料夾；實際檔名可在拿到檔案後再確認）。
+- 在 `index.qmd` 的 `about.links` 新增一筆連結，跟現有的 LinkedIn / GitHub / Email 並列——只放首頁，不動導覽列。
 
-### URL-safety guarantee
+### 網址不變的保證
 
-Both changes are additive/presentational:
-- Blog change: same 29 files, same output paths, only the index page's
-  layout logic changes.
-- CV change: adds one new static file + one new homepage link; touches no
-  existing route.
+兩項改動都屬於「新增／呈現層」的變更，不動既有結構：
+- Blog 部分：還是同樣的 29 個檔案、同樣的輸出路徑，只有首頁的版面邏輯改變。
+- CV 部分：新增一個靜態檔案與一個首頁連結，不動任何既有路由。
 
-No redirects are needed because nothing that currently resolves changes
-where it resolves to.
+因為現有能被解析到的網址，解析結果完全不變，所以不需要任何轉址（redirect）。
 
-## Spec location note
+## Spec 存放位置說明
 
-This spec lives in `.claude/specs/`, not the skill's usual
-`docs/superpowers/specs/` default — in this repo, `docs/` is the Quarto
-website's actual build output (`_quarto.yml: output-dir: docs`, published to
-GitHub Pages), so it's the wrong place for a non-published planning
-document. (Same reasoning already established in
-`.claude/specs/2026-07-19-patient-timeline-design.md`.)
+這份 spec 放在 `.claude/specs/`，而不是技能預設的 `docs/superpowers/specs/`——因為在這個專案裡，`docs/` 是 Quarto 網站實際的建置輸出目錄（`_quarto.yml: output-dir: docs`，會發布到 GitHub Pages），所以並不適合放這種不對外發布的規劃文件。（這個做法跟 `.claude/specs/2026-07-19-patient-timeline-design.md` 裡已經確立的理由一致。）
 
-## Open item before implementation
+## 實作前的待辦事項
 
-CV PDF file itself has not been provided yet. The `index.qmd` link and file
-placement can be implemented as soon as it's supplied; the blog
-four-category change has no such dependency and can proceed independently.
+CV PDF 檔案目前還沒有提供。`index.qmd` 的連結與檔案放置，可以在拿到檔案後隨時實作；Blog 四大分類的部分則沒有這個相依性，可以獨立先進行。
