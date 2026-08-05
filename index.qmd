@@ -13,7 +13,7 @@ about:
       href: https://github.com/winklelu
     - icon: file-earmark-pdf
       text: Download CV
-      href: "files/CV_Winkle%20Lu_Statistical%20Programmer_20260806_ForReferenceOnly.pdf"
+      href: "https://winklelu.github.io/WinSual/files/CV_Winkle%20Lu_Statistical%20Programmer_20260806_ForReferenceOnly.pdf"
     - text: winsualviz@gmail.com
     
 ---

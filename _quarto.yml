@@ -6,7 +6,7 @@ project:
 
 website:
   title: "WinSual – Winkle Lu"
-  site-url: "https://winklelu.github.io/WinSual"
+  site-url: "https://winklelu.github.io/WinSual/"
   description: "Winkle Lu – Statistical Programming Manager specializing in CDISC standards, clinical data visualization, R, Shiny, and regulatory submissions for Pharma and Biotech."
   favicon: "favicon.ico"
 
