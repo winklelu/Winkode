@@ -1,11 +1,13 @@
 # Blog 五大分類篩選 + CV 下載 — 設計規格
 
 日期：2026-08-05
-狀態：使用者已核准最終版本，可進入實作規劃階段
+狀態：已實作完成並在本機驗證通過（`quarto preview` + 瀏覽器實測）
 
 > 本文件取代同名檔案較早的版本。設計過程中發現 Quarto 內建的分類篩選機制
 > 比原本規劃的「手動堆疊區塊 + 自動化腳本」方案更簡單、更穩，因此整份設計
-> 改採原生篩選機制。詳見下方「技術驗證」一節。
+> 改採原生篩選機制。詳見下方「技術驗證」一節。實作過程中又發現兩個原生
+> 機制的細節坑（分類名稱不能含逗號、Pandoc 會重新編碼 markdown 連結網址），
+> 修正方式見第 4、5 節與「實作踩坑紀錄」。
 
 ## 目標
 
@@ -36,7 +38,7 @@
    這一類底下含有 WBC 2026、NBA/F1 賽事分析等與臨床試驗無關的一般數據視覺化
    文章，硬加「Clinical」字首會讓內容跟標籤不符）
 3. **Automation & Reproducible Workflows**
-4. **Quality, Leadership & Industry Practice**
+4. **Quality Leadership & Industry Practice**
 5. **All Articles**（顯示全部 29 篇，未篩選狀態）
 
 ### 2. 文章分類對應表
@@ -76,7 +78,7 @@
 - `25-FEB-2026-New-MacBook-Setup-and-WinSual-Relaunch.qmd`
 - `01-FEB-2025-Lets Code the Zodiac in R.qmd`
 
-**Quality, Leadership & Industry Practice（3）**
+**Quality Leadership & Industry Practice（3）**
 - `21-APR-2026-Career-Git-Repository.qmd`
 - `01-AUG-2025-Takeaways from Learning Programming and AI Tools.qmd`
 - `06-JUL-2025-Statistical Programmer.qmd`
@@ -107,7 +109,7 @@ Clinical Programming 一類——沿用 PDF 自己的判斷：雖然用了 R，�
   （原本 11 篇 + Forest-Plot + useR-Lightning-Talk）
 - Automation & Reproducible Workflows：13（不變，4 篇跨分類文章本來就都
   屬於這一類）
-- Quality, Leadership & Industry Practice：3（不變）
+- Quality Leadership & Industry Practice：3（不變）
 
 這個調整順帶緩解了先前討論過的「核心身分展示篇數太少」問題——不用另外
 寫新文章，Clinical Programming 分類篩選出來就從 2 篇變成 5 篇。
@@ -136,8 +138,21 @@ categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & 
 
 `blog/index.qmd` 把 Quarto 內建、會列出全部細標籤（目前約 30 個，字母排序、
 命名也不一致，例如 "Clinical Trial" 與 "Clinical Trials" 並存）的自動側邊欄
-關閉，換成只有這 5 個項目的自訂篩選按鈕列，沿用 Quarto 內建的篩選引擎
-（`quarto-listing.js`）與 `#category=...` 網址機制（細節見下方技術驗證）。
+關閉（`categories: false`），但**沿用 Quarto 原生的側邊欄 CSS/JS 結構**，而
+不是完全自訂的按鈕列：在頁面內容裡放一個 `:::{.column-margin}` 區塊，內含
+跟 Quarto 原本產生的 HTML 一模一樣的結構（`<h5 class="quarto-listing-category-title">`
++ `<div class="quarto-listing-category category-default">` + 5 個
+`<div class="category" data-category="...">`，`data-category` 是
+`base64(encodeURIComponent(分類名))`）。
+
+這樣做的好處：
+- Quarto 的 `DOMContentLoaded` handler 會自動掃描 `.quarto-listing-category .category`
+  這個 selector 並掛上點擊事件，**不需要自己寫 onclick**。
+- 位置沿用 `#quarto-margin-sidebar` 的既有 CSS（`quarto-listing.scss`），畫面
+  一樣是右側欄位，跟改版前視覺一致。
+- `.category.active { font-weight: 600 }` 這個既有樣式跟 `activateCategory()`
+  的高亮邏輯直接生效，不管是從 Blog 頁面本身點擊、還是從首頁卡片連結帶著
+  `#category=...` 進來，目前選中的分類都會自動反黑——不需要額外寫程式。
 
 每篇文章自己頁面上方的標籤列不受此項改動影響，仍會完整顯示（見第 3 節）。
 
@@ -149,14 +164,19 @@ categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & 
 📘 [Blog/Sharing](blog/)  |  👉 [Presentations](Speaker.qmd)
 ```
 
-移除，原位置（`## Current Focus` 之前）改為 5 張分類卡片，每項前綴 👉：
+移除，原位置（`## Current Focus` 之前）改為 5 張分類卡片，每項前綴 👉。
+**這 5 個連結是手寫的 raw HTML `<a>`，不是 markdown `[text](url)` 語法**
+（原因見下方「實作踩坑紀錄」），其中 4 個用 `onclick` + `encodeURIComponent`
+在點擊當下組出網址，「All Articles」是純 `href="blog/"`：
 
-```
-👉 Clinical Programming & Regulatory Delivery → blog/#category=...
-👉 Data Review & Visualization → blog/#category=...
-👉 Automation & Reproducible Workflows → blog/#category=...
-👉 Quality, Leadership & Industry Practice → blog/#category=...
-👉 All Articles → blog/
+```html
+<ul>
+<li>👉 <a href="#" onclick="location.href = 'blog/#category=' + encodeURIComponent('Clinical Programming & Regulatory Delivery'); return false;">Clinical Programming &amp; Regulatory Delivery</a></li>
+<li>👉 <a href="#" onclick="location.href = 'blog/#category=' + encodeURIComponent('Data Review & Visualization'); return false;">Data Review &amp; Visualization</a></li>
+<li>👉 <a href="#" onclick="location.href = 'blog/#category=' + encodeURIComponent('Automation & Reproducible Workflows'); return false;">Automation &amp; Reproducible Workflows</a></li>
+<li>👉 <a href="#" onclick="location.href = 'blog/#category=' + encodeURIComponent('Quality Leadership & Industry Practice'); return false;">Quality Leadership &amp; Industry Practice</a></li>
+<li>👉 <a href="blog/">All Articles</a></li>
+</ul>
 ```
 
 原本連到 `Presentations` 的連結拿掉不補，因為導覽列本身已有 `Presentations`
@@ -172,7 +192,8 @@ categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & 
 
 新文章只要在自己的 `categories:` 欄位裡包含對應的主分類全名（連同想加的
 細標籤），存檔後就會自動被首頁卡片與 Blog 篩選按鈕正確篩選到——**不需要
-額外腳本，也不需要回頭手動改 `blog/index.qmd`**。
+額外腳本，也不需要回頭手動改 `blog/index.qmd`**。唯一要注意的規則：分類
+名稱本身不能包含逗號（見「實作踩坑紀錄」第 1 點）。
 
 ### 網址不變的保證
 
@@ -198,8 +219,26 @@ categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & 
    獨立渲染的，跟 Blog 列表頁的側邊欄設定無關——這是「側邊欄改自訂按鈕，
    不影響個別文章頁面標籤顯示」的技術依據。
 
-自訂 5 項按鈕的實際 HTML/JS 寫法（是否直接呼叫 `quartoListingCategory()`，
-或需要額外綁定），留到實作規劃階段再確認細節。
+## 實作踩坑紀錄
+
+實作並在 `quarto preview` + 瀏覽器實測後，發現兩個原生機制沒有事先預期到
+的細節，記錄下來避免以後重踩：
+
+1. **分類名稱不能包含逗號。** Quarto 把一篇文章的多個 `categories:` 值，
+   內部用逗號 join 成一個字串存進 `data-categories` 屬性，篩選時再用逗號
+   `split(',')` 拆回陣列。如果分類名稱本身含有逗號（一開始選的
+   `"Quality, Leadership & Industry Practice"` 就是），會被自己的逗號從
+   中間拆成兩截，導致這個分類永遠篩不到任何文章（`filterListingCategory`
+   比對不到完整字串）。已改名為 `Quality Leadership & Industry Practice`
+   （拿掉逗號）解決。**以後新增分類或幫文章加分類時，分類名稱一律不能有
+   逗號。**
+2. **首頁的動態分類連結不能用 markdown `[text](url)` 語法。** 一開始用
+   `[Clinical Programming & Regulatory Delivery](blog/#category=Clinical%20Programming%20%26%20Regulatory%20Delivery)`
+   這種寫法，Pandoc 在轉成 HTML 時會「部分解碼」網址——把 `%20` 還原成
+   真正的空白字元，但 `%26`、`%2C` 這種符號的編碼留著不動，產生一個不乾淨、
+   容易在不同瀏覽器行為不一致的網址。改成手寫 raw HTML `<a>` 標籤，
+   `href` 用 `onclick` + `encodeURIComponent()` 在點擊當下即時組出來，
+   完全繞過 Pandoc 的網址處理，才穩定可靠。
 
 ## Spec 存放位置說明
 
