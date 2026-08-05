@@ -156,37 +156,60 @@ categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & 
 
 每篇文章自己頁面上方的標籤列不受此項改動影響，仍會完整顯示（見第 3 節）。
 
-### 5. 首頁改動
+### 5. 首頁改動（最終版本，經多輪版面調整）
 
-`index.qmd` 目前這一行：
+**簡介文案**：`:::{#hero-heading}` 裡原本「With over a decade... Feel free to
+connect...」那兩段，換成使用者提供的三段新文案（強調 SAS/CDISC/法規交付
+為核心身分，R/Python/Shiny/Quarto/D3.js 為延伸能力）。開頭刻意寫
+「over a decade」而不是寫死「12 years」，避免每年要手動更新。
 
-```
-📘 [Blog/Sharing](blog/)  |  👉 [Presentations](Speaker.qmd)
-```
-
-移除，原位置（`## Current Focus` 之前）改為 5 張分類卡片，每項前綴 👉。
-**這 5 個連結是手寫的 raw HTML `<a>`，不是 markdown `[text](url)` 語法**
-（原因見下方「實作踩坑紀錄」），其中 4 個用 `onclick` + `encodeURIComponent`
-在點擊當下組出網址，「All Articles」是純 `href="blog/"`：
+**「Explore by Topic」區塊**：取代原本的「📘 Blog/Sharing \| 👉 Presentations」
+那一行。**這幾個連結是手寫的 raw HTML `<a>`，不是 markdown `[text](url)`
+語法**（原因見下方「實作踩坑紀錄」）。版面經過使用者反饋調整：拿掉項目
+符號（不用 `<ul>/<li>`，改用 `display:block` 的 `<a>`）、拿掉 👉 emoji、
+每個項目改成文字後綴 → 箭頭、行距加大：
 
 ```html
-<ul>
-<li>👉 <a href="#" onclick="location.href = 'blog/#category=' + encodeURIComponent('Clinical Programming & Regulatory Delivery'); return false;">Clinical Programming &amp; Regulatory Delivery</a></li>
-<li>👉 <a href="#" onclick="location.href = 'blog/#category=' + encodeURIComponent('Data Review & Visualization'); return false;">Data Review &amp; Visualization</a></li>
-<li>👉 <a href="#" onclick="location.href = 'blog/#category=' + encodeURIComponent('Automation & Reproducible Workflows'); return false;">Automation &amp; Reproducible Workflows</a></li>
-<li>👉 <a href="#" onclick="location.href = 'blog/#category=' + encodeURIComponent('Quality Leadership & Industry Practice'); return false;">Quality Leadership &amp; Industry Practice</a></li>
-<li>👉 <a href="blog/">All Articles</a></li>
-</ul>
+## Explore by Topic
+
+<div class="wh-topic-links" style="margin: 0.5em 0 1.25em 0;">
+<a href="#" style="display:block; padding: 0.45em 0; text-decoration:none;" onclick="location.href = 'blog/#category=' + encodeURIComponent('Clinical Programming & Regulatory Delivery'); return false;">Clinical Programming &amp; Regulatory Delivery →</a>
+<a href="#" style="display:block; padding: 0.45em 0; text-decoration:none;" onclick="location.href = 'blog/#category=' + encodeURIComponent('Data Review & Visualization'); return false;">Data Review &amp; Visualization →</a>
+<a href="#" style="display:block; padding: 0.45em 0; text-decoration:none;" onclick="location.href = 'blog/#category=' + encodeURIComponent('Automation & Reproducible Workflows'); return false;">Automation &amp; Reproducible Workflows →</a>
+<a href="#" style="display:block; padding: 0.45em 0; text-decoration:none;" onclick="location.href = 'blog/#category=' + encodeURIComponent('Quality Leadership & Industry Practice'); return false;">Quality, Leadership &amp; Industry Practice →</a>
+</div>
 ```
 
-原本連到 `Presentations` 的連結拿掉不補，因為導覽列本身已有 `Presentations`
-入口，訪客仍找得到。
+（顯示文字用帶逗號的 `Quality, Leadership & Industry Practice`——可讀性
+較好；`onclick` 裡實際比對用的是不含逗號的技術值，兩者故意不同，見「實作
+踩坑紀錄」第 1 點。）
 
-### 6. CV 下載
+**「瀏覽全部」區塊**：跟上面 4 個主題連結明顯用間距分開，兩個入口——
+`All Blog Articles →`（連到 `blog/`，取代原本的「View all articles」，
+更明確強調是部落格文章）與 `Conference Talks & Posters →`（連到
+`Speaker.qmd`，取代原本規劃裡完全拿掉的 Presentations 連結；下方另外加一行
+斜體小字列出實際參與過的研討會：`useR!, R/Pharma, ShinyConf, PharmaSUG`）：
 
-- CV PDF 由使用者提供，不在本專案內製作內容。
-- 檔案放在 `files/CV_Winkle_Lu.pdf`（實際檔名待拿到檔案後確認）。
-- `index.qmd` 的 `about.links` 新增一筆連結，跟 LinkedIn / GitHub / Email 並列。
+```html
+<div style="margin-top: 1em;">
+<a href="blog/" style="display:block; padding: 0.2em 0; text-decoration:none;">All Blog Articles →</a>
+<a href="Speaker.qmd" style="display:block; padding: 0.2em 0; text-decoration:none;">Conference Talks &amp; Posters →</a>
+<div style="font-size: 0.85em; color: #6c757d; padding-left: 0.05em; font-style: italic;">useR!, R/Pharma, ShinyConf, PharmaSUG</div>
+</div>
+```
+
+導覽列本身的 `Presentations` 入口維持不動，這裡的命名調整只影響首頁連結
+文字，不影響導覽列。
+
+### 6. CV 下載（已完成實作）
+
+- 使用者提供原始 Word 檔（`__Career/CV/CV_202607/CV_Winkle Lu_Statistical Programmer_20260712_Origin.docx`），本機用 Microsoft Word（AppleScript 自動化）轉成 PDF，保留原始排版與格式。
+- 用 Python（`pypdf` + `reportlab`，裝在暫用的 venv 裡，不動系統 Python）在每一頁疊加浮水印：文字
+  `Downloaded from Winkle Lu's personal website — for reference only`，淡灰色、45 度斜對角、貫穿整頁、半透明，不擋內容閱讀。
+- 最終檔案放在 `files/CV_Winkle Lu_Statistical Programmer_20260712_ForReferenceOnly.pdf`——比原始檔名拿掉 `_Origin`，改成 `_ForReferenceOnly`，讓下載後的檔名本身就標示這是公開參考版本。
+- `index.qmd` 的 `about.links` 新增一筆 `Download CV` 連結（`icon: file-earmark-pdf`），跟 LinkedIn / GitHub 並列，Email 放在最後。
+- `files/` 資料夾不會被 Quarto 自動複製進 `docs/` 輸出目錄，因此在 `_post-render.R` 裡新增第三段邏輯，比照專案裡既有的 `winviz.html`／`tools/` 複製方式，把 `files/` 也複製進 `docs/files/`。
+- 已用 `fetch()` 實測連結：HTTP 200、`content-type: application/pdf`、檔案大小與來源一致。
 
 ### 7. 新文章的維護方式
 
@@ -239,6 +262,25 @@ categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & 
    容易在不同瀏覽器行為不一致的網址。改成手寫 raw HTML `<a>` 標籤，
    `href` 用 `onclick` + `encodeURIComponent()` 在點擊當下即時組出來，
    完全繞過 Pandoc 的網址處理，才穩定可靠。
+3. **「顯示文字」跟「比對用的技術值」可以刻意不同。** `Quality, Leadership
+   & Industry Practice`（有逗號，可讀性好）只用在畫面上顯示的文字；實際
+   `onclick`／`data-category` 用來比對篩選的字串一律是拿掉逗號的
+   `Quality Leadership & Industry Practice`。兩者是分開的，改其中一個不會
+   影響另一個，但**如果以後要改分類的顯示文字，記得同時檢查 onclick 裡的
+   技術值有沒有需要一起改**。
+4. **Quarto 原生機制在「網址沒有指定分類」時，不會自動把 All Articles
+   標成選中狀態。** 不管是新鮮進入 `blog/`（完全無 hash），還是進入
+   `blog/#category=`（空值 hash），Quarto 自己的 `quarto-listing-loaded`
+   初始化邏輯裡 `if (hash.category)` 這個判斷式會把空字串當成 falsy 略過，
+   導致兩種情況都不會呼叫 `activateCategory("")`。這是 Quarto 原生機制
+   本身的行為（不是這次改版才有的新問題，理論上原本的內建側邊欄也有一樣的
+   限制），修法是在 `blog/index.qmd` 額外包一層 `window["quarto-listing-loaded"]`
+   ——保留原本的行為，再補一個判斷：如果沒有任何分類是 `.active`，就手動
+   把 All Articles 標成選中。
+5. **自訂側邊欄要自己補分類文章數。** 原生 `categories: true` 側邊欄會
+   自動在每個分類後面顯示 `(N)` 篇數，改成手寫的 5 個項目後，這個數字
+   不會自動出現，要照第 2b 節算好的篩選後篇數（5／13／13／3／29）手動寫進
+   `<span class="quarto-category-count">(N)</span>`。
 
 ## Spec 存放位置說明
 
@@ -247,7 +289,7 @@ categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & 
 發布到 GitHub Pages），不適合放這種不對外發布的規劃文件。（與
 `.claude/specs/2026-07-19-patient-timeline-design.md` 已確立的理由一致。）
 
-## 實作前的待辦事項
+## 待辦事項
 
-CV PDF 檔案尚未提供。`index.qmd` 的 CV 連結與檔案放置，可在拿到檔案後隨時
-實作；Blog 五大分類篩選與首頁卡片的部分沒有這個相依性，可以獨立先進行。
+全部項目（Blog 五大分類篩選、首頁改版、CV 下載）已實作完成並在本機
+`quarto preview` + 瀏覽器實測驗證通過。目前沒有已知的待辦事項。
