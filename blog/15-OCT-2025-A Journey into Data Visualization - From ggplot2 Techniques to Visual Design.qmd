@@ -3,7 +3,7 @@ title: "A Journey into Data Visualization: From ggplot2 Techniques to Visual Des
 subtitle: "30 Days of ggplot2 — From Plotting to Visual Thinking"
 author: "Winkle Lu"
 date: "2025-10-15"
-categories: [R, ggplot2, Visualization, Learning]
+categories: [R, ggplot2, Visualization, Learning, "Data Review & Visualization"]
 format:
   html:
     toc: true

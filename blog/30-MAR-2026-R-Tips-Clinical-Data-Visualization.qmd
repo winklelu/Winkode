@@ -1,7 +1,7 @@
 ---
 title: "5 R Tips for Efficient Clinical Data Visualization"
 date: 2026-03-30
-categories: [R, ggplot2, Clinical Trials, Data Visualization, tidyverse]
+categories: [R, ggplot2, Clinical Trials, Data Visualization, tidyverse, "Data Review & Visualization"]
 description: "Five practical R tips I use regularly when building oncology plots — covering slice_min, case_when, factor levels, setNames, and match()."
 format: html
 image: ../images/R_5TIP.jpg

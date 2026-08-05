@@ -1,7 +1,7 @@
 ---
 title: "Git in the Age of AI — A Statistical Programmer's Perspective"
 date: 2026-06-02
-categories: [Git, Clinical Trial, Statistical Programming, Version Control]
+categories: [Git, Clinical Trial, Statistical Programming, Version Control, "Automation & Reproducible Workflows"]
 description: "What a statistical programmer learned from a conversation about Git — and why the concepts were already familiar."
 format: html
 ---

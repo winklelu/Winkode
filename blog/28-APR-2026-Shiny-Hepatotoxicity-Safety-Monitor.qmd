@@ -1,7 +1,7 @@
 ---
 title: "R + Shiny + Plotly: Interactive Visualization for Clinical Safety Data Review"
 date: 2026-04-28
-categories: [R, Shiny, Plotly, Clinical Trials, Safety, Data Visualization]
+categories: [R, Shiny, Plotly, Clinical Trials, Safety, Data Visualization, "Data Review & Visualization"]
 description: "Starting from a real clinical need, this post walks through how to use Shiny to integrate EX, AE, and LB domains into an interactive hepatotoxicity monitoring tool."
 format: html
 image: ../images/shiny_hepatotoxicity.png

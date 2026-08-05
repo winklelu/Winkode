@@ -1,7 +1,7 @@
 ---
 title: "From NBA Shot Selection to F1 Pit Strategy: Analyzing Sports Data with R"
 date: 17-JUL-2026
-categories: [R, Sports Analytics, Data Visualization, useR2026, Clinical Trials]
+categories: [R, Sports Analytics, Data Visualization, useR2026, Clinical Trials, "Data Review & Visualization"]
 description: "Key takeaways from Max Marchi's useR! 2026 session — how the same data analysis workflow drives NBA shot selection, F1 pit strategy, and clinical trial analysis."
 format: html
 ---

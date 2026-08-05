@@ -1,7 +1,7 @@
 ---
 title: "Colors Matter: Exploring `cols4all` for Better Data Visualization"
 date: 13-SEP-2025
-categories: [R, ggplot2, Data Visualization, Colors]
+categories: [R, ggplot2, Data Visualization, Colors, "Data Review & Visualization"]
 description: "How the R package cols4all helps you balance aesthetics and accessibility in choosing color palettes."
 format: html
 ---

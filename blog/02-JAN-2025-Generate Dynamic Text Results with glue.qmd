@@ -1,7 +1,7 @@
 ---
 title: "Generate Dynamic Text Results with glue and lapply in R"
 date: 02-JAN-2025
-categories: [R, Tidyverse, glue]
+categories: [R, Tidyverse, glue, "Automation & Reproducible Workflows"]
 description: " "
 format: html
 ---

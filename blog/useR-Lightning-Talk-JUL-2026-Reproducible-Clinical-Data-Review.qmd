@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Clinical Data Review: A Modular R and Quarto Workflow for Transparent Reporting"
 date: 2026-07-07
-categories: [R, YAML, Quarto, Clinical Trials, CDISC, Reproducibility]
+categories: [R, YAML, Quarto, Clinical Trials, CDISC, Reproducibility, "Automation & Reproducible Workflows", "Data Review & Visualization"]
 description: "useR! 2026 Lightning Talk — A two-layer modular framework for structured, traceable clinical data review"
 format: html
 image: ../images/useR-lightning-talk-2026.jpg

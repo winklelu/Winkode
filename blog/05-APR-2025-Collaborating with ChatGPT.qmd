@@ -1,7 +1,7 @@
 ---
 title: "Collaborating with ChatGPT in Coding"
 date: 05-APR-2025
-categories: [AI, ChatGPT, Programming]
+categories: [AI, ChatGPT, Programming, "Automation & Reproducible Workflows"]
 description: "What I’ve Learned So Far"
 format: html
 ---

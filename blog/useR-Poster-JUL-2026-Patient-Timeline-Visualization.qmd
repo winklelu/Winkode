@@ -1,7 +1,7 @@
 ---
 title: "Patient Timeline Visualization: Presenting Individual and Population-Level Clinical Trial Journeys with R and D3.js"
 date: 2026-07-08
-categories: [R, D3.js, Clinical Trials, Data Visualization, Patient Timeline]
+categories: [R, D3.js, Clinical Trials, Data Visualization, Patient Timeline, "Data Review & Visualization"]
 description: "useR! 2026 Poster — An interactive patient timeline system integrating visit records, adverse events, and survival status using R and D3.js"
 format: html
 image: ../images/useR-poster-2026.jpg

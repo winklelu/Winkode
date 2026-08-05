@@ -1,7 +1,7 @@
 ---
 title: "Two Simple Ways to Fill Dummy Data into the Right Rows"
 date: "12-Nov-2025"
-categories: [R, Tidyverse]
+categories: [R, Tidyverse, "Automation & Reproducible Workflows"]
 description: "Two Simple Ways to Fill Dummy Data into the Right Rows."
 format: html
 ---

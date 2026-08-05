@@ -1,7 +1,7 @@
 ---
 title: "🧧 Happy Lunar New Year! Let’s Code the Zodiac in R 🐍"
 date: 2025-02-01
-categories: [R, hash, Zodiac]
+categories: [R, hash, Zodiac, "Automation & Reproducible Workflows"]
 description: " "
 format: html
 ---

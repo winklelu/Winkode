@@ -1,7 +1,7 @@
 ---
 title: "New MacBook, New Setup — Rebuilding My Dev Environment and Relaunching My Website"
 date: 2026-02-25
-categories: [Git, Quarto, GitHub, Setup]
+categories: [Git, Quarto, GitHub, Setup, "Automation & Reproducible Workflows"]
 description: "What I learned from setting up a new MacBook — including the traps I fell into along the way."
 format: html
 ---

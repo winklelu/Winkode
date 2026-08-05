@@ -1,7 +1,7 @@
 ---
 title: "Efficiently Apply the Same Function to Multiple Datasets in R"
 date: 23-JUN-2024
-categories: [R, lapply, gsub]
+categories: [R, lapply, gsub, "Automation & Reproducible Workflows"]
 description: " "
 format: html
 ---

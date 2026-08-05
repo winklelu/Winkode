@@ -1,7 +1,7 @@
 ---
 title: "Plot-Table Highlighting in Shiny"
 date: 04-MAY-2025
-categories: [R, DT, Shiny, plotly]
+categories: [R, DT, Shiny, plotly, "Data Review & Visualization"]
 description: " "
 format: html
 ---

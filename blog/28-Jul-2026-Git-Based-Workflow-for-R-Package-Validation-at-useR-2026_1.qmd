@@ -2,7 +2,7 @@
 title: "Git-Based Workflow for R Package Validation: Notes from useR! 2026"
 description: "Notes from Laure Cougnaud's (Open Analytics NV) poster at useR! 2026 — how a git-based workflow and the pkgTesteR package can turn unit tests into a formal validation form."
 date: 2026-07-28
-categories: [Git, R, useR2026, Validation, Clinical Trials, CDISC, Reproducibility]
+categories: [Git, R, useR2026, Validation, Clinical Trials, CDISC, Reproducibility, "Automation & Reproducible Workflows", "Clinical Programming & Regulatory Delivery"]
 image: ../images/git_validation_poster.png
 ---
 ![](../images/git_base.png){style="border-radius: 30px;" width="500"}

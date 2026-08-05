@@ -2,7 +2,7 @@
 title: "Quarto and AI for Reproducible Documents: Notes from useR! 2026"
 description: "Notes from MIchał Ramsza's (SGH Warsaw School of Economics) tutorial 'Quarto and AI for reproducible reports' at useR! 2026"
 date: 2026-08-04
-categories: [Quarto, R, LLM, ellmer, useR2026, Reproducibility, Clinical Trials]
+categories: [Quarto, R, LLM, ellmer, useR2026, Reproducibility, Clinical Trials, "Automation & Reproducible Workflows"]
 image: ../images/quarto_llm_workshop.png
 ---
 

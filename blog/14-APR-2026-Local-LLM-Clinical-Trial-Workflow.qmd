@@ -1,7 +1,7 @@
 ---
 title: "Running Local LLM in Clinical Trial Workflows: From Setup to Real-World Experience"
 date: 14-APR-2026
-categories: [R, LLM, CDISC, Clinical Trial, Open Source]
+categories: [R, LLM, CDISC, Clinical Trial, Open Source, "Automation & Reproducible Workflows", "Clinical Programming & Regulatory Delivery"]
 description: "How I used Ollama, Gemma 3, ellmer, and text2vec to automate CRF-to-SDTM mapping — and what I learned after 13 hours of runtime."
 format: html
 ---

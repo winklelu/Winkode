@@ -1,7 +1,7 @@
 ---
 title: "Takeaways from Learning Programming and AI Tools - Part 1 "
 date: 30-JUL-2025
-categories: [Programming, AI, Learning]
+categories: [Programming, AI, Learning, "Quality Leadership & Industry Practice"]
 description: "Introduction"
 format: html
 ---

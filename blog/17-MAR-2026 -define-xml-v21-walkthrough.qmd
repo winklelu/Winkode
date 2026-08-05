@@ -1,7 +1,7 @@
 ---
 title: "From XPT to Define-XML v2.1: A Hands-On Walkthrough with R"
 date: 2026-03-17
-categories: [R, CDISC, Define-XML, Clinical Data, xml2]
+categories: [R, CDISC, Define-XML, Clinical Data, xml2, "Clinical Programming & Regulatory Delivery"]
 description: "How I used R to rebuild Define-XML v2.1 from scratch — and what I finally understood about XML after 12 years as a statistical programmer."
 format: html
 ---

@@ -1,7 +1,7 @@
 ---
 title: "R + YAML + Quarto: A Reproducible Workflow for Repeated Clinical Outputs"
 date: 2026-04-07
-categories: [R, YAML, Quarto, Clinical Trials, Forest Plot, Reproducibility]
+categories: [R, YAML, Quarto, Clinical Trials, Forest Plot, Reproducibility, "Automation & Reproducible Workflows", "Data Review & Visualization", "Clinical Programming & Regulatory Delivery"]
 description: "How to use R, YAML, and Quarto together to produce repeated clinical outputs — each with its own written summary report — by changing a single parameter."
 format: html
 image: ../images/forest_workflow.png

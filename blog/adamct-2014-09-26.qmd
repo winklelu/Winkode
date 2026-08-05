@@ -1,7 +1,7 @@
 ---
 title: "\"You Need a Placebo Comparison\" — Building an External Control Arm from EMR Data"
 date: 12-JUL-2026
-categories: [RWE, Real World Data, Clinical Programming, CDISC, External Control Arm]
+categories: [RWE, Real World Data, Clinical Programming, CDISC, External Control Arm, "Clinical Programming & Regulatory Delivery"]
 description: "When reviewers asked for a placebo comparison after the CSR was final, we built an external control arm from EMR data — and learned that team design is itself a programming strategy."
 format: html
 ---

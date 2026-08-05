@@ -1,7 +1,7 @@
 ---
 title: "Lesser-known but crucial role - Statistical Programmer"
 date: 06-JUL-2025
-categories: [Statistical Programmer, Career]
+categories: [Statistical Programmer, Career, "Quality Leadership & Industry Practice"]
 description: " "
 format: html
 ---

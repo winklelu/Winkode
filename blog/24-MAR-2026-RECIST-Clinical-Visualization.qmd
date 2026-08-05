@@ -1,7 +1,7 @@
 ---
 title: "A Statistical Programmer's Confession: RECIST 1.1 Is Not Just Numbers"
 date: 2026-03-24
-categories: [R, Clinical Trials, Data Visualization, RECIST, Oncology]
+categories: [R, Clinical Trials, Data Visualization, RECIST, Oncology, "Data Review & Visualization"]
 description: "Why Waterfall, Spider, and Swimming plots are more than just charts — they are live documents that help you catch data issues in real time."
 format: html
 image: ../images/recist_4plots.png

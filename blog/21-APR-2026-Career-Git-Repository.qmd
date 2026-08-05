@@ -1,7 +1,7 @@
 ---
 title: "Career as a Git Repository: Tracking Every Choice You Make"
 date: 2026-04-21
-categories: [Career, Personal Growth, Open Source]
+categories: [Career, Personal Growth, Open Source, "Quality Leadership & Industry Practice"]
 description: "A career is not like CDISC Compliance. It can be like git — honestly tracking every thought, choice, and change you make."
 format: html
 image: ../images/CareerReflection.jpg

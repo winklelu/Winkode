@@ -3,7 +3,7 @@ title: "useR! 2026 Notes: Reusing 'ggplot2' code: how to design better plot help
 description: "Notes from Cynthia Huang's talk at useR! 2026 in Warsaw — five ways to reuse ggplot2 code, three calendar packages that show common design mistakes, and the three principles of Window Plot Helpers"
 author: "Winkle Lu"
 date: "2026-07-21"
-categories: [ggplot2, R, useR2026, data-visualization, function-design]
+categories: [ggplot2, R, useR2026, data-visualization, function-design, "Automation & Reproducible Workflows"]
 lang: en
 format:
   html:
