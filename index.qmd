@@ -11,6 +11,9 @@ about:
     - icon: github
       text: Github
       href: https://github.com/winklelu
+    - icon: file-earmark-pdf
+      text: Download CV
+      href: "files/CV_Winkle%20Lu_Statistical%20Programmer_20260712_ForReferenceOnly.pdf"
     - text: winsualviz@gmail.com
     
 ---

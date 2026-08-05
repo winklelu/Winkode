@@ -1,6 +1,6 @@
 # _post-render.R
 # 每次 quarto render 後自動執行
-# 從根目錄複製 winviz.html 和 tools/ 到 docs/
+# 從根目錄複製 winviz.html、tools/、files/ 到 docs/
 
 # --- 1. winviz.html ---
 if (file.exists("winviz.html")) {
@@ -24,4 +24,16 @@ if (dir.exists("tools")) {
   cat("✅ docs/tools/ restored from root\n")
 } else {
   cat("⚠️  tools/ not found in root directory\n")
+}
+
+# --- 3. files/ ---
+if (dir.exists("files")) {
+  if (!dir.exists("docs/files")) dir.create("docs/files", recursive = TRUE)
+  files <- list.files("files", full.names = TRUE)
+  if (length(files) > 0) {
+    file.copy(files, "docs/files", overwrite = TRUE)
+  }
+  cat("✅ docs/files/ restored from root\n")
+} else {
+  cat("⚠️  files/ not found in root directory\n")
 }
