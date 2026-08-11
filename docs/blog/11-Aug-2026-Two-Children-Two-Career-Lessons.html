@@ -6,9 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-02">
+<meta name="dcterms.date" content="2026-08-11">
+<meta name="description" content="From a company-wide Phase 3 submission to late-night feeding breaks with R and Python — my two children’s births each marked a different lesson in my career.">
 
-<title>Generate Dynamic Text Results with glue and lapply in R – WinSual – Winkle Lu</title>
+<title>Two Children, Two Career Lessons – WinSual – Winkle Lu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,41 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -118,13 +84,17 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
 
 <meta property="og:title" content="WinSual – Winkle Lu">
 <meta property="og:description" content="Clinical data visualization, CDISC standards, R/Shiny tools, and statistical programming for Pharma &amp; Biotech.">
-<meta property="og:image" content="https://winklelu.github.io/WinSual/blog/winkle.jpg">
+<meta property="og:image" content="https://winklelu.github.io/WinSual/images/two_children_career_lessons.png">
 <meta property="og:site_name" content="WinSual – Winkle Lu">
 <meta property="og:locale" content="en_US">
+<meta property="og:image:height" content="1086">
+<meta property="og:image:width" content="1448">
 <meta name="twitter:title" content="WinSual – Winkle Lu">
 <meta name="twitter:description" content="Clinical data visualization, CDISC standards, R/Shiny tools, and statistical programming for Pharma &amp; Biotech.">
-<meta name="twitter:image" content="https://winklelu.github.io/WinSual/blog/winkle.jpg">
+<meta name="twitter:image" content="https://winklelu.github.io/WinSual/images/two_children_career_lessons.png">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image-height" content="1086">
+<meta name="twitter:image-width" content="1448">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -177,15 +147,23 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Generate Dynamic Text Results with glue and lapply in R</h1>
+<h1 class="title">Two Children, Two Career Lessons</h1>
   <div class="quarto-categories">
+    <div class="quarto-category">Career</div>
+    <div class="quarto-category">Leadership</div>
+    <div class="quarto-category">Open Source</div>
     <div class="quarto-category">R</div>
-    <div class="quarto-category">Tidyverse</div>
-    <div class="quarto-category">glue</div>
-    <div class="quarto-category">Automation &amp; Reproducible Workflows</div>
+    <div class="quarto-category">Clinical Trials</div>
+    <div class="quarto-category">NEJM</div>
+    <div class="quarto-category">Quality Leadership &amp; Industry Practice</div>
   </div>
   </div>
 
+<div>
+  <div class="description">
+    From a company-wide Phase 3 submission to late-night feeding breaks with R and Python — my two children’s births each marked a different lesson in my career.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -194,7 +172,7 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 2, 2025</p>
+      <p class="date">August 11, 2026</p>
     </div>
   </div>
   
@@ -206,67 +184,63 @@ gtag('config', 'G-3SYN2DR111', { 'anonymize_ip': true});
 </header>
 
 
-<p><img src="../images/glue.jpg" class="img-fluid" style="margin-bottom: 1em; border-radius: 8px;" width="600"></p>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">🧩 Introduction</h2>
-<p>When presenting analysis results, it’s often necessary to <strong>embed specific values into structured sentences</strong> — for example, describing results for certain patients, countries, or hospitals.</p>
-<p>The <a href="https://glue.tidyverse.org/"><code>glue</code></a> package in R provides a powerful solution for this. It allows you to <strong>integrate variable values into a fixed text template</strong>, making your code more efficient, readable, and less prone to errors.</p>
-<p>In this post, I’ll demonstrate how to: - Use <code>glue()</code> to dynamically create descriptive text<br>
-- Use <code>glue_collapse()</code> to collapse grouped records<br>
-- Use <code>lapply()</code> to manage and prefix multiple datasets<br>
-- Integrate the results into <strong>Quarto</strong> or <strong>R Markdown</strong> reports</p>
 <hr>
+<section id="two-children-two-career-lessons" class="level2">
+<h2 class="anchored" data-anchor-id="two-children-two-career-lessons">Two Children, Two Career Lessons</h2>
+<p>In the three months after my first child was born, I was part of a project that mattered to the whole company. I learned how to lead an 18-person team, spread across many locations, and bring them safely to the finish line under extreme pressure.</p>
+<p>After my second child was born, something different happened. The three-to-six-hour gap between night feedings became the start of a new learning habit. This lesson was different. It taught me that growth does not always come from pressure. Sometimes, it comes from a choice you make on your own.</p>
+<p>These two stories look very different. But they are both about the same thing: making the best choice you can, with the time you have.</p>
 </section>
-<section id="required-packages" class="level2">
-<h2 class="anchored" data-anchor-id="required-packages">📦 Required Packages</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>🪇 Step 1: Create and Prefix Multiple Datasetsrepresenting different hospitals’ medication records:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample CM data from different hospitals</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cm1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">USUBJID =</span> <span class="fu">c</span>(<span class="st">"001"</span>, <span class="st">"002"</span>), <span class="at">CMTRT =</span> <span class="fu">c</span>(<span class="st">"DrugA"</span>, <span class="st">"DrugB"</span>))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>cm2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">USUBJID =</span> <span class="fu">c</span>(<span class="st">"003"</span>, <span class="st">"004"</span>), <span class="at">CMTRT =</span> <span class="fu">c</span>(<span class="st">"DrugC"</span>, <span class="st">"DrugD"</span>))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Put into a named list</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>cm_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Hosp1 =</span> cm1, <span class="at">Hosp2 =</span> cm2)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Prefix each dataset with its group name</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>cm_prefixed <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">names</span>(cm_list), <span class="cf">function</span>(name) {</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> cm_list[[name]]</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>Group <span class="ot">&lt;-</span> name</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  df</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge all into one</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>cm_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(cm_prefixed)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="the-three-months-after-my-first-child-was-born" class="level2">
+<h2 class="anchored" data-anchor-id="the-three-months-after-my-first-child-was-born">The Three Months After My First Child Was Born</h2>
+<p>Three months after my first child was born, I joined the most important project in the whole company — a COVID-19 Phase 3 trial. Our goal was to finish the work as fast as possible and submit it for publication.</p>
+<p>I was the Programming Lead. My team had 18 people, and they worked from many different locations — nobody was in the same office. Our work covered everything from SDTM and ADaM to TLFs and the final submission documents. For 40 days in a row, I joined a progress meeting with the CEO and department heads every night. Every week, I prepared summary datasets and Excel reports for the medical team. On top of that, urgent statistical requests could come in at any time.</p>
+<p>In three months, we completed the full Phase 3 process, from raw data to submission — and successfully published the paper in NEJM. During that time, I worked more than 16 hours a day for 45 days straight.</p>
+<section id="my-job-was-more-than-just-writing-code" class="level3">
+<h3 class="anchored" data-anchor-id="my-job-was-more-than-just-writing-code">My Job Was More Than Just Writing Code</h3>
+<p>My real role was closer to being the person who kept the whole programming team moving. I planned the timeline, kept our documents up to date, tracked every task, checked in with each role on the team, and stepped in whenever something urgent came up.</p>
 </section>
-<section id="step-2-collapse-records-per-subject" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-collapse-records-per-subject">🧠 Step 2: Collapse Records per Subject</h2>
-<p>We want to describe each subject’s treatment history by combining multiple CMTRT values:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: combine multiple treatments per subject</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cm_text <span class="ot">&lt;-</span> cm_all <span class="sc">%&gt;%</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(USUBJID, Group) <span class="sc">%&gt;%</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">cmx_CMTRT =</span> <span class="fu">glue_collapse</span>(CMTRT, <span class="at">sep =</span> <span class="st">"; "</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>✨ Step 3: Use <code>glue()</code> to Format Sentences</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dynamic sentences for reporting</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cm_text <span class="ot">&lt;-</span> cm_text <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sentence =</span> <span class="fu">glue</span>(<span class="st">"Subject {USUBJID} in {Group} was treated with: {cmx_CMTRT}."</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>cm_text<span class="sc">$</span>sentence</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>📝 Output Example</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Subject <span class="dv">001</span> <span class="cf">in</span> Hosp1 was treated with<span class="sc">:</span> DrugA.</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Subject <span class="dv">002</span> <span class="cf">in</span> Hosp1 was treated with<span class="sc">:</span> DrugB.</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Subject <span class="dv">003</span> <span class="cf">in</span> Hosp2 was treated with<span class="sc">:</span> DrugC.</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Subject <span class="dv">004</span> <span class="cf">in</span> Hosp2 was treated with<span class="sc">:</span> DrugD.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>🧵 Conclusion</p>
-<p>The combination of glue(), glue_collapse(), and lapply() offers a powerful workflow for:</p>
-<ul>
-<li><p>fficient text generation</p></li>
-<li><p>Flexible dataset processing</p></li>
-<li><p>Clean report integration</p></li>
-</ul>
-<p>This approach not only reduces manual effort but also ensures consistency and clarity in reporting.</p>
-<hr>
+<section id="four-real-challenges-and-how-i-handled-them" class="level3">
+<h3 class="anchored" data-anchor-id="four-real-challenges-and-how-i-handled-them">Four Real Challenges — and How I Handled Them</h3>
+<p><strong>A tight timeline.</strong> Working within our department’s existing process and tools, I built a clear, well-estimated timeline. I also sent frequent status updates and summary emails. I didn’t wait for problems to appear — I tried to show the real situation early, before it became a crisis.</p>
+<p><strong>Too many requests from other departments.</strong> I learned to ask one question first: how urgent is this? If it was truly urgent, I assigned the right person right away. If it wasn’t, it waited until the team had time. This sounds simple, but making that call clearly, in the middle of chaos, is a real skill.</p>
+<p><strong>Keeping track of progress.</strong> Besides using a tracker file, I put everyone working on related tasks into the same chat group. This wasn’t about control — it was about letting information move freely, so everyone could see where others were stuck.</p>
+<p><strong>The department’s first real submission.</strong> At the time, our department had many tools, but had never actually gone through a full, formal submission. This meant we faced more than just a tight schedule — we also had to adjust our tools and help the team adapt. I had submission experience from before, so I worked closely with the right people on the core tasks, wrote out every step clearly for them, and ran a formal training session on the tools. In the end, we delivered everything the submission needed.</p>
+</section>
+<section id="what-mattered-more-than-the-result" class="level3">
+<h3 class="anchored" data-anchor-id="what-mattered-more-than-the-result">What Mattered More Than the Result</h3>
+<p>Three months, one full project delivered end to end, one paper published in NEJM — these are the visible results. But a few deeper lessons still stay with me:</p>
+<p>First, when family care and work both reach their limits at the same time, paying for extra childcare support is not giving up. It’s a real way to protect the other people caring for your child from burning out.</p>
+<p>Second, I later realized that a large part of those 16-hour days went into cross-department communication, document upkeep, handling SAP changes, and last-minute tasks — not the core logic work itself. If I had built a small core team of one or two people to share this management work, the whole team would have had more room to focus on the tasks that truly needed deep thinking, instead of being interrupted by small coordination issues all day.</p>
+<p>Third, with a team of 18 people, simply multiplying “total headcount” by “hours” misses something important: the value of adding more people drops as the team grows. A better approach might be to build different team combinations for different project stages — one group focused only on core logic, and another group handling urgent requests and cross-department support. Work should be divided by the nature of the task, not just by stacking more people on the clock.</p>
+<p>Fourth, testing a tool only counts when you run it through the entire workflow, start to finish. Testing each function on its own can look complete, but different stages can affect each other. Problems can still show up later and need fixing again. Real validation means running the tool through the whole process — not just checking each function by itself.</p>
+</section>
+</section>
+<section id="a-few-years-later-our-second-child-was-born" class="level2">
+<h2 class="anchored" data-anchor-id="a-few-years-later-our-second-child-was-born">A Few Years Later, Our Second Child Was Born</h2>
+<p>This time, the company no longer needed frequent overtime. The pace of work was different — but a new kind of challenge showed up in daily life instead.</p>
+<p>In the newborn stage, babies need to be fed every three to four hours. At first, I used the breaks to watch Korean dramas on Netflix. But after a while, I couldn’t find any show or movie that really interested me anymore. Then one day, while scrolling through LinkedIn, I saw a few global pharma companies sharing how they used R for regulatory submissions. That was the moment my interest was truly sparked. I decided to pick up my R and Python skills again, seriously this time.</p>
+<section id="feeding-time-became-study-time" class="level3">
+<h3 class="anchored" data-anchor-id="feeding-time-became-study-time">Feeding Time Became Study Time</h3>
+<p>Each feeding gave me a solid block of three to six uninterrupted hours. R wasn’t new to me — I had used it for my master’s thesis, so I wasn’t starting from zero. I already had some basic concepts to build on.</p>
+<p>I started by watching many talks and case studies about using R for submissions. I focused on a few clear questions: What problems did people run into? What did the overall workflow look like? What tools did they use most often? And which of these could I actually apply in my own daily work? These questions helped me stay focused, instead of just browsing without direction.</p>
+<p>From there, I used resources shared by Posit, real experiences shared by other LinkedIn users, and some well-known tutorials. Slowly, I combined all of this with my own clinical trial experience, and started building small tools of my own — and sharing them, too.</p>
+</section>
+<section id="one-brave-application-opened-a-new-world" class="level3">
+<h3 class="anchored" data-anchor-id="one-brave-application-opened-a-new-world">One Brave Application Opened a New World</h3>
+<p>After some time, I saw the call for speakers for R/Pharma APAC. I thought about it, then took a chance and submitted my first-ever talk that wasn’t about SAS. I was lucky — the talk was accepted.</p>
+<p>During preparation, I worked with a mentor. From building the slides, to shaping the content, to actually standing on stage, I learned so much from people with very different backgrounds. It was a great experience. After that, I kept submitting talks to different conferences, and I also shared these experiences internally at my company a few times.</p>
+</section>
+<section id="from-learning-alone-to-learning-with-a-community" class="level3">
+<h3 class="anchored" data-anchor-id="from-learning-alone-to-learning-with-a-community">From Learning Alone to Learning With a Community</h3>
+<p>From studying alone during feeding breaks, to joining the open-source community and speaking at conferences, I met many talented people along the way. Through these conversations, I picked up ideas I had never been exposed to before.</p>
+<p>Because of this experience, I started to see the role of “Statistical Programmer” in a whole new way. This path can be interesting, varied, and full of room for you to shape your own future.</p>
+</section>
+</section>
+<section id="two-lessons-one-shared-idea" class="level2">
+<h2 class="anchored" data-anchor-id="two-lessons-one-shared-idea">Two Lessons, One Shared Idea</h2>
+<p>Whether I was pushed forward by pressure during those three months, or chose to study on my own late at night, both experiences taught me the same thing: you can always find something worth learning, whether you’re under high pressure or working in a quiet gap of time.</p>
+<p>The difference is this. Sometimes, learning is a choice you make when you have some space. Other times, it’s a responsibility — using the skills you already have to protect the quality of the whole process. Neither one is more valuable than the other. They are simply two sides of a career, and they take turns showing up at different stages of your journey.</p>
 
 
 </section>

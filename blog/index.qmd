@@ -11,11 +11,11 @@ listing:
 :::{.column-margin}
 <h5 class="quarto-listing-category-title">Categories</h5>
 <div class="quarto-listing-category category-default">
-<div class="category" data-category="">All Articles <span class="quarto-category-count">(29)</span></div>
+<div class="category" data-category="">All Articles <span class="quarto-category-count">(30)</span></div>
 <div class="category" data-category="Q2xpbmljYWwlMjBQcm9ncmFtbWluZyUyMCUyNiUyMFJlZ3VsYXRvcnklMjBEZWxpdmVyeQ==">Clinical Programming &amp; Regulatory Delivery <span class="quarto-category-count">(5)</span></div>
 <div class="category" data-category="RGF0YSUyMFJldmlldyUyMCUyNiUyMFZpc3VhbGl6YXRpb24=">Data Review &amp; Visualization <span class="quarto-category-count">(13)</span></div>
 <div class="category" data-category="QXV0b21hdGlvbiUyMCUyNiUyMFJlcHJvZHVjaWJsZSUyMFdvcmtmbG93cw==">Automation &amp; Reproducible Workflows <span class="quarto-category-count">(13)</span></div>
-<div class="category" data-category="UXVhbGl0eSUyMExlYWRlcnNoaXAlMjAlMjYlMjBJbmR1c3RyeSUyMFByYWN0aWNl">Quality Leadership &amp; Industry Practice <span class="quarto-category-count">(3)</span></div>
+<div class="category" data-category="UXVhbGl0eSUyMExlYWRlcnNoaXAlMjAlMjYlMjBJbmR1c3RyeSUyMFByYWN0aWNl">Quality Leadership &amp; Industry Practice <span class="quarto-category-count">(4)</span></div>
 </div>
 :::
 
