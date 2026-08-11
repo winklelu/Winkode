@@ -6,6 +6,7 @@ categories: [Career, Leadership, Open Source, R, Clinical Trials, NEJM, "Quality
 image: ../images/two_children_career_lessons.png
 ---
 
+![](../images/two_children_career_lessons.png){style="margin-bottom: 1em; border-radius: 8px;" width="478"}
 ------------------------------------------------------------------------
 
 ## Two Children, Two Career Lessons
