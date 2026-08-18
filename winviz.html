@@ -171,8 +171,9 @@
   }
   .section-label span {
     font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     white-space: nowrap;
@@ -183,10 +184,13 @@
     z-index: 1;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 3rem 6rem;
+    padding: 0 3rem 3rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 1.5rem;
+  }
+  .category-section:last-child .viz-grid {
+    padding-bottom: 6rem;
   }
   .viz-card {
     background: var(--card-bg);
@@ -326,14 +330,14 @@
     font-family: 'DM Sans', sans-serif;
   }
   .btn-code {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border);
-    color: var(--text-dim);
+    background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.35);
+    color: var(--accent);
   }
   .btn-code:not([disabled]):hover {
-    background: rgba(0,212,170,0.08);
-    border-color: rgba(0,212,170,0.3);
-    color: var(--accent);
+    background: rgba(0,212,170,0.2);
+    border-color: rgba(0,212,170,0.6);
+    color: #00e8bb;
   }
   .btn-try { background: var(--accent); color: var(--bg); font-weight: 600; }
   .btn-try:not([disabled]):hover { background: #00e8bb; }
@@ -467,7 +471,7 @@
   </p>
   <div class="hero-stats">
     <div class="stat">
-      <span class="stat-num">06</span>
+      <span class="stat-num">13</span>
       <span class="stat-label">Tools</span>
     </div>
     <div class="stat">
@@ -486,19 +490,20 @@
   <div class="filter-bar">
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="figure">Figure</button>
-    <button class="filter-btn" data-filter="table">Table</button>
+    <button class="filter-btn" data-filter="table" style="display:none;">Table</button>
     <button class="filter-btn" data-filter="dataset">Dataset</button>
-    <button class="filter-btn" data-filter="other">Other</button>
+    <button class="filter-btn" data-filter="other" style="display:none;">Other</button>
   </div>
 </div>
 
-<!-- Section label -->
-<div class="section-label">
-  <span>In Development</span>
-</div>
+<!-- Categories, stacked top to bottom -->
+<div class="viz-sections" id="viz-sections">
 
-<!-- Grid -->
-<div class="viz-grid" id="viz-grid">
+  <div class="category-section" data-category-section="figure">
+    <div class="section-label">
+      <span>Figure</span>
+    </div>
+    <div class="viz-grid">
 
   <!-- ✅ KM Curve — AVAILABLE -->
   <div class="viz-card available" data-category="figure">
@@ -693,13 +698,217 @@
     </div>
   </div>
 
-  <!-- No result message -->
-  <div id="no-result">
-    <div class="nr-icon">◎</div>
-    <div class="nr-title">No tools in this category yet</div>
-    <div class="nr-sub">Coming soon — stay tuned</div>
+    </div>
   </div>
 
+  <div class="category-section" data-category-section="dataset">
+    <div class="section-label">
+      <span>Dataset</span>
+    </div>
+    <div class="viz-grid">
+
+  <!-- adam-in-r series — Dataset -->
+  <div class="viz-card available" data-category="dataset">
+    <div class="card-preview" style="flex-direction:column;gap:0.4rem;">
+      <div style="font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:500;color:var(--accent);opacity:0.85;">01</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--accent);letter-spacing:0.05em;opacity:0.9;">SAS &gt;&gt; R</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;">Data Restructuring</div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Data Restructuring (Sort, Merge & Reshape)</h3>
+      <p class="card-desc">
+        Reorganizing raw records into analysis-ready shape — sorting, merging,
+        long/wide reshaping, expanding multi-select fields, and linking
+        cross-domain records. SAS logic and its tidyverse equivalent shown
+        side by side.
+      </p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">arrange()</span>
+          <span class="tech-pill">left_join()</span>
+          <span class="tech-pill">pivot_wider()</span>
+        </div>
+        <div class="card-actions">
+          <a class="btn-code"
+             href="https://github.com/winklelu/adam-in-r/tree/main/R/01_data_restructure"
+             target="_blank">⌥ Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="viz-card available" data-category="dataset">
+    <div class="card-preview" style="flex-direction:column;gap:0.4rem;">
+      <div style="font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:500;color:var(--accent);opacity:0.85;">02</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--accent);letter-spacing:0.05em;opacity:0.9;">SAS &gt;&gt; R</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;">Variable Attributes</div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Variable Attributes & Column Control</h3>
+      <p class="card-desc">
+        Centralizing variable labels and controlling output column order for
+        consistent, submission-ready datasets.
+      </p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">attr()</span>
+          <span class="tech-pill">relocate()</span>
+        </div>
+        <div class="card-actions">
+          <a class="btn-code"
+             href="https://github.com/winklelu/adam-in-r/tree/main/R/02_variable_attrib"
+             target="_blank">⌥ Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="viz-card available" data-category="dataset">
+    <div class="card-preview" style="flex-direction:column;gap:0.4rem;">
+      <div style="font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:500;color:var(--accent);opacity:0.85;">03</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--accent);letter-spacing:0.05em;opacity:0.9;">SAS &gt;&gt; R</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;">Date & Time</div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Date & Time Derivation</h3>
+      <p class="card-desc">
+        Parsing and deriving date/time values — ISO 8601 conversion, partial
+        dates, relative study day, and datetime differences for PK timing.
+      </p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">lubridate</span>
+          <span class="tech-pill">case_when()</span>
+          <span class="tech-pill">difftime()</span>
+        </div>
+        <div class="card-actions">
+          <a class="btn-code"
+             href="https://github.com/winklelu/adam-in-r/tree/main/R/03_date_time"
+             target="_blank">⌥ Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="viz-card available" data-category="dataset">
+    <div class="card-preview" style="flex-direction:column;gap:0.4rem;">
+      <div style="font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:500;color:var(--accent);opacity:0.85;">04</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--accent);letter-spacing:0.05em;opacity:0.9;">SAS &gt;&gt; R</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;">ADaM Core</div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Core ADaM Derivations</h3>
+      <p class="card-desc">
+        The core set of ADaM-style derivations — treatment-emergent flags,
+        baseline/change from baseline, PARAM/PARAMCD, toxicity grading,
+        population flags, and more.
+      </p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">mutate()</span>
+          <span class="tech-pill">case_when()</span>
+          <span class="tech-pill">group_by()</span>
+        </div>
+        <div class="card-actions">
+          <a class="btn-code"
+             href="https://github.com/winklelu/adam-in-r/tree/main/R/04_adam_core"
+             target="_blank">⌥ Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="viz-card available" data-category="dataset">
+    <div class="card-preview" style="flex-direction:column;gap:0.4rem;">
+      <div style="font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:500;color:var(--accent);opacity:0.85;">05</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--accent);letter-spacing:0.05em;opacity:0.9;">SAS &gt;&gt; R</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;">String & Numeric</div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">String & Numeric Handling</h3>
+      <p class="card-desc">
+        Cleaning and transforming raw text and numeric values — string
+        split/concatenate, numeric ↔ character conversion, coalescing
+        multiple sources, and regex extraction.
+      </p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">stringr</span>
+          <span class="tech-pill">coalesce()</span>
+          <span class="tech-pill">separate_rows()</span>
+        </div>
+        <div class="card-actions">
+          <a class="btn-code"
+             href="https://github.com/winklelu/adam-in-r/tree/main/R/05_string_numeric"
+             target="_blank">⌥ Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="viz-card available" data-category="dataset">
+    <div class="card-preview" style="flex-direction:column;gap:0.4rem;">
+      <div style="font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:500;color:var(--accent);opacity:0.85;">06</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--accent);letter-spacing:0.05em;opacity:0.9;">SAS &gt;&gt; R</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;">Validation & Output</div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Validation & Output</h3>
+      <p class="card-desc">
+        Checking data integrity and exporting deliverables — structural
+        validation checks and export across multiple datasets in one call.
+      </p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">assertions</span>
+          <span class="tech-pill">purrr::iwalk()</span>
+        </div>
+        <div class="card-actions">
+          <a class="btn-code"
+             href="https://github.com/winklelu/adam-in-r/tree/main/R/06_qc_output"
+             target="_blank">⌥ Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="viz-card available" data-category="dataset">
+    <div class="card-preview" style="flex-direction:column;gap:0.4rem;">
+      <div style="font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:500;color:var(--accent);opacity:0.85;">07</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--accent);letter-spacing:0.05em;opacity:0.9;">SAS &gt;&gt; R</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;">Oncology & TTE</div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Oncology Response & Time-to-Event</h3>
+      <p class="card-desc">
+        Oncology-specific derivations — RECIST lesion classification, best
+        overall response, and PFS/OS time-to-event with censoring.
+      </p>
+      <div class="card-footer">
+        <div class="card-tech">
+          <span class="tech-pill">case_when()</span>
+          <span class="tech-pill">slice_min()</span>
+          <span class="tech-pill">pmin()</span>
+        </div>
+        <div class="card-actions">
+          <a class="btn-code"
+             href="https://github.com/winklelu/adam-in-r/tree/main/R/07_oncology_tte"
+             target="_blank">⌥ Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- No result message -->
+<div id="no-result">
+  <div class="nr-icon">◎</div>
+  <div class="nr-title">No tools in this category yet</div>
+  <div class="nr-sub">Coming soon — stay tuned</div>
 </div>
 
 <!-- Lightbox overlay -->
@@ -716,7 +925,7 @@
 
 <script>
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const vizCards = document.querySelectorAll('.viz-card');
+  const categorySections = document.querySelectorAll('.category-section');
   const noResult = document.getElementById('no-result');
 
   filterBtns.forEach(function(btn) {
@@ -727,13 +936,13 @@
       var filter = btn.getAttribute('data-filter');
       var visibleCount = 0;
 
-      vizCards.forEach(function(card) {
-        var category = card.getAttribute('data-category');
+      categorySections.forEach(function(section) {
+        var category = section.getAttribute('data-category-section');
         if (filter === 'all' || category === filter) {
-          card.style.display = '';
-          visibleCount++;
+          section.style.display = '';
+          visibleCount += section.querySelectorAll('.viz-card').length;
         } else {
-          card.style.display = 'none';
+          section.style.display = 'none';
         }
       });
 
